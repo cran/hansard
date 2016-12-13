@@ -37,17 +37,27 @@ Provides functions to download data from the data.parliament.uk APIs. Because of
 
 \code{\link{epetition}}
 
-\code{\link{lords_ammendments}}
+\code{\link{hansard_generic}}
+
+\code{\link{hansard_basic}}
+
+\code{\link{lords_amendments}}
 
 \code{\link{lords_attendance}}
 
 \code{\link{lords_divisions}}
+
+\code{\link{lords_vote_record}}
 
 \code{\link{lords_written_questions}}
 
 \code{\link{members}}
 
 \code{\link{members_search}}
+
+\code{\link{mp_questions}}
+
+\code{\link{mp_vote_record}}
 
 \code{\link{papers_laid}}
 

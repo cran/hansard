@@ -1,5 +1,5 @@
 
-#' House of Lords Written Questions
+#' lords_written_questions
 #'
 #' Imports data on House of Lords written questions
 #' @param lordsWritType The type of data you want, allows the arguments 'all', 'department' and 'dates'
@@ -75,8 +75,8 @@ lords_written_questions <- function(lordsWritType = c("all", "department", "date
         pages <- list()
         
         for (i in 0:writJpage) {
-            mydata <- jsonlite::fromJSON(paste0(baseurl_writ, start.date, "&endDate=", end.date, "&_pageSize=500", "&_page=", i), 
-                flatten = TRUE)
+            mydata <- jsonlite::fromJSON(paste0(baseurl_writ, start.date, "&endDate=", end.date, "&_pageSize=500", "&_page=", 
+                i), flatten = TRUE)
             message("Retrieving page ", i + 1, " of ", writJpage + 1)
             pages[[i + 1]] <- mydata$result$items
         }

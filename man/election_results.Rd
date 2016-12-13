@@ -2,19 +2,25 @@
 % Please edit documentation in R/election_results.R
 \name{election_results}
 \alias{election_results}
-\title{Elections Results}
+\title{election_results}
 \usage{
-election_results(all = TRUE)
+election_results(resultType = c("all", "ID"))
 }
 \arguments{
-\item{all}{Returns general and by-election resuls for each consituency from the 2010 general election onwards. Defaults to TRUE.}
+\item{resultType}{Accepts the arguments 'all' and 'ID'}
+
+\item{all}{Returns general and by-election resuls for each consituency from the 2010 general election onwards.}
+
+\item{ID}{Returns general and by-election resuls for each consituency from the 2010 general election onwards.}
 }
 \description{
 Imports data on general election results
 }
 \examples{
 \dontrun{
-x <- election_results(all=TRUE)
+x <- election_results('all')
+
+x <- election_results('ID')
 }
 }
 \keyword{Election}

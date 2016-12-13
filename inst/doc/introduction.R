@@ -52,6 +52,36 @@
 #  #> 6 CD:2016-09-06:125  2016-09-06       dateTime
 #  
 
+## ----eval = FALSE--------------------------------------------------------
+#  x <- mp_vote_record(172, "all")
+#  #> Retrieving aye votes:
+#  #> Connecting to API
+#  #> Retrieving page 1 of 4
+#  #> Retrieving page 2 of 4
+#  #> Retrieving page 3 of 4
+#  #> Retrieving page 4 of 4
+#  #> Retrieving no votes:
+#  #> Connecting to API
+#  #> Retrieving page 1 of 3
+#  #> Retrieving page 2 of 3
+#  #> Retrieving page 3 of 3
+#  #> head(x)
+#  #>                                       _about                                                                       title
+#  #> 1 http://data.parliament.uk/resources/653644 Opposition Motion: The Government's plan for Brexit (Prime Minister's Amdt)
+#  #> 2 http://data.parliament.uk/resources/653645       Opposition motion: The Government's plan for Brexit motion as amended
+#  #> 3 http://data.parliament.uk/resources/646440                             Digital Economy Bill: Report Stage New Clause 8
+#  #> 4 http://data.parliament.uk/resources/641464                            Opposition Motion: Education and Social Mobility
+#  #> 5 http://data.parliament.uk/resources/641522                          Opposition Motion: National Health Service Funding
+#  #> 6 http://data.parliament.uk/resources/640531               Higher Education and Research Bill: Report Stage New Clause 2
+#  #>                 uin date._value date._datatype vote
+#  #> 1 CD:2016-12-07:169  2016-12-07       dateTime  aye
+#  #> 2 CD:2016-12-07:170  2016-12-07       dateTime  aye
+#  #> 3 CD:2016-11-28:165  2016-11-28       dateTime  aye
+#  #> 4 CD:2016-11-22:161  2016-11-22       dateTime  aye
+#  #> 5 CD:2016-11-22:162  2016-11-22       dateTime  aye
+#  #> 6 CD:2016-11-21:154  2016-11-21       dateTime  aye
+#  
+
 ## ---- eval=FALSE---------------------------------------------------------
 #  #> x <- research_briefings('topicSubTopic')
 #  #> Sub-topics are case sensititve. To return list of sub-topics, enter yes.
@@ -77,4 +107,7 @@
 #  #> [7] "Schools"                      "Special educational needs"
 #  #> [9] "Students"                     "Teachers"
 #  #> Enter sub-topic. For ease of use, copy and paste the sub-topic: Teachers
+
+## ---- eval=FALSE---------------------------------------------------------
+#  x <- hansard_generic("commonsansweredquestions.json")
 

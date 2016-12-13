@@ -1,6 +1,6 @@
 
 
-#' TV Programmes
+#' tv_programmes
 #'
 #' Imports data on TV broadcasts
 #' @param AVtype The type of data you want, allows the arguments 'TV' and 'clips'
@@ -26,6 +26,8 @@ tv_programmes <- function(AVtype = c("TV", "clips")) {
         
         tv <- jsonlite::fromJSON(baseurl_tv)
         
+        message("Connecting to API")
+        
         tvJpage <- round(tv$result$totalResults/tv$result$itemsPerPage, digits = 0)
         
         pages <- list()
@@ -41,6 +43,8 @@ tv_programmes <- function(AVtype = c("TV", "clips")) {
         baseurl_tv <- "http://lda.data.parliament.uk/tvclips.json?_pageSize=500"
         
         tv <- jsonlite::fromJSON(baseurl_tv)
+        
+        message("Connecting to API")
         
         tvJpage <- round(tv$result$totalResults/tv$result$itemsPerPage, digits = 0)
         

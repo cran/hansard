@@ -2,14 +2,23 @@
 % Please edit documentation in R/early_day_motions.R
 \name{early_day_motions}
 \alias{early_day_motions}
-\title{Early Day Motions}
+\title{early_day_motions}
 \usage{
-early_day_motions(edmType = c("all"))
+early_day_motions(edmType = c("all", "allSponsors", "primarySponsor",
+  "signatures", "ID"))
 }
 \arguments{
-\item{edmType}{The type of data you want, allows the argument 'all'}
+\item{edmType}{The type of data you want, allows the arguments 'all', 'allSponsors', 'primarySponsor', 'signatures' and 'ID'}
 
 \item{all}{Returns a data frame of all early day motions}
+
+\item{allSponsors}{Requests a member's ID, and returns a data frame of early day motions where the given member is a sponsor}
+
+\item{primarySponsor}{Requests a member's ID, and returns a data frame of early day motions where the given member is the primary sponsor}
+
+\item{signatures}{Returns a data frame of all early day motion signatures.}
+
+\item{ID}{Requests an Early Day Motion ID, and returns a data frame with information on that Motion.}
 }
 \description{
 Imports data on early day motions
@@ -17,6 +26,16 @@ Imports data on early day motions
 \examples{
 \dontrun{
 x <- early_day_motions('all')
+
+x <- early_day_motions('allSponsors')
+
+x <- early_day_motions('all')
+
+x <- early_day_motions('primarySponsor')
+
+x <- early_day_motions('signatures')
+
+x <- early_day_motions('ID')
 }
 }
 \keyword{EDM}
