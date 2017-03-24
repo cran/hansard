@@ -4,23 +4,27 @@
 \alias{lords_attendance}
 \title{lords_attendance}
 \usage{
-lords_attendance(lordsAttendType = c("all", "date"))
+lords_attendance(session_id = NULL, start_date = "1900-01-01",
+  end_date = Sys.Date(), extra_args = NULL, tidy = TRUE)
 }
 \arguments{
-\item{lordsAttendType}{Accepts arguments 'all' and 'date'.}
+\item{session_id}{The ID of the House of Lords session. If NULL, returns a list of all sessions. Defaults to NULL.}
 
-\item{all}{Returns a data frame with all available House of Lords attendance records.}
+\item{start_date}{The earliest date to include in the data frame. Defaults to '1900-01-01'.}
 
-\item{date}{Requests a date and returns a data frame with all available House of Lords attendance records for that date.}
+\item{end_date}{The latest date to include in the data frame. Defaults to current system date.}
+
+\item{extra_args}{Additional parameters to pass to API. Defaults to NULL.}
+
+\item{tidy}{Fix the variable names in the data frame to remove extra characters, superfluous text and convert variable names to snake_case. Defaults to TRUE.}
 }
 \description{
 Imports data on House of Lords attendance. Please note that the attendance data frames are not as tidy as some of the others that are accessible through this API.
 }
 \examples{
 \dontrun{
-x <- lords_attendance('all')
 
-x <- lords_attendance('date')
+x <- lords_attendance(session_id = 706178)
 }
 
 }
@@ -28,4 +32,3 @@ x <- lords_attendance('date')
 \keyword{House}
 \keyword{Lords}
 \keyword{of}
-

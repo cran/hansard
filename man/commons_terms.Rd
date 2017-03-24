@@ -4,22 +4,29 @@
 \alias{commons_terms}
 \title{commons_terms}
 \usage{
-commons_terms(termsType = c("all"))
+commons_terms(search = NULL, class = NULL, extra_args = NULL,
+  tidy = TRUE)
 }
 \arguments{
-\item{termsType}{The type of data you want, allows the argument 'all'}
+\item{search}{A string to search the parliamentary thesaurus for.}
 
-\item{all}{Returns a data frame with all definitions in the parliamentary thesaurus}
+\item{class}{The class of definition to be returned Accepts one of 'ID', 'ORG', 'SIT', 'NAME', 'LEG','CTP', 'PBT' and 'TPG'.  Defaults to NULL}
+
+\item{extra_args}{Additional parameters to pass to API. Defaults to NULL.}
+
+\item{tidy}{Fix the variable names in the data frame to remove extra characters, superfluous text and convert variable names to snake_case. Defaults to TRUE.}
 }
 \description{
-Imports the parliamentary thesaurus
+Imports the parliamentary thesaurus. The API is rate limited to 5500 requests at a time, so some use of parameters is required.
 }
 \examples{
 \dontrun{
-x <- commons_terms('all')
-head(x)
- }
+
+x <- commons_terms(search='estate')
+
+x <- commons_terms(search='estate', class='ORG')
+
+}
 }
 \keyword{parliamentary}
 \keyword{thesaurus}
-

@@ -4,39 +4,35 @@
 \alias{early_day_motions}
 \title{early_day_motions}
 \usage{
-early_day_motions(edmType = c("all", "allSponsors", "primarySponsor",
-  "signatures", "ID"))
+early_day_motions(edm_id = NULL, session = NULL,
+  start_date = "1900-01-01", end_date = Sys.Date(), signatures = 1,
+  extra_args = NULL, tidy = TRUE)
 }
 \arguments{
-\item{edmType}{The type of data you want, allows the arguments 'all', 'allSponsors', 'primarySponsor', 'signatures' and 'ID'}
+\item{edm_id}{Accepts the ID number of an early day motion, and returns data on that motion. Note that EDM numbers reset each parliamentary session, so using this as the only parameter will return multiple early day motions. Defaults to NULL.}
 
-\item{all}{Returns a data frame of all early day motions}
+\item{session}{Accepts a parliamentary session, in yyyy/yy format. Defaults to NULL.}
 
-\item{allSponsors}{Requests a member's ID, and returns a data frame of early day motions where the given member is a sponsor}
+\item{start_date}{The earliest date to include in the data frame, if calling all early day motions. Defaults to '1900-01-01'.}
 
-\item{primarySponsor}{Requests a member's ID, and returns a data frame of early day motions where the given member is the primary sponsor}
+\item{end_date}{The latest date to include in the data frame, if calling all early day motions. Defaults to current system date.}
 
-\item{signatures}{Returns a data frame of all early day motion signatures.}
+\item{signatures}{The minimum number of signatures required for inclusion in the data frame. Defaults to 1.}
 
-\item{ID}{Requests an Early Day Motion ID, and returns a data frame with information on that Motion.}
+\item{extra_args}{Additional parameters to pass to API. Defaults to NULL.}
+
+\item{tidy}{Fix the variable names in the data frame to remove extra characters, superfluous text and convert variable names to snake_case. Defaults to TRUE.}
 }
 \description{
 Imports data on early day motions
 }
 \examples{
 \dontrun{
-x <- early_day_motions('all')
 
-x <- early_day_motions('allSponsors')
+x <- early_day_motions(edm_id = 1073)
 
-x <- early_day_motions('all')
+x <- early_day_motions(edm_id = 1073, session='2015/16')
 
-x <- early_day_motions('primarySponsor')
-
-x <- early_day_motions('signatures')
-
-x <- early_day_motions('ID')
 }
 }
 \keyword{EDM}
-

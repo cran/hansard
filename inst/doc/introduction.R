@@ -29,8 +29,7 @@
 #  
 
 ## ----eval = FALSE--------------------------------------------------------
-#  x <- commons_divisions("aye")
-#  #> Enter Member ID: 172
+#  x <- mp_vote_record(172, "aye")
 #  #> Retrieving page 1 of 4
 #  #> Retrieving page 2 of 4
 #  #> Retrieving page 3 of 4
@@ -53,60 +52,47 @@
 #  
 
 ## ----eval = FALSE--------------------------------------------------------
-#  x <- mp_vote_record(172, "all")
-#  #> Retrieving aye votes:
-#  #> Connecting to API
-#  #> Retrieving page 1 of 4
-#  #> Retrieving page 2 of 4
-#  #> Retrieving page 3 of 4
-#  #> Retrieving page 4 of 4
-#  #> Retrieving no votes:
-#  #> Connecting to API
-#  #> Retrieving page 1 of 3
-#  #> Retrieving page 2 of 3
-#  #> Retrieving page 3 of 3
-#  #> head(x)
-#  #>                                       _about                                                                       title
-#  #> 1 http://data.parliament.uk/resources/653644 Opposition Motion: The Government's plan for Brexit (Prime Minister's Amdt)
-#  #> 2 http://data.parliament.uk/resources/653645       Opposition motion: The Government's plan for Brexit motion as amended
-#  #> 3 http://data.parliament.uk/resources/646440                             Digital Economy Bill: Report Stage New Clause 8
-#  #> 4 http://data.parliament.uk/resources/641464                            Opposition Motion: Education and Social Mobility
-#  #> 5 http://data.parliament.uk/resources/641522                          Opposition Motion: National Health Service Funding
-#  #> 6 http://data.parliament.uk/resources/640531               Higher Education and Research Bill: Report Stage New Clause 2
-#  #>                 uin date._value date._datatype vote
-#  #> 1 CD:2016-12-07:169  2016-12-07       dateTime  aye
-#  #> 2 CD:2016-12-07:170  2016-12-07       dateTime  aye
-#  #> 3 CD:2016-11-28:165  2016-11-28       dateTime  aye
-#  #> 4 CD:2016-11-22:161  2016-11-22       dateTime  aye
-#  #> 5 CD:2016-11-22:162  2016-11-22       dateTime  aye
-#  #> 6 CD:2016-11-21:154  2016-11-21       dateTime  aye
+#  #> research_topics_list <- research_topics_list()
+#  #>
+#  #> research_subtopics_list <- research_subtopics_list()
+#  #>
+#  #> research_types_list <- research_types_list()
+#  #>
+#  #> research_topics_list[[7]]
+#  #> [1] "Defence"
+#  #>
+#  #> research_subtopics_list[[7]][10]
+#  #> [1] "Falkland Islands"
+#  #>
+#  #> research_types_list[[1]]
+#  #> [1] "Lords Library notes"
 #  
 
-## ---- eval=FALSE---------------------------------------------------------
-#  #> x <- research_briefings('topicSubTopic')
-#  #> Sub-topics are case sensititve. To return list of sub-topics, enter yes.
-#  #> Enter sub-topic: yes
-#  #
-#  #> [1] 'Agriculture, animals, food and rural affairs' 'Asylum, immigration and nationality'
-#  #> [3] 'Business, industry and consumers'             'Communities and families'
-#  #> [5] 'Crime, civil law, justice and rights'         'Culture, media and sport'
-#  #> [7] 'Defence'                                      'Economy and finance'
-#  #> [9] 'Education'                                    'Employment and training'
-#  #> [11] 'Energy and environment'                       'European Union'
-#  #> [13] 'Health services and medicine'                 'Housing and planning'
-#  #> [15] 'International affairs'                        'Parliament, government and politics'
-#  #> [17] 'Science and technology'                       'Social Security and pensions'
-#  #> [19] 'Social services'                              'Transport'
-#  #> Enter Topic. For ease of use, copy and paste the topic: Education
-#  #> Sub-topics are case sensititve. To return list of sub-topics, enter yes.
-#  #> Enter sub-topic: yes
+## ----eval = FALSE--------------------------------------------------------
+#  #> x <- research_briefings(topic = research_topics_list[[7]])
+#  #>
+#  #> x <- research_briefings(topic = research_topics_list[[7]], subtopic=research_subtopics_list[[7]][10])
+#  #>
+#  #> x <- research_briefings(topic = "Defence")
 #  
-#  #> [1] "Adult education"              "Further education"
-#  #> [3] "Higher education"             "Local authorities: education"
-#  #> [5] "Ofsted"                       "Pre-school education"
-#  #> [7] "Schools"                      "Special educational needs"
-#  #> [9] "Students"                     "Teachers"
-#  #> Enter sub-topic. For ease of use, copy and paste the sub-topic: Teachers
+
+## ----eval = FALSE--------------------------------------------------------
+#  #> x <- research_briefings(subtopic = research_subtopics_list[[7]][10])
+#  #>
+#  #> x <- research_briefings(subtopic = "Falkland Islands")
+#  #>
+#  #> system.time(without_topic <- research_briefings(subtopic = research_subtopics_list[[7]][10]))
+#  #> Retrieving page 1 of 1
+#  #>   user  system elapsed
+#  #>   1.12    2.59    4.71
+#  #>
+#  #> system.time(with_topic <- research_briefings(topic = research_topics_list[[7]], subtopic=research_subtopics_list[[7]][10]))
+#  #> Retrieving page 1 of 1
+#  #>    user  system elapsed
+#  #>    0.47    1.31    1.89
+#  #>
+#  #> all.equal(with_topic, without_topic)
+#  #> [1] TRUE
 
 ## ---- eval=FALSE---------------------------------------------------------
 #  x <- hansard_generic("commonsansweredquestions.json")

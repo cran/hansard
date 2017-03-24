@@ -4,14 +4,19 @@
 \alias{all_answered_questions}
 \title{all_answered_questions}
 \usage{
-all_answered_questions(allAnsType = c("all", "askedBy"))
+all_answered_questions(mp_id = NULL, start_date = "1900-01-01",
+  end_date = Sys.Date(), extra_args = NULL, tidy = TRUE)
 }
 \arguments{
-\item{allAnsType}{The type of questions you want, accepts the arguments 'all' and 'askedBy'}
+\item{mp_id}{Accepts a member ID, and returns a data frame with all available questions asked by that member. If NULL, returns  a data frame with all available answered questions.}
 
-\item{all}{Returns a data frame with all available answered questions.}
+\item{start_date}{The earliest date to include in the data frame. Defaults to '1900-01-01'.}
 
-\item{askedBy}{Requests a member ID, and returns a data frame with all available questions asked by that member.}
+\item{end_date}{The latest date to include in the data frame. Defaults to current system date.}
+
+\item{extra_args}{Additional parameters to pass to API. Defaults to NULL.}
+
+\item{tidy}{Fix the variable names in the data frame to remove extra characters, superfluous text and convert variable names to snake_case. Defaults to TRUE.}
 }
 \description{
 Imports data on answered parliamentary questions
@@ -19,11 +24,9 @@ Imports data on answered parliamentary questions
 \examples{
 \dontrun{
 
-x <- all_answered_questions('all')
+x <- all_answered_questions(4019)
 
-x <- all_answered_questions('askedBy')
 }
 }
 \keyword{Answered}
 \keyword{Questions}
-

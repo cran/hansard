@@ -14,9 +14,10 @@ A semi-generic function for the parliamentary API. Provides greater flexibility,
 }
 \examples{
 \dontrun{
-x <- hansard_generic('elections.json')
+
+ x <- hansard_generic('elections.json')
+
 }
 }
 \keyword{API}
 \keyword{Hansard}
-

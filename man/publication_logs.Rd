@@ -4,19 +4,27 @@
 \alias{publication_logs}
 \title{publication_logs}
 \usage{
-publication_logs(all = TRUE)
+publication_logs(ID = NULL, start_date = "1900-01-01",
+  end_date = Sys.Date(), extra_args = NULL, tidy = TRUE)
 }
 \arguments{
-\item{all}{Returns a data frame with all available Publication Logs. Defaults to TRUE.}
+\item{ID}{Publication ID. Defaults to NULL. If not null, requests a data frame with information on the given publication.}
+
+\item{start_date}{The earliest date to include in the data frame. Defaults to '1900-01-01'.}
+
+\item{end_date}{The latest date to include in the data frame. Defaults to current system date.}
+
+\item{extra_args}{Additional parameters to pass to API. Defaults to NULL.}
+
+\item{tidy}{Fix the variable names in the data frame to remove extra characters, superfluous text and convert variable names to snake_case. Defaults to TRUE.}
 }
 \description{
 Imports data on Publication Logs
 }
 \examples{
 \dontrun{
-# x <- publication_logs()
+# x <- publication_logs(683267)
 }
 }
 \keyword{Logs}
 \keyword{Publication}
-
