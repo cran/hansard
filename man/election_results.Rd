@@ -2,23 +2,36 @@
 % Please edit documentation in R/election_results.R
 \name{election_results}
 \alias{election_results}
-\title{election_results}
+\title{Imports data on general election and by-election results}
 \usage{
-election_results(ID = NULL, extra_args = NULL, tidy = TRUE)
+election_results(ID = NULL, calculate_percent = FALSE,
+  constit_details = FALSE, extra_args = NULL, tidy = TRUE,
+  tidy_style = "snake_case")
 }
 \arguments{
 \item{ID}{Accepts an ID for a general or by-election from the 2010 general election onwards, and returns the results. If NULL, returns all available election results. Defaults to NULL.}
 
+\item{calculate_percent}{If TRUE, calculates the turnout percentage for each constituency in the tibble and the majority of the winning candidate to one decimal place, and includes this information in the tibble in additional columns labelled 'turnout_percentage' and 'majority_percentage'. Defaults to FALSE.}
+
+\item{constit_details}{If TRUE, returns additional details on each constituency, including its GSS (Government Statistical Service) code. Defaults to FALSE.}
+
 \item{extra_args}{Additional parameters to pass to API. Defaults to NULL.}
 
-\item{tidy}{Fix the variable names in the data frame to remove extra characters, superfluous text and convert variable names to snake_case. Defaults to TRUE.}
+\item{tidy}{Fix the variable names in the tibble to remove special characters and superfluous text, and converts the variable names to a consistent style. Defaults to TRUE.}
+
+\item{tidy_style}{The style to convert variable names to, if tidy = TRUE. Accepts one of 'snake_case', 'camelCase' and 'period.case'. Defaults to 'snake_case'.}
+}
+\value{
+A tibble with the results of all general and by-elections, or of a specified general election or by-election.
 }
 \description{
-Imports data on general election results
+Imports data on general election and by-election results
 }
 \examples{
 \dontrun{
+
 x <- election_results(ID=382037)
+
 }
 }
 \keyword{Election}

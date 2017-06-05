@@ -1,12 +1,13 @@
 
-#' commons_oral_question_times
-#'
 #' Imports data on House of Commons oral question times
-#' @param session Accepts a session in format yyyy/yy (e.g. 2016/17) and returns a data frame of all oral question times from that session
-#' @param question_id Accepts a question time ID, and returns a data frame of that question time.
+#' @param session Accepts a session in format yyyy/yy (e.g. 2016/17) and returns a tibble of all oral question times from that session
+#' @param question_id Accepts a question time ID, and returns a tibble of that question time.
 #' @param extra_args Additional parameters to pass to API. Defaults to NULL.
-#' @param tidy Fix the variable names in the data frame to remove extra characters, superfluous text and convert variable names to snake_case. Defaults to TRUE.
+#' @param tidy Fix the variable names in the tibble to remove special characters and superfluous text, and converts the variable names to a consistent style. Defaults to TRUE.
+#' @param tidy_style The style to convert variable names to, if tidy = TRUE. Accepts one of 'snake_case', 'camelCase' and 'period.case'. Defaults to 'snake_case'.
+#' @return A tibble with information on oral question times in the House of Commons.
 #' @keywords Oral Questions Time
+#' @seealso \code{\link{all_answered_questions}} \code{\link{commons_answered_questions}} \code{\link{commons_oral_questions}} \code{\link{commons_written_questions}}  \code{\link{lords_written_questions}} \code{\link{mp_questions}}
 #' @export
 #' @examples \dontrun{
 #'
@@ -14,7 +15,7 @@
 #'
 #' }
 
-commons_oral_question_times <- function(session = NULL, question_id = NULL, extra_args = NULL, tidy = TRUE) {
+commons_oral_question_times <- function(session = NULL, question_id = NULL, extra_args = NULL, tidy = TRUE, tidy_style = "snake_case") {
     
     if (is.null(session) == FALSE) {
         
@@ -46,6 +47,8 @@ commons_oral_question_times <- function(session = NULL, question_id = NULL, extr
         
         df <- mydata$result$items
         
+        df <- tibble::as_tibble(df)
+        
     } else {
         
         oral <- jsonlite::fromJSON(paste0(baseurl, question_id, ".json", session, page_size, extra_args))
@@ -55,13 +58,12 @@ commons_oral_question_times <- function(session = NULL, question_id = NULL, extr
         pages <- list()
         
         for (i in 0:jpage) {
-            mydata <- jsonlite::fromJSON(paste0(baseurl, question_id, ".json", session, page_size, "&_page=", i, extra_args), 
-                flatten = TRUE)
+            mydata <- jsonlite::fromJSON(paste0(baseurl, question_id, ".json", session, page_size, "&_page=", i, extra_args), flatten = TRUE)
             message("Retrieving page ", i + 1, " of ", jpage + 1)
             pages[[i + 1]] <- mydata$result$items
         }
         
-        df <- dplyr::bind_rows(pages)
+        df <- tibble::as_tibble(dplyr::bind_rows(pages))
         
     }
     
@@ -71,7 +73,19 @@ commons_oral_question_times <- function(session = NULL, question_id = NULL, extr
         
         if (tidy == TRUE) {
             
-            df <- hansard_tidy(df)
+            df$date._value <- gsub("T", " ", df$date._value)
+            
+            df$date._value <- lubridate::parse_date_time(df$date._value, "Y-m-d H:M:S")
+            
+            df$modified._value <- gsub("T", " ", df$modified._value)
+            
+            df$modified._value <- lubridate::parse_date_time(df$modified._value, "Y-m-d H:M:S")
+            
+            df$modified._datatype <- "POSIXct"
+            
+            df$date._datatype <- "POSIXct"
+            
+            df <- hansard::hansard_tidy(df, tidy_style)
             
             df
             

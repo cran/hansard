@@ -1,20 +1,23 @@
 
 
-#' publication_logs
-#'
-#' Imports data on Publication Logs
-#' @param ID Publication ID. Defaults to NULL. If not null, requests a data frame with information on the given publication.
-#' @param start_date The earliest date to include in the data frame. Defaults to '1900-01-01'.
-#' @param end_date The latest date to include in the data frame. Defaults to current system date.
+#' Imports data on House of Commons and House of Lords publications.
+#' @param ID Publication ID. Defaults to NULL. If not NULL, requests a tibble with information on the given publication.
+#' @param house The house that produced the particular publication. Accepts 'commons' and 'lords'. If NULL or not 'commons' or 'lords', returns publications from both House of Commons and House of Lords. This parameter is case-insensitive. Defaults to NULL.
+#' @param start_date The earliest date to include in the tibble. Defaults to '1900-01-01'. Accepts character values in 'YYYY-MM-DD' format, and objects of class Date, POSIXt, POSIXct, POSIXlt or anything else than can be coerced to a date with \code{as.Date()}.
+#' @param end_date The latest date to include in the tibble. Defaults to current system date. Defaults to '1900-01-01'. Accepts character values in 'YYYY-MM-DD' format, and objects of class Date, POSIXt, POSIXct, POSIXlt or anything else than can be coerced to a date with \code{as.Date()}.
 #' @param extra_args Additional parameters to pass to API. Defaults to NULL.
-#' @param tidy Fix the variable names in the data frame to remove extra characters, superfluous text and convert variable names to snake_case. Defaults to TRUE.
+#' @param tidy Fix the variable names in the tibble to remove special characters and superfluous text, and converts the variable names to a consistent style. Defaults to TRUE.
+#' @param tidy_style The style to convert variable names to, if tidy = TRUE. Accepts one of 'snake_case', 'camelCase' and 'period.case'. Defaults to 'snake_case'.
 #' @keywords Publication Logs
 #' @export
 #' @examples \dontrun{
-#' # x <- publication_logs(683267)
+#'
+#' x <- publication_logs(house='commons')
+#'
+#' x <- publication_logs(683267)
 #' }
 
-publication_logs <- function(ID = NULL, start_date = "1900-01-01", end_date = Sys.Date(), extra_args = NULL, tidy = TRUE) {
+publication_logs <- function(ID = NULL, house = NULL, start_date = "1900-01-01", end_date = Sys.Date(), extra_args = NULL, tidy = TRUE, tidy_style = "snake_case") {
     
     if (is.null(ID) == FALSE) {
         query <- paste0("/", ID, ".json?")
@@ -22,17 +25,32 @@ publication_logs <- function(ID = NULL, start_date = "1900-01-01", end_date = Sy
         query <- ".json?&_pageSize=500"
     }
     
-    dates <- paste0("&_properties=publicationDate&max-publicationDate=", end_date, "&min-publicationDate=", start_date)
+    if (is.null(house) == FALSE) {
+        house <- tolower(house)
+        if (house == "commons") {
+            house_query <- "&legislature.prefLabel=House of Commons"
+            house_query <- utils::URLencode(house_query)
+        } else if (house == "lords") {
+            house_query <- "&legislature.prefLabel=House of Lords"
+            house_query <- utils::URLencode(house_query)
+        } else {
+            house_query <- NULL
+        }
+    } else {
+        house_query <- NULL
+    }
+    
+    dates <- paste0("&_properties=publicationDate&max-publicationDate=", as.Date(end_date), "&min-publicationDate=", as.Date(start_date))
     
     baseurl <- "http://lda.data.parliament.uk/publicationlogs"
     
     message("Connecting to API")
     
-    logs <- jsonlite::fromJSON(paste0(baseurl, query, dates, extra_args), flatten = TRUE)
+    logs <- jsonlite::fromJSON(paste0(baseurl, query, house_query, dates, extra_args), flatten = TRUE)
     
     if (is.null(ID) == FALSE) {
         
-        df <- as.data.frame(logs$result$primaryTopic)
+        df <- tibble::as_tibble(as.data.frame(logs$result$primaryTopic))
         
     } else {
         
@@ -41,12 +59,12 @@ publication_logs <- function(ID = NULL, start_date = "1900-01-01", end_date = Sy
         pages <- list()
         
         for (i in 0:jpage) {
-            mydata <- jsonlite::fromJSON(paste0(baseurl, query, dates, "&_page=", i, extra_args), flatten = TRUE)
+            mydata <- jsonlite::fromJSON(paste0(baseurl, query, house_query, dates, "&_page=", i, extra_args), flatten = TRUE)
             message("Retrieving page ", i + 1, " of ", jpage + 1)
             pages[[i + 1]] <- mydata$result$items
         }
         
-        df <- dplyr::bind_rows(pages)
+        df <- tibble::as_tibble(dplyr::bind_rows(pages))
         
     }
     
@@ -56,7 +74,11 @@ publication_logs <- function(ID = NULL, start_date = "1900-01-01", end_date = Sy
         
         if (tidy == TRUE) {
             
-            df <- hansard_tidy(df)
+            df$publicationDate._value <- as.POSIXct(df$publicationDate._value)
+            
+            df$publicationDate._datatype <- "POSIXct"
+            
+            df <- hansard::hansard_tidy(df, tidy_style)
             
             df
             
@@ -68,4 +90,3 @@ publication_logs <- function(ID = NULL, start_date = "1900-01-01", end_date = Sy
         
     }
 }
-

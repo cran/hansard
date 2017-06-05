@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -12,9 +12,9 @@
 
 <meta name="author" content="Evan Odell" />
 
-<meta name="date" content="2017-03-24" />
+<meta name="date" content="2017-06-04" />
 
-<title>Introduction to Hansard</title>
+<title>Introduction to hansard</title>
 
 
 
@@ -68,9 +68,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 
-<h1 class="title toc-ignore">Introduction to Hansard</h1>
+<h1 class="title toc-ignore">Introduction to hansard</h1>
 <h4 class="author"><em>Evan Odell</em></h4>
-<h4 class="date"><em>2017-03-24</em></h4>
+<h4 class="date"><em>2017-06-04</em></h4>
 
 
 
@@ -93,117 +93,171 @@ devtools::install_github(&quot;EvanOdell/hansard&quot;)</code></pre>
 </div>
 <div id="using-hansard" class="section level2">
 <h2>Using hansard</h2>
-<p><code>hansard</code> contains functions for calling data for the UK Parliament API. Most of the functions are designed to call data from a specific <a href="http://www.data.parliament.uk/" class="uri">http://www.data.parliament.uk/</a> API, but several functions have special or experimental features:</p>
-<ul>
-<li><p><code>research_briefings_lists</code> An experimental feature that creates lists of possible parameters, and allows the user to call to the API based on the content of the list. Currently only available with the <code>research_briefings_lists</code> function.</p></li>
-<li><p><code>hansard_generic</code> A basic wrapper function for any of the available APIs. Users must specify the exact path they want the function to call from, and must also specify JSON formatting.</p></li>
-<li><p><code>members_search</code> A search function for members of the House of Commons and House of Lords.</p></li>
-</ul>
-<div id="the-members_search-function" class="section level3">
-<h3>The <code>members_search</code> function</h3>
-<p>Looking up information on an individual MP or Lord through the Parliamentary API requires knowing their parliamentary ID number. This can be hard to find on the web, but luckily you can look it up through the API. We want information on the voting record of the Labour MP for Hackney North and Stoke Newington Diane Abbott, but we don’t know her ID number, so we search for her:</p>
+<p><code>hansard</code> contains functions for calling data for the UK Parliament API. The functions are designed to call data from a specific <a href="http://www.data.parliament.uk/" class="uri">http://www.data.parliament.uk/</a> API. The parameter options for each function vary, depending on the specific information available from each API, but there are two constant parameters in every function (with the exception of the <code>hansard_generic()</code> and <code>research_topics_list()</code> functions <a href="#special-functions">described below</a>): <code>tidy</code> and <code>tidy_style</code>.</p>
+<p><code>tidy</code> is a logical parameter accepting either TRUE or FALSE, defaulting to TRUE. If TRUE, <code>hansard</code> will fix variable names, which by default contain non alpha-numeric characters and appear to use an inconsistent/idiosyncratic naming convention, at least by the standards of the various naming conventions used in R. Dates and datetimes are converted to POSIXct class. Some extra URL data included in the API is also stripped out.</p>
+<p>The naming convention for variables used if <code>tidy</code>==TRUE is indicated by <code>tidy_style</code>. <code>tidy_style</code> accepts one of <code>&quot;snake_case&quot;</code>, <code>&quot;camelCase&quot;</code> and <code>&quot;period.case&quot;</code>, defaulting to <code>&quot;snake_case&quot;</code>. All variable names will be converted to match the given naming convention.</p>
+<div id="example-using-the-commons_divisions-and-mp_vote_record-functions" class="section level3">
+<h3>Example using the <code>commons_divisions()</code> and <code>mp_vote_record()</code> functions</h3>
+<p>The <code>commons_divisions()</code> function returns divisions in the House of Commons, including the result of votes and information on what we being voted on. <code>mp_vote_record()</code> returns a data frame the voting record of a given MP on each division they voted in. The example below returns all Commons Divisions where Diane Abbott voted aye in 2017. To find the parliamentary ID of Diane Abbott (or any other member of the House of Commons or House of Lords), use the <a href="#special-functions"><code>members_search()</code> function described below</a>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(hansard)
-<span class="kw">members_search</span>(<span class="st">&quot;abbot&quot;</span>)
-<span class="co">#&gt;   MP.ID additionalName                      constituency constituencyCode</span>
-<span class="co">#&gt; 1   172          Julie Hackney North and Stoke Newington           146966</span>
-<span class="co">#&gt; 2  1651      Granville                              &lt;NA&gt;               NA</span>
-<span class="co">#&gt; 3  4249           &lt;NA&gt;                      Newton Abbot           147092</span>
-<span class="co">#&gt; 4  3827         Edmond                              &lt;NA&gt;               NA</span>
-<span class="co">#&gt;   familyName                       fullName gender  givenName</span>
-<span class="co">#&gt; 1     Abbott                Ms Diane Abbott Female      Diane</span>
-<span class="co">#&gt; 2    Hodgson Lord Hodgson of Astley Abbotts   Male      Robin</span>
-<span class="co">#&gt; 3     Morris              Anne Marie Morris Female Anne Marie</span>
-<span class="co">#&gt; 4  Neuberger   Lord Neuberger of Abbotsbury   Male      David</span>
-<span class="co">#&gt;                            homePage</span>
-<span class="co">#&gt; 1     http://www.dianeabbott.org.uk</span>
-<span class="co">#&gt; 2                              &lt;NA&gt;</span>
-<span class="co">#&gt; 3 http://www.annemariemorris.co.uk/</span>
-<span class="co">#&gt; 4       http://www.judiciary.gov.uk</span>
-<span class="co">#&gt;                                                      label        party</span>
-<span class="co">#&gt; 1                Biography information for Ms Diane Abbott       Labour</span>
-<span class="co">#&gt; 2 Biography information for Lord Hodgson of Astley Abbotts         &lt;NA&gt;</span>
-<span class="co">#&gt; 3              Biography information for Anne Marie Morris Conservative</span>
-<span class="co">#&gt; 4   Biography information for Lord Neuberger of Abbotsbury         &lt;NA&gt;</span>
-<span class="co">#&gt;                             twitter</span>
-<span class="co">#&gt; 1 https://twitter.com/HackneyAbbott</span>
-<span class="co">#&gt; 2                              &lt;NA&gt;</span>
-<span class="co">#&gt; 3    https://twitter.com/AMMorrisMP</span>
-<span class="co">#&gt; 4                              &lt;NA&gt;</span></code></pre></div>
-<p>The search function is not case sensitive, and searchs in the names and constituencies of all MPs and Lords. So even though we spelled her surname incorrectly, we can still find her. This API provides limited biographical details, to retrieve more detailed biographical information, use the related <a href="https://cran.r-project.org/package=mnis"><code>mnis</code></a> package to retrives data from the Members’ Names Information Service.</p>
-</div>
-<div id="the-commons_divisions-and-mp_vote_record-functions" class="section level3">
-<h3>The <code>commons_divisions</code> and <code>mp_vote_record</code> functions</h3>
-<p>The <code>commons_divisions</code> function returns divisions in the House of Commons, including the result of votes and information on what we being voted on. <code>mp_vote_record</code> returns a data frame the voting record of a given MP on each division they voted in. The example below returns all Commons Divisions where Diane Abbott voted aye.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="kw">mp_vote_record</span>(<span class="dv">172</span>, <span class="st">&quot;aye&quot;</span>)
-<span class="co">#&gt; Retrieving page 1 of 4</span>
-<span class="co">#&gt; Retrieving page 2 of 4</span>
-<span class="co">#&gt; Retrieving page 3 of 4</span>
-<span class="co">#&gt; Retrieving page 4 of 4</span>
-<span class="co">#&gt; head(x)</span>
-<span class="co">#&gt;  _about                                                              title</span>
-<span class="co">#&gt; 1 http://data.parliament.uk/resources/626911                            Opposition Motion: Community Pharmacies</span>
-<span class="co">#&gt; 2 http://data.parliament.uk/resources/626953                           Opposition Motion: Police Officer Safety</span>
-<span class="co">#&gt; 3 http://data.parliament.uk/resources/621252                                           Opposition Motion: Yemen</span>
-<span class="co">#&gt; 4 http://data.parliament.uk/resources/607490 Closure Motion: Sexual Offences (Pardons Etc.) Bill second reading</span>
-<span class="co">#&gt; 5 http://data.parliament.uk/resources/582798      Opposition Motion: NHS sustainabiliy and transformation plans</span>
-<span class="co">#&gt; 6 http://data.parliament.uk/resources/576587                                Finance Bill: Report Stage Amdt 174</span>
-<span class="co">#&gt;                 uin date._value date._datatype</span>
-<span class="co">#&gt; 1 CD:2016-11-02:142  2016-11-02       dateTime</span>
-<span class="co">#&gt; 2 CD:2016-11-02:143  2016-11-02       dateTime</span>
-<span class="co">#&gt; 3 CD:2016-10-26:139  2016-10-26       dateTime</span>
-<span class="co">#&gt; 4 CD:2016-10-21:138  2016-10-21       dateTime</span>
-<span class="co">#&gt; 5 CD:2016-09-14:134  2016-09-14       dateTime</span>
-<span class="co">#&gt; 6 CD:2016-09-06:125  2016-09-06       dateTime</span></code></pre></div>
+<span class="kw">library</span>(tibble)##for the `glimpse()` function
+z &lt;-<span class="st"> </span><span class="kw">mp_vote_record</span>(<span class="dv">172</span>, <span class="st">&quot;aye&quot;</span>, <span class="dt">start_date =</span> <span class="st">&quot;2017-01-01&quot;</span>, <span class="dt">end_date =</span> <span class="st">&quot;2017-05-03&quot;</span>)</code></pre></div>
+<pre><code>## Connecting to API</code></pre>
+<pre><code>## Retrieving page 1 of 1</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">glimpse</span>(z)</code></pre></div>
+<pre><code>## Observations: 38
+## Variables: 5
+## $ about         &lt;chr&gt; &quot;http://data.parliament.uk/resources/722300&quot;, &quot;h...
+## $ title         &lt;chr&gt; &quot;Early Parliamentary General Election&quot;, &quot;Pension...
+## $ uin           &lt;chr&gt; &quot;CD:2017-04-19:264&quot;, &quot;CD:2017-03-29:260&quot;, &quot;CD:20...
+## $ date_value    &lt;dttm&gt; 2017-04-19, 2017-03-29, 2017-03-29, 2017-03-29,...
+## $ date_datatype &lt;chr&gt; &quot;POSIXct&quot;, &quot;POSIXct&quot;, &quot;POSIXct&quot;, &quot;POSIXct&quot;, &quot;POS...</code></pre>
+<p>Using <code>commons_divisions()</code>, we can see the result of one of those votes, ID 722300, the Early Parliamentary General Election bill that dissolved parliament for the 2017 General Election. The function default is to return a list of every MP and how they voted:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="kw">commons_divisions</span>(<span class="dv">722300</span>)</code></pre></div>
+<pre><code>## Connecting to API</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">glimpse</span>(x)</code></pre></div>
+<pre><code>## Observations: 535
+## Variables: 6
+## $ vote_id              &lt;chr&gt; &quot;722300/vote/1&quot;, &quot;722300/vote/10&quot;, &quot;72230...
+## $ member_party         &lt;chr&gt; &quot;Labour&quot;, &quot;Labour&quot;, &quot;Labour&quot;, &quot;Labour (Co...
+## $ type                 &lt;chr&gt; &quot;aye_vote&quot;, &quot;aye_vote&quot;, &quot;aye_vote&quot;, &quot;aye_...
+## $ member_printed_value &lt;chr&gt; &quot;Ms Diane Abbott&quot;, &quot;Dr Rosena Allin-Khan&quot;...
+## $ about                &lt;chr&gt; &quot;172&quot;, &quot;4573&quot;, &quot;1579&quot;, &quot;4088&quot;, &quot;3950&quot;, &quot;1...
+## $ label_value          &lt;chr&gt; &quot;Biography information for Ms Diane Abbot...</code></pre>
+<p>With the <code>summary</code> parameter, we can return a brief summary table of votes:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">y &lt;-<span class="st"> </span><span class="kw">commons_divisions</span>(<span class="dv">722300</span>, <span class="dt">summary=</span><span class="ot">TRUE</span>)</code></pre></div>
+<pre><code>## Connecting to API</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">glimpse</span>(y)</code></pre></div>
+<pre><code>## Observations: 2
+## Variables: 17
+## $ about                         &lt;chr&gt; &quot;http://data.parliament.uk/resou...
+## $ abstain_count                 &lt;chr&gt; &quot;0&quot;, &quot;0&quot;
+## $ ayes_count                    &lt;chr&gt; &quot;522&quot;, &quot;522&quot;
+## $ deferred_vote                 &lt;lgl&gt; FALSE, FALSE
+## $ didnotvotecount               &lt;chr&gt; &quot;0&quot;, &quot;0&quot;
+## $ errorvotecount                &lt;chr&gt; &quot;0&quot;, &quot;0&quot;
+## $ margin                        &lt;chr&gt; &quot;509&quot;, &quot;509&quot;
+## $ noesvotecount                 &lt;chr&gt; &quot;13&quot;, &quot;13&quot;
+## $ noneligiblecount              &lt;chr&gt; &quot;0&quot;, &quot;0&quot;
+## $ suspendedorexpelledvotescount &lt;chr&gt; &quot;0&quot;, &quot;0&quot;
+## $ date                          &lt;dttm&gt; 2017-04-19, 2017-04-19
+## $ division_number               &lt;chr&gt; &quot;196&quot;, &quot;196&quot;
+## $ is_primary_topic_of           &lt;chr&gt; &quot;http://lda.data.parliament.uk/c...
+## $ legislature                   &lt;chr&gt; &quot;http://data.parliament.uk/terms...
+## $ session                       &lt;chr&gt; &quot;2016/17&quot;, &quot;http://data.parliame...
+## $ title                         &lt;chr&gt; &quot;Early Parliamentary General Ele...
+## $ uin                           &lt;chr&gt; &quot;CD:2017-04-19:264&quot;, &quot;CD:2017-04...</code></pre>
 <p>The results of votes in the House of Lords can be retrieved with the <code>lords_divisions</code> function. The voting record of individual Lords can be retrieved using the <code>lords_vote_record</code> functions.</p>
 </div>
+</div>
+<div id="special-functions" class="section level2">
+<h2>Special functions</h2>
+<p>Several functions have special or experimental features:</p>
+<ul>
+<li><p><code>research_briefings_lists()</code> An experimental feature that creates lists of possible parameters, and allows the user to call to the API based on the content of the list. Currently only available with the <code>research_briefings_lists</code> function.</p></li>
+<li><p><code>hansard_generic()</code> A basic wrapper function for any of the available APIs. Users must specify the exact path they want the function to call from, and must also specify JSON formatting.</p></li>
+<li><p><code>members_search()</code> A search function for members of the House of Commons and House of Lords.</p></li>
+</ul>
 <div id="the-research_briefings-function" class="section level3">
-<h3>The <code>research_briefings</code> function</h3>
-<p>The <code>research_briefings</code> function includes the experimental feature of requesting data using lists created using the <code>research_briefings_lists</code> functions:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#&gt; research_topics_list &lt;- research_topics_list()</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; research_subtopics_list &lt;- research_subtopics_list()</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; research_types_list &lt;- research_types_list()</span>
-<span class="co">#&gt;</span>
-<span class="co">#&gt; research_topics_list[[7]]</span>
-<span class="co">#&gt; [1] &quot;Defence&quot;</span>
-<span class="co">#&gt;</span>
-<span class="co">#&gt; research_subtopics_list[[7]][10]</span>
-<span class="co">#&gt; [1] &quot;Falkland Islands&quot;</span>
-<span class="co">#&gt;</span>
-<span class="co">#&gt; research_types_list[[1]]</span>
-<span class="co">#&gt; [1] &quot;Lords Library notes&quot;</span></code></pre></div>
+<h3>The <code>research_briefings()</code> function</h3>
+<p>The <code>research_briefings()</code> function includes the experimental feature of requesting data using lists created using the <code>research_briefings_lists</code> functions:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">research_topics_list &lt;-<span class="st"> </span><span class="kw">research_topics_list</span>()
+
+research_subtopics_list &lt;-<span class="st"> </span><span class="kw">research_subtopics_list</span>()
+
+research_types_list &lt;-<span class="st"> </span><span class="kw">research_types_list</span>()
+
+research_topics_list[[<span class="dv">7</span>]]</code></pre></div>
+<pre><code>## [1] &quot;Defence&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">research_subtopics_list[[<span class="dv">7</span>]][<span class="dv">10</span>]</code></pre></div>
+<pre><code>## [1] &quot;Falkland Islands&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">research_types_list[[<span class="dv">1</span>]]</code></pre></div>
+<pre><code>## [1] &quot;Lords Library notes&quot;</code></pre>
 <p>In this case I have given them the same name as their function, but you can assign any name you wish to them.</p>
 <p>Having created the lists, they can be used to specify which topics and subtopics to call, although strings can also be used.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#&gt; x &lt;- research_briefings(topic = research_topics_list[[7]])</span>
-<span class="co">#&gt;</span>
-<span class="co">#&gt; x &lt;- research_briefings(topic = research_topics_list[[7]], subtopic=research_subtopics_list[[7]][10])</span>
-<span class="co">#&gt;</span>
-<span class="co">#&gt; x &lt;- research_briefings(topic = &quot;Defence&quot;)</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">a &lt;-<span class="st"> </span><span class="kw">research_briefings</span>(<span class="dt">topic =</span> research_topics_list[[<span class="dv">7</span>]])</code></pre></div>
+<pre><code>## Retrieving page 1 of 2</code></pre>
+<pre><code>## Retrieving page 2 of 2</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">b &lt;-<span class="st"> </span><span class="kw">research_briefings</span>(<span class="dt">topic =</span> research_topics_list[[<span class="dv">7</span>]], <span class="dt">subtopic=</span>research_subtopics_list[[<span class="dv">7</span>]][<span class="dv">10</span>])</code></pre></div>
+<pre><code>## Retrieving page 1 of 1</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">c &lt;-<span class="st"> </span><span class="kw">research_briefings</span>(<span class="dt">topic =</span> <span class="st">&quot;Defence&quot;</span>)</code></pre></div>
+<pre><code>## Retrieving page 1 of 2
+## Retrieving page 2 of 2</code></pre>
 <p>If a specific subtopic is called, but the topic is not specified, the function will still return all data within that specific subtopic. Note that this is slower than specifying the topic and subtopic.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#&gt; x &lt;- research_briefings(subtopic = research_subtopics_list[[7]][10])</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; x &lt;- research_briefings(subtopic = &quot;Falkland Islands&quot;)</span>
-<span class="co">#&gt;</span>
-<span class="co">#&gt; system.time(without_topic &lt;- research_briefings(subtopic = research_subtopics_list[[7]][10]))</span>
-<span class="co">#&gt; Retrieving page 1 of 1</span>
-<span class="co">#&gt;   user  system elapsed </span>
-<span class="co">#&gt;   1.12    2.59    4.71 </span>
-<span class="co">#&gt;</span>
-<span class="co">#&gt; system.time(with_topic &lt;- research_briefings(topic = research_topics_list[[7]], subtopic=research_subtopics_list[[7]][10]))</span>
-<span class="co">#&gt; Retrieving page 1 of 1</span>
-<span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;    0.47    1.31    1.89 </span>
-<span class="co">#&gt;</span>
-<span class="co">#&gt; all.equal(with_topic, without_topic)</span>
-<span class="co">#&gt; [1] TRUE</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">research_topics_list &lt;-<span class="st"> </span><span class="kw">research_topics_list</span>()
+
+research_subtopics_list &lt;-<span class="st"> </span><span class="kw">research_subtopics_list</span>()
+
+<span class="kw">system.time</span>(without_topic &lt;-<span class="st"> </span><span class="kw">research_briefings</span>(<span class="dt">subtopic =</span> research_subtopics_list[[<span class="dv">7</span>]][<span class="dv">10</span>]))</code></pre></div>
+<pre><code>## Retrieving page 1 of 1</code></pre>
+<pre><code>##    user  system elapsed 
+##   0.409   0.092   7.891</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.time</span>(with_topic &lt;-<span class="st"> </span><span class="kw">research_briefings</span>(<span class="dt">topic =</span> research_topics_list[[<span class="dv">7</span>]], <span class="dt">subtopic=</span>research_subtopics_list[[<span class="dv">7</span>]][<span class="dv">10</span>]))</code></pre></div>
+<pre><code>## Retrieving page 1 of 1</code></pre>
+<pre><code>##    user  system elapsed 
+##   0.026   0.002   0.177</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">identical</span>(with_topic, without_topic)</code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
 <p>If a specified subtopic is not a subtopic of the specified topic, the function will not return any data.</p>
 </div>
 <div id="the-hansard_generic-function" class="section level3">
-<h3>The <code>hansard_generic</code> function</h3>
-<p>The <code>hansard_generic</code> function allows you to put in your own paths to the API. Information on all the paths available in the API can be found on the <a href="http://explore.data.parliament.uk/">DDP Explorer website</a>.</p>
+<h3>The <code>hansard_generic()</code> function</h3>
+<p>The <code>hansard_generic()</code> function allows you to put in your own paths to the API. Information on all the paths available in the API can be found on the <a href="http://explore.data.parliament.uk/">DDP Explorer website</a>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="kw">hansard_generic</span>(<span class="st">&quot;commonsansweredquestions.json&quot;</span>)</code></pre></div>
 <p>Note that the API defaults to returning 10 items per page, but allows up to 500 items per page.</p>
+</div>
+<div id="the-members_search-function" class="section level3">
+<h3>The <code>members_search()</code> function</h3>
+<p>Looking up information on an individual MP or Lord through the Parliamentary API requires knowing their parliamentary ID number. This can be hard to find on the web, but luckily you can look it up through the API. We want information on the voting record of the Labour MP for Hackney North and Stoke Newington Diane Abbott, but we don’t know her ID number, so we search for her:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(hansard)
+<span class="kw">members_search</span>(<span class="st">&quot;abbot&quot;</span>)</code></pre></div>
+<pre><code>## Connecting to API</code></pre>
+<pre><code>## Retrieving page 1 of 1</code></pre>
+<pre><code>## # A tibble: 4 x 12
+##   mnis_id                         home_page additional_name_value
+##     &lt;chr&gt;                             &lt;chr&gt;                 &lt;chr&gt;
+## 1     172     http://www.dianeabbott.org.uk                 Julie
+## 2    1651                              &lt;NA&gt;             Granville
+## 3    4249 http://www.annemariemorris.co.uk/                  &lt;NA&gt;
+## 4    3827       http://www.judiciary.gov.uk                Edmond
+## # ... with 9 more variables: constituency_about &lt;chr&gt;,
+## #   constituency_label_value &lt;chr&gt;, family_name_value &lt;chr&gt;,
+## #   full_name_value &lt;chr&gt;, gender_value &lt;chr&gt;, given_name_value &lt;chr&gt;,
+## #   label_value &lt;chr&gt;, party_value &lt;chr&gt;, twitter_value &lt;chr&gt;</code></pre>
+<p>The same function, without the use of the tidy parameter, illustrating the differences in the variable names and the presentation of information in the first column:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(hansard)
+<span class="kw">members_search</span>(<span class="st">&quot;abbot&quot;</span>, <span class="dt">tidy =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<pre><code>## Connecting to API</code></pre>
+<pre><code>## Retrieving page 1 of 1</code></pre>
+<pre><code>## # A tibble: 4 x 12
+##                                 `_about`                          homePage
+##                                    &lt;chr&gt;                             &lt;chr&gt;
+## 1  http://data.parliament.uk/members/172     http://www.dianeabbott.org.uk
+## 2 http://data.parliament.uk/members/1651                              &lt;NA&gt;
+## 3 http://data.parliament.uk/members/4249 http://www.annemariemorris.co.uk/
+## 4 http://data.parliament.uk/members/3827       http://www.judiciary.gov.uk
+## # ... with 10 more variables: additionalName._value &lt;chr&gt;,
+## #   constituency._about &lt;chr&gt;, constituency.label._value &lt;chr&gt;,
+## #   familyName._value &lt;chr&gt;, fullName._value &lt;chr&gt;, gender._value &lt;chr&gt;,
+## #   givenName._value &lt;chr&gt;, label._value &lt;chr&gt;, party._value &lt;chr&gt;,
+## #   twitter._value &lt;chr&gt;</code></pre>
+<p>The same function as above, but with <code>tidy_style = &quot;period.case&quot;</code>, so it returns a different</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(hansard)
+<span class="kw">members_search</span>(<span class="st">&quot;abbot&quot;</span>, <span class="dt">tidy =</span> <span class="ot">TRUE</span>, <span class="dt">tidy_style =</span> <span class="st">&quot;period.case&quot;</span>)</code></pre></div>
+<pre><code>## Connecting to API</code></pre>
+<pre><code>## Retrieving page 1 of 1</code></pre>
+<pre><code>## # A tibble: 4 x 12
+##   mnis.id                         home.page additional.name.value
+##     &lt;chr&gt;                             &lt;chr&gt;                 &lt;chr&gt;
+## 1     172     http://www.dianeabbott.org.uk                 Julie
+## 2    1651                              &lt;NA&gt;             Granville
+## 3    4249 http://www.annemariemorris.co.uk/                  &lt;NA&gt;
+## 4    3827       http://www.judiciary.gov.uk                Edmond
+## # ... with 9 more variables: constituency.about &lt;chr&gt;,
+## #   constituency.label.value &lt;chr&gt;, family.name.value &lt;chr&gt;,
+## #   full.name.value &lt;chr&gt;, gender.value &lt;chr&gt;, given.name.value &lt;chr&gt;,
+## #   label.value &lt;chr&gt;, party.value &lt;chr&gt;, twitter.value &lt;chr&gt;</code></pre>
+<p>The search function is not case sensitive, and searchs in the names and constituencies of all MPs and Lords. So even though we spelled her surname incorrectly, we can still find her. This API provides limited biographical details, to retrieve more detailed biographical information, use the <a href="https://cran.r-project.org/package=mnis"><code>mnis</code></a> package to retrives data from the Members’ Names Information Service.</p>
 </div>
 </div>
 
@@ -214,7 +268,7 @@ devtools::install_github(&quot;EvanOdell/hansard&quot;)</code></pre>
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

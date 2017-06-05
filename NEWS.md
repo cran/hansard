@@ -1,3 +1,63 @@
+
+# hansard 0.4.6
+
+## New features
+
+Added optional `tidy_style` parameter, allowing users to decide which style of "snake_case", "camelCase" and "period.case" they want variable names to be in, if `tidy`==TRUE.
+
+The `elections()` function now accepts `start_date` and `end_date` parameters. As the API called by the `elections()` function only accepts one additional argument not included in the package (the label of the election), changed the `extra_args` parameter to `label` to query that argument. 
+
+The `tidy` parameter now changes date values to POSIXct class with `as.POSIXct()` when the API returns date information, or to POSIXct with the `parse_date_time` from the `lubridate` package where the API returns both date and time information.
+
+`tidy` parameter now strips out more unneeded character strings from API response.
+
+## Bug fixes
+
+Updated `elections()` to work with new API syntax.
+
+# hansard 0.4.5
+
+## Date Classes
+
+`hansard()` functions with `start_date` and `end_date` parameters now accept any input that can be coerced to a date with the `as.Date()` function.
+
+# hansard 0.4.4
+
+## Election types
+
+Added a `type` parameter to `elections()`, to return all elections of a particular type.
+
+## Constituency details
+
+Added optional `constit_details` parameter to `election_result()` function. If TRUE, `constit_details` retrieves additional constituency details from `constituencies()`, most notably including GSS code.
+
+## Bug fixes
+
+Fixed bug on `commons_oral_question_times()` where some calls did not return tibbles.
+
+Fixed bug in `lords_divisons()` that did prevented vote summary queries from being returned.
+
+Removed superfluous `x` from names in `elections()` when tidy=TRUE.
+
+# hansard 0.4.3
+
+## Voting margins
+
+Added optional `calculate_percent` parameter to `election_result()` function. If TRUE, `calculate_percent` calculates the turnout percentage for each constituency in the tibble and the majority of the winning candidate to one decimal place, and includes this information in the tibble in columns labelled `turnout_percentage` and `majority_percentage`. Defaults to FALSE.
+
+# hansard 0.4.2
+
+## tibbling
+
+`hansard()` now uses tibbles instead of data frames as the data class returned from API calls.
+
+# hansard 0.4.1
+
+Fixes discrepency between output displayed and vignette and actual package output (#7, @pssguy)
+
+tidy parameter in `members_search()` now does some additional tidying up.
+
+
 # hansard 0.4.0
 
 Major re-write, breaks compatibility with previous versions, please check your code to ensure it still works with the new package, as console input functionality has been removed from all functions. These changes ensure greater consistency in syntax across the package, in both the body and formals of the functions.
@@ -6,74 +66,74 @@ If you need the old console based functions, they can be accessed through the `h
 
 Changes have been made to most functions, including:
 
-`all_answered_questions`: Console interface is gone, now operates as a function with the ID for a given MP accepted as the only function parameter. Returns all answered questions if blank.
+`all_answered_questions()`: Console interface is gone, now operates as a function with the ID for a given MP accepted as the only function parameter. Returns all answered questions if blank.
 
-`bills`: Rewritten, now with the ability to look up bills by ID, as well as bill amendments. Added `bill_stage_types` function.
+`bills()`: Rewritten, now with the ability to look up bills by ID, as well as bill amendments. Added `bill_stage_types()` function.
 
-`commons_answered_questions`: Changed parameter name `answeredBy` to `answered_by`; improved ability to search by date, dropped console inputs.
+`commons_answered_questions()`: Changed parameter name `answeredBy` to `answered_by`; improved ability to search by date, dropped console inputs.
 
-`commons_divisions`: Removed console inputs, simplified options.
+`commons_divisions()`: Removed console inputs, simplified options.
 
-`commons_oral_question_times`: Simplified function, removed need for console input.
+`commons_oral_question_times()`: Simplified function, removed need for console input.
 
-`commons_oral_questions`: Simpler process, same result, more flexibility in requests
+`commons_oral_questions()`: Simpler process, same result, more flexibility in requests
 
-`commons_answered_questions`: Removed need for console input.
+`commons_answered_questions()`: Removed need for console input.
 
-`commons_terms`: Simplified formals.
+`commons_terms()`: Simplified formals.
 
-`commons_written_questions`: Removed need for console input.
+`commons_written_questions()`: Removed need for console input.
 
-`constituencies`: Simplified formals.
+`constituencies()`: Simplified formals.
 
-`early_day_motions`: Changed all camelCase to snake_case; STILL OUTSTANDING!
+`early_day_motions()`: Changed all camelCase to snake_case.
 
-`election_results`: Removed console input, simplified formals.
+`election_results()`: Removed console input, simplified formals.
 
-`elections`: Removed console input, simplified formals.
+`elections()`: Removed console input, simplified formals.
 
-`lords_attendance`: Removed console input, simplified formals.
+`lords_attendance()`: Removed console input, simplified formals.
 
-`lord_vote_record`: Removed console input, simplified formals.
- 
-`lords_divisions`: Removed console input, simplified formals.
+`lord_vote_record()`: Removed console input, simplified formals.
 
-`members`: Added additional `commons_members`, `commons_interests`, `lords_members` and `lords_interests` functions.
+`lords_divisions()`: Removed console input, simplified formals.
 
-`mp_edms`: Improved functionality, can now call full text of early day motions.
+`members()`: Added additional `commons_members()`, `commons_interests()`, `lords_members()` and `lords_interests()` functions.
 
-`mp_questions`: Changed `questionType` to `question_type`
+`mp_edms()`: Improved functionality, can now call full text of early day motions.
 
-`mp_vote_record`: Minor re-write
+`mp_questions()`: Changed `questionType` to `question_type`
 
-`papers_laid`: Incorporates new features in the API
+`mp_vote_record()`: Minor re-write
 
-`publication_logs`: Minor re-write, now includes start and end dates.
+`papers_laid()`: Incorporates new features in the API
 
-`sessions_info`: Added `start_date` and `end_date` parameters
+`publication_logs()`: Minor re-write, now includes start and end dates.
 
-`tv_channels` New function.
+`sessions_info()`: Added `start_date()` and `end_date()` parameters
 
-`tv_clips`: New function, previously part of `tv_programmes`.
+`tv_channels()` New function.
 
-`tv_programmes`: Minor re-write, now includes ability to select legislature.
+`tv_clips()`: New function, previously part of `tv_programmes`.
 
-Adding of `research_briefings_lists` functions.
+`tv_programmes()`: Minor re-write, now includes ability to select legislature.
+
+Adding of `research_briefings_lists()` functions.
 
 
 # hansard 0.3.4
 
 ## Bug fixes
 
-The `lords_attendance` function was not working. It was returning empty data frames when searching by date and failing entirely when trying to retrieve all attendance. This was due to url encoding issues, which have now been identified and fixed. (#4, @meenaparam)
+The `lords_attendance()` function was not working. It was returning empty data frames when searching by date and failing entirely when trying to retrieve all attendance. This was due to url encoding issues, which have now been identified and fixed. (#4, @meenaparam)
 
-Fixed spelling of amendments, so that `lords_ammendments` is now `lords_amendments`. The `lords_ammendments` function has been deprecated, and will be removed in a future release.
+Fixed spelling of amendments, so that `lords_ammendments()` is now `lords_amendments(0`. The `lords_ammendments()` function has been deprecated, and will be removed in a future release.
 
 # hansard 0.3.3
 
 ## hansard_basic()
 
-As part of a move towards calling the api through function parameters rather than console input for most functions, I have introduced `hansard_basic()` which uses console input to walk through the various steps of calling to the API. 
+As part of a move towards calling the api through function parameters rather than console input for most functions, I have introduced `hansard_basic()` which uses console input to walk through the various steps of calling to the API.
 
 # hansard 0.3.2
 
@@ -84,21 +144,21 @@ As part of a move towards calling the api through function parameters rather tha
 
 ## Requesting data through function parameters
 
-In response to a request, I've added three new functions that allow you to request the voting record of both MPs and members of the House of Lords by using their ID as a function parameter, rather than as a console input. They are:
+In response to a request, I`ve added three new functions that allow you to request the voting record of both MPs and members of the House of Lords by using their ID as a function parameter, rather than as a console input. They are:
 
-`lords_vote_record`
+`lords_vote_record()`
 
-`mp_questions`
+`mp_questions()`
 
-`mp_vote_record`
+`mp_vote_record()`
 
-`mp_edms`
+`mp_edms()`
 
-The option to use console input has been preserved in `commons_divisions`, `lords_divisions`, `commons_written_questions` and `commons_oral_questions`, along with other features not available in the new functions. 
+The option to use console input has been preserved in `commons_divisions()`, `lords_divisions()`, `commons_written_questions()` and `commons_oral_questions()`, along with other features not available in the new functions.
 
 ## Bug fixes
 
-This update fixes an issue with `lords_written_questions` and `commons_written_questions` where the functions returned a 404 error on some requests.
+This update fixes an issue with `lords_written_questions()` and `commons_written_questions()` where the functions returned a 404 error on some requests.
 
 # hansard 0.2.5
 

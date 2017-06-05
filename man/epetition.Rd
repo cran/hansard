@@ -2,25 +2,31 @@
 % Please edit documentation in R/epetition.R
 \name{epetition}
 \alias{epetition}
-\title{epetition}
+\title{Imports data on Epetitions}
 \usage{
 epetition(ID = NULL, by_constituency = FALSE, extra_args = NULL,
-  tidy = TRUE)
+  tidy = TRUE, tidy_style = "snake_case")
 }
 \arguments{
-\item{ID}{The ID of a given constituency. If NULL, returns all petitions. Defaults to NULL.}
+\item{ID}{The ID of a given petition. If NULL, returns all petitions. Defaults to NULL.}
 
-\item{by_constituency}{Accepts either TRUE or FALSE. If TRUE, provides a data frame with a breakdown of signatures for each petition, by constituency. Defaults to FALSE.}
+\item{by_constituency}{Accepts either TRUE or FALSE. If TRUE, provides a tibble with a breakdown of signatures for each petition, by constituency. Defaults to FALSE.}
 
 \item{extra_args}{Additional parameters to pass to API. Defaults to NULL.}
 
-\item{tidy}{Fix the variable names in the data frame to remove extra characters, superfluous text and convert variable names to snake_case. Defaults to TRUE.}
+\item{tidy}{Fix the variable names in the tibble to remove special characters and superfluous text, and converts the variable names to a consistent style. Defaults to TRUE.}
+
+\item{tidy_style}{The style to convert variable names to, if tidy = TRUE. Accepts one of 'snake_case', 'camelCase' and 'period.case'. Defaults to 'snake_case'.}
+}
+\value{
+A tibble with details on electronic petitions submitted to parliament.
 }
 \description{
 Imports data on Epetitions
 }
 \examples{
 \dontrun{
+
 x <- epetition(ID = 706964, by_constituency=TRUE)
 
 }

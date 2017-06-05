@@ -1,19 +1,21 @@
 
-#' epetition
-#'
+
 #' Imports data on Epetitions
-#' @param ID The ID of a given constituency. If NULL, returns all petitions. Defaults to NULL.
-#' @param by_constituency Accepts either TRUE or FALSE. If TRUE, provides a data frame with a breakdown of signatures for each petition, by constituency. Defaults to FALSE.
+#' @param ID The ID of a given petition. If NULL, returns all petitions. Defaults to NULL.
+#' @param by_constituency Accepts either TRUE or FALSE. If TRUE, provides a tibble with a breakdown of signatures for each petition, by constituency. Defaults to FALSE.
 #' @param extra_args Additional parameters to pass to API. Defaults to NULL.
-#' @param tidy Fix the variable names in the data frame to remove extra characters, superfluous text and convert variable names to snake_case. Defaults to TRUE.
+#' @param tidy Fix the variable names in the tibble to remove special characters and superfluous text, and converts the variable names to a consistent style. Defaults to TRUE.
+#' @param tidy_style The style to convert variable names to, if tidy = TRUE. Accepts one of 'snake_case', 'camelCase' and 'period.case'. Defaults to 'snake_case'.
+#' @return A tibble with details on electronic petitions submitted to parliament.
 #' @keywords ePetitions
 #' @export
 #' @examples \dontrun{
+#'
 #' x <- epetition(ID = 706964, by_constituency=TRUE)
 #'
 #'}
 
-epetition <- function(ID = NULL, by_constituency = FALSE, extra_args = NULL, tidy = TRUE) {
+epetition <- function(ID = NULL, by_constituency = FALSE, extra_args = NULL, tidy = TRUE, tidy_style = "snake_case") {
     
     if (is.null(ID) == FALSE) {
         ID <- paste0("/", ID)
@@ -33,7 +35,7 @@ epetition <- function(ID = NULL, by_constituency = FALSE, extra_args = NULL, tid
         
         petition <- jsonlite::fromJSON(paste0(baseurl, ID, by_constituency, ".json?", extra_args), flatten = TRUE)
         
-        df <- as.data.frame(petition$result$primaryTopic)
+        df <- tibble::as_tibble(petition$result$primaryTopic)
         
     } else {
         
@@ -44,13 +46,12 @@ epetition <- function(ID = NULL, by_constituency = FALSE, extra_args = NULL, tid
         pages <- list()
         
         for (i in 0:jpage) {
-            mydata <- jsonlite::fromJSON(paste0(baseurl, ID, by_constituency, ".json?&_pageSize=500", "&_page=", i, extra_args), 
-                flatten = TRUE)
+            mydata <- jsonlite::fromJSON(paste0(baseurl, ID, by_constituency, ".json?&_pageSize=500", "&_page=", i, extra_args), flatten = TRUE)
             message("Retrieving page ", i + 1, " of ", jpage + 1)
             pages[[i + 1]] <- mydata$result$items
         }
         
-        df <- dplyr::bind_rows(pages)
+        df <- tibble::as_tibble(dplyr::bind_rows(pages))
         
         df$member <- NULL  # Removes superfluous member column
         
@@ -62,7 +63,7 @@ epetition <- function(ID = NULL, by_constituency = FALSE, extra_args = NULL, tid
         
         if (tidy == TRUE) {
             
-            df <- hansard_tidy(df)
+            df <- hansard::hansard_tidy(df, tidy_style)
             
             df
             

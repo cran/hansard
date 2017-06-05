@@ -2,31 +2,40 @@
 % Please edit documentation in R/mp_questions.R
 \name{mp_questions}
 \alias{mp_questions}
-\title{mp_questions}
+\title{Accepts an ID number for a member of the House of Commons, and returns a tibble of of all their oral and written questions.}
 \usage{
-mp_questions(mp_id, question_type = "all", start_date = "1900-01-01",
-  end_date = Sys.Date(), extra_args = NULL, tidy = TRUE)
+mp_questions(mp_id = NULL, question_type = "all",
+  start_date = "1900-01-01", end_date = Sys.Date(), extra_args = NULL,
+  tidy = TRUE, tidy_style = "snake_case")
 }
 \arguments{
-\item{mp_id}{The ID number of a member of the House of Commons.}
+\item{mp_id}{The ID number of a member of the House of Commons. Defaults to NULL.}
 
 \item{question_type}{Accepts the arguments 'all', 'oral' and 'written'. Defaults to 'all'.}
 
-\item{start_date}{The earliest date to include in the data frame. Defaults to '1900-01-01'.}
+\item{start_date}{The earliest date to include in the tibble. Defaults to '1900-01-01'. Accepts character values in 'YYYY-MM-DD' format, and objects of class Date, POSIXt, POSIXct, POSIXlt or anything else than can be coerced to a date with \code{as.Date()}.}
 
-\item{end_date}{The latest date to include in the data frame. Defaults to current system date.}
+\item{end_date}{The latest date to include in the tibble. Defaults to current system date. Defaults to '1900-01-01'. Accepts character values in 'YYYY-MM-DD' format, and objects of class Date, POSIXt, POSIXct, POSIXlt or anything else than can be coerced to a date with \code{as.Date()}.}
 
 \item{extra_args}{Additional parameters to pass to API. Defaults to NULL.}
 
-\item{tidy}{Fix the variable names in the data frame to remove extra characters, superfluous text and convert variable names to snake_case. Defaults to TRUE.}
+\item{tidy}{Fix the variable names in the tibble to remove special characters and superfluous text, and converts the variable names to a consistent style. Defaults to TRUE.}
+
+\item{tidy_style}{The style to convert variable names to, if tidy = TRUE. Accepts one of 'snake_case', 'camelCase' and 'period.case'. Defaults to 'snake_case'.}
+}
+\value{
+A tibble with details on all questions asked by a member of the House of Commons.
 }
 \description{
-Accepts an ID number for a member of the House of Commons, and returns a data frame of of all their oral and written questions.
+Accepts an ID number for a member of the House of Commons, and returns a tibble of of all their oral and written questions.
 }
 \examples{
 \dontrun{
 x <- mp_questions(172, 'all')
 }
 
+}
+\seealso{
+\code{\link{all_answered_questions}} \code{\link{commons_answered_questions}} \code{\link{commons_oral_questions}} \code{\link{commons_oral_question_times}} \code{\link{commons_written_questions}} \code{\link{lords_written_questions}}
 }
 \keyword{questions}

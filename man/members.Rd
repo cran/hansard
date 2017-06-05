@@ -5,24 +5,33 @@
 \alias{commons_members}
 \alias{lords_members}
 \alias{lords_interests}
-\title{members}
+\title{Imports data on all current and former Members of Parliament including the Lords and the Commons}
 \usage{
-members(ID = NULL, extra_args = NULL, tidy = TRUE)
+members(ID = NULL, extra_args = NULL, tidy = TRUE,
+  tidy_style = "snake_case")
 
-commons_members(extra_args = NULL, tidy = TRUE)
+commons_members(extra_args = NULL, tidy = TRUE, tidy_style = "snake_case")
 
-lords_members(extra_args = NULL, tidy = TRUE)
+lords_members(extra_args = NULL, tidy = TRUE, tidy_style = "snake_case")
 
-lords_interests(peer_id = NULL, extra_args = NULL, tidy = TRUE)
+lords_interests(peer_id = NULL, extra_args = NULL, tidy = TRUE,
+  tidy_style = "snake_case")
 }
 \arguments{
-\item{ID}{The ID of a member of the House of Commons or the House of Lords. Defaults to NULL. If NULL, returns a data frame of all members. If not NULL, returns a data frame with basic information on that member.}
+\item{ID}{The ID of a member of the House of Commons or the House of Lords. Defaults to NULL. If NULL, returns a tibble of all members. If not NULL, returns a tibble with basic information on that member.}
 
 \item{extra_args}{Additional parameters to pass to API. Defaults to NULL.}
 
-\item{tidy}{Fix the variable names in the data frame to remove extra characters, superfluous text and convert variable names to snake_case. Defaults to TRUE.}
+\item{tidy}{Fix the variable names in the tibble to remove special characters and superfluous text, and converts the variable names to a consistent style. Defaults to TRUE.}
 
-\item{peer_id}{The ID of a member of the house of lords. If NULL, returns a data frame with all listed financial interests for all members. Defaults to NULL.}
+\item{tidy_style}{The style to convert variable names to, if tidy = TRUE. Accepts one of 'snake_case', 'camelCase' and 'period.case'. Defaults to 'snake_case'.}
+
+\item{peer_id}{The ID of a member of the House of lords. If NULL, returns a tibble with all listed financial interests for all members. Defaults to NULL.}
+}
+\value{
+A tibble with data on members of the House of Commons and/or the House of Lords.
+
+A tibble with details on the interests of peers in the House of Lords.
 }
 \description{
 Imports data on all current and former Members of Parliament including the Lords and the Commons
