@@ -1,9 +1,65 @@
 
+
+# hansard 0.5.0
+
+## New features
+
+All functions have a wrapper function with the same name, but with `hansard_` prefixed. Existing names have remained untouched.
+
+Addition of `house` and `answering_body` parameters to `all_answered_questions()` function.
+
+## Bug Fixes
+
+Fixed bug in `lord_vote_record()` which produced an error if requesting both lobbies, but a peer had only voted in one of the lobbies.
+
+# hansard 0.4.9
+
+## New features
+
+Party name columns in `election_candidates()` and `election_results(all_data=TRUE)` are now in alphabetical order.
+
+## Bug Fixes
+
+Fixed bug in `all_answered_questions()` that wasn't returning results when `tabling_mp_id` is a parameter.
+
+## Documentation changes
+
+`lords_interests()` and `bill_stage_types()` seperated from `members` and `bills`, respectively, into their own distinct functions.
+
+
+# hansard 0.4.8
+
+## New features
+
+New `all_data` parameter in `election_results()` to return the number of votes cast for each party in each constituency.
+
+New `election_candidates()` function, which returns the name of all candidates standing in an election.
+
+New `epetition_tibble()` function, which returns a tibble with all epetitions submitted to parliament, subject to parameters. This function offers more flexibility for returning basic details about a group of epetitions than the existing `epetition()` function, which is designed to provide more detailed information on a single epetition.
+
+# hansard 0.4.7
+
+## New features
+
+Additional URL stripping from variable values if `tidy`=TRUE.
+
+Added `tabling_mp_id` parameter to `all_answered_questions()`.
+
+## Bug Fixes
+
+Fixed bug in `members()` where looking up a single member returned a tibble with two rows.
+
+Fixed bug in `mp_edms()` where additional data was not being returned if `full_data`=TRUE.
+
+Fixed bug in `election_results()` where it did not return data if `constit_details`=TRUE.
+
+Fixed bugs where empty queries in `election_results()`, `members()` and possibly other functions were returning incorrect errors in some environments or circumstances.
+
 # hansard 0.4.6
 
 ## New features
 
-Added optional `tidy_style` parameter, allowing users to decide which style of "snake_case", "camelCase" and "period.case" they want variable names to be in, if `tidy`==TRUE.
+Added optional `tidy_style` parameter, allowing users to decide which style of "snake_case", "camelCase" and "period.case" they want variable names to be in, if `tidy`=TRUE.
 
 The `elections()` function now accepts `start_date` and `end_date` parameters. As the API called by the `elections()` function only accepts one additional argument not included in the package (the label of the election), changed the `extra_args` parameter to `label` to query that argument. 
 
@@ -56,7 +112,6 @@ Added optional `calculate_percent` parameter to `election_result()` function. If
 Fixes discrepency between output displayed and vignette and actual package output (#7, @pssguy)
 
 tidy parameter in `members_search()` now does some additional tidying up.
-
 
 # hansard 0.4.0
 
@@ -120,7 +175,6 @@ Changes have been made to most functions, including:
 
 Adding of `research_briefings_lists()` functions.
 
-
 # hansard 0.3.4
 
 ## Bug fixes
@@ -131,20 +185,17 @@ Fixed spelling of amendments, so that `lords_ammendments()` is now `lords_amendm
 
 # hansard 0.3.3
 
-## hansard_basic()
-
-As part of a move towards calling the api through function parameters rather than console input for most functions, I have introduced `hansard_basic()` which uses console input to walk through the various steps of calling to the API.
+## Bug Fixes
 
 # hansard 0.3.2
 
 ## Bug Fixes
 
-
 # hansard 0.3.0
 
 ## Requesting data through function parameters
 
-In response to a request, I`ve added three new functions that allow you to request the voting record of both MPs and members of the House of Lords by using their ID as a function parameter, rather than as a console input. They are:
+In response to a request, I've added three new functions that allow you to request the voting record of both MPs and members of the House of Lords by using their ID as a function parameter, rather than as a console input. They are:
 
 `lords_vote_record()`
 

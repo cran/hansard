@@ -21,7 +21,7 @@
 #'
 #' }
 
-lords_divisions <- function(division_id = NULL, summary = FALSE, start_date = "1900-01-01", end_date = Sys.Date(), extra_args = NULL, tidy = TRUE, tidy_style = "snake_case") {
+lords_divisions <- function(division_id = NULL, summary = FALSE, start_date = "1900-01-01", end_date = Sys.Date(), extra_args = NULL,  tidy = TRUE, tidy_style = "snake_case") {
 
     dates <- paste0("&_properties=date&max-date=", as.Date(end_date), "&min-date=", as.Date(start_date))
 
@@ -33,7 +33,7 @@ lords_divisions <- function(division_id = NULL, summary = FALSE, start_date = "1
 
         divis <- jsonlite::fromJSON(paste0(baseurl, ".json?_pageSize=500", dates, extra_args))
 
-        jpage <- round(divis$result$totalResults/divis$result$itemsPerPage, digits = 0)
+        jpage <- floor(divis$result$totalResults/divis$result$itemsPerPage)
 
         pages <- list()
 
@@ -90,42 +90,46 @@ lords_divisions <- function(division_id = NULL, summary = FALSE, start_date = "1
 
         if (tidy == TRUE) {
 
-          if (is.null(division_id) == TRUE) {
-
-            df$date._datatype <- "POSIXct"
-
-            df$date._value <- as.POSIXct(df$date._value)
-
-          } else {
-
-            if (summary == FALSE) {
-
-                df$date._value <- as.POSIXct(df$date._value)
+            if (is.null(division_id) == TRUE) {
 
                 df$date._datatype <- "POSIXct"
 
-                df$vote.type  <- gsub("http://data.parliament.uk/schema/parl#", "", df$vote.type )
+                df$date._value <- as.POSIXct(df$date._value)
 
-                df$vote.type  <- gsub("([[:lower:]])([[:upper:]])", "\\1_\\2", df$vote.type )
+            } else {
 
-                if (tidy_style == "camelCase") {
+                if (summary == FALSE) {
 
-                  df$vote.type   <- gsub("(^|[^[:alnum:]])([[:alnum:]])", "\\U\\2", df$vote.type , perl = TRUE)
+                  df$date._value <- as.POSIXct(df$date._value)
 
-                  substr(df$vote.type , 1, 1) <- tolower(substr(df$vote.type , 1, 1))
+                  df$date._datatype <- "POSIXct"
 
-                } else if (tidy_style == "period.case") {
+                  df$vote.type <- gsub("http://data.parliament.uk/schema/parl#", "", df$vote.type)
 
-                  df$vote.type  <- gsub("_", ".", df$vote.type )
+                  df$vote.type <- gsub("([[:lower:]])([[:upper:]])", "\\1_\\2", df$vote.type)
 
-                  df$vote.type  <- tolower(df$vote.type )
+                  df$vote.member <- unlist(df$vote.member)
 
-                } else {
+                  df$vote.member <- gsub("http://data.parliament.uk/resources/members/api/lords/id/", "", df$vote.member)
 
-                  df$vote.type <- tolower(df$vote.type)
+                  if (tidy_style == "camelCase") {
 
+                    df$vote.type <- gsub("(^|[^[:alnum:]])([[:alnum:]])", "\\U\\2", df$vote.type, perl = TRUE)
+
+                    substr(df$vote.type, 1, 1) <- tolower(substr(df$vote.type, 1, 1))
+
+                  } else if (tidy_style == "period.case") {
+
+                    df$vote.type <- gsub("_", ".", df$vote.type)
+
+                    df$vote.type <- tolower(df$vote.type)
+
+                  } else {
+
+                    df$vote.type <- tolower(df$vote.type)
+
+                  }
                 }
-            }
             }
 
             df <- hansard::hansard_tidy(df, tidy_style)
@@ -139,4 +143,15 @@ lords_divisions <- function(division_id = NULL, summary = FALSE, start_date = "1
         }
 
     }
+}
+
+
+#' @rdname lords_divisions
+#' @export
+hansard_lords_divisions <- function(division_id = NULL, summary = FALSE, start_date = "1900-01-01", end_date = Sys.Date(), extra_args = NULL,  tidy = TRUE, tidy_style = "snake_case") {
+
+  df <- lords_divisions(division_id = division_id, summary = summary, start_date = start_date, end_date = end_date, extra_args = extra_args, tidy = tidy, tidy_style = tidy_style)
+
+  df
+
 }

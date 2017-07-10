@@ -2,12 +2,12 @@
 % Please edit documentation in R/hansard_tidy.R
 \name{hansard_tidy}
 \alias{hansard_tidy}
-\title{hansard_tidy}
+\title{A function to make the results of calls to the API easier to work with.}
 \usage{
-hansard_tidy(df, tidy_style)
+hansard_tidy(df, tidy_style = c("snake_case", "camelCase", "period.case"))
 }
 \arguments{
-\item{df}{The tibble to tidy}
+\item{df}{The tibble to tidy.}
 
 \item{tidy_style}{The style to tidy variable names to.}
 }

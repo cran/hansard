@@ -2,14 +2,26 @@
 % Please edit documentation in R/all_answered_questions.R
 \name{all_answered_questions}
 \alias{all_answered_questions}
+\alias{hansard_all_answered_questions}
 \title{Imports data on all answered parliamentary questions.}
 \usage{
-all_answered_questions(mp_id = NULL, start_date = "1900-01-01",
+all_answered_questions(mp_id = NULL, tabling_mp_id = NULL, house = NULL,
+  answering_body = NULL, start_date = "1900-01-01", end_date = Sys.Date(),
+  extra_args = NULL, tidy = TRUE, tidy_style = "snake_case")
+
+hansard_all_answered_questions(mp_id = NULL, tabling_mp_id = NULL,
+  house = NULL, answering_body = NULL, start_date = "1900-01-01",
   end_date = Sys.Date(), extra_args = NULL, tidy = TRUE,
   tidy_style = "snake_case")
 }
 \arguments{
-\item{mp_id}{Accepts a member ID, and returns a tibble with all available questions asked by that member. If NULL, returns a tibble with all available answered questions. Includes both oral and written questions.}
+\item{mp_id}{Accepts a member ID, and returns a tibble with all available questions answered by that member. Includes both oral and written questions, and includes members of the House of Commons and the House of Lords. If NULL, returns a tibble with all available answered questions. Defaults to NULL.}
+
+\item{tabling_mp_id}{Accepts a member ID, and returns a tibble with all available questions asked by that member, subject to all other parameters. Includes both oral and written questions, and includes members of the House of Commons and the House of Lords. If NULL, returns a tibble with all available answered questions. Defaults to NULL.}
+
+\item{house}{The house to return questions from. Accepts either the short name of the legislature (e.g. 'commons' or 'lords') or the ID of the legislature (1 for the House of Commons, 2 for the House of Lords). The short names are not case sensitive. If NULL, returns answers from both houses, subject to other parameters. Defaults to NULL.}
+
+\item{answering_body}{The government department that answers the question. Accepts either the short name name of a department (e.g. 'Education' for the Department for Education), or the ID of a particular department (e.g. 60 for education.) Note that if using departmental short names the API is case sensitive, so 'Education' will work but 'education' will not return any data. If NULL, returns answers from all departments, subject to other parameters. Defaults to NULL.}
 
 \item{start_date}{The earliest date to include in the tibble. Defaults to '1900-01-01'. Accepts character values in 'YYYY-MM-DD' format, and objects of class Date, POSIXt, POSIXct, POSIXlt or anything else than can be coerced to a date with \code{as.Date()}.}
 
@@ -25,19 +37,37 @@ all_answered_questions(mp_id = NULL, start_date = "1900-01-01",
 A tibble with details on all answered questions in the House of Commons and the House of Lords.
 }
 \description{
-Imports data on all answered parliamentary questions.
+Imports data on all answered parliamentary questions in the House of Commons and in the House of Lords.
 }
 \examples{
 \dontrun{
 
 x <- all_answered_questions(4019, start_date ='2017-01-01')
 
-x <- all_answered_questions(4019, start_date ='2017-01-01', tidy_style="camelCase")
+y <- all_answered_questions(4019, start_date ='2017-01-01', tidy_style='camelCase')
+
+z <- hansard_all_answered_questions(tabling_mp_id=179, start_date ='2017-04-01')
+
+a <- hansard_all_answered_questions(house="lords", answering_body=60)
+# Returns all questions asked in the House of Lords answered by the Department for Education.
+
+b <- hansard_all_answered_questions(house=2, answering_body="Education")
+# Returns all questions asked in the House of Lords answered by the Department for Education.
 
 }
 }
 \seealso{
-\code{\link{commons_answered_questions}} \code{\link{commons_oral_questions}} \code{\link{commons_oral_question_times}} \code{\link{commons_written_questions}}  \code{\link{lords_written_questions}} \code{\link{mp_questions}}
+\code{\link{commons_answered_questions}}
+
+\code{\link{commons_oral_questions}}
+
+\code{\link{commons_oral_question_times}}
+
+\code{\link{commons_written_questions}}
+
+\code{\link{lords_written_questions}}
+
+\code{\link{mp_questions}}
 }
 \keyword{Answered}
 \keyword{Questions}

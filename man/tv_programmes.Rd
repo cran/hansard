@@ -2,18 +2,31 @@
 % Please edit documentation in R/tv_programmes.R
 \name{tv_programmes}
 \alias{tv_programmes}
+\alias{hansard_tv_programmes}
 \alias{tv_clips}
+\alias{hansard_tv_clips}
 \alias{tv_channels}
-\title{Imports data on TV broadcasts. To import information on TV channel options,}
+\alias{hansard_tv_channels}
+\title{Imports data on TV broadcasts.}
 \usage{
 tv_programmes(legislature = NULL, start_date = "1900-01-01",
+  end_date = Sys.Date(), extra_args = NULL, tidy = TRUE,
+  tidy_style = "snake_case")
+
+hansard_tv_programmes(legislature = NULL, start_date = "1900-01-01",
   end_date = Sys.Date(), extra_args = NULL, tidy = TRUE,
   tidy_style = "snake_case")
 
 tv_clips(mp_id = NULL, start_date = "1900-01-01", end_date = Sys.Date(),
   extra_args = NULL, tidy = TRUE, tidy_style = "snake_case")
 
+hansard_tv_clips(mp_id = NULL, start_date = "1900-01-01",
+  end_date = Sys.Date(), extra_args = NULL, tidy = TRUE,
+  tidy_style = "snake_case")
+
 tv_channels(tidy = TRUE, tidy_style = "snake_case")
+
+hansard_tv_channels(tidy = TRUE, tidy_style = "snake_case")
 }
 \arguments{
 \item{legislature}{Accepts one of either 'commons' or 'lords'. If NULL, returns all TV programmes for all chambers.}
@@ -38,11 +51,11 @@ A tibble with details on TV broadcasts featuring the given MP, or all available 
 A tibble with details on the different broadcasting channels.
 }
 \description{
-Imports data on TV broadcasts. To import information on TV channel options,
-
-Imports data on TV broadcasts. To import information on TV channel options,
+Imports data on TV broadcasts.
 
 Imports data on TV broadcasts
+
+Returns data on the different parliamentary broadcasting channels.
 }
 \examples{
 \dontrun{

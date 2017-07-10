@@ -2,15 +2,24 @@
 % Please edit documentation in R/research_briefings_lists.R
 \name{research_topics_list}
 \alias{research_topics_list}
+\alias{hansard_research_topics_list}
 \alias{research_subtopics_list}
+\alias{hansard_research_subtopics_list}
 \alias{research_types_list}
-\title{research_topics_list}
+\alias{hansard_research_types_list}
+\title{Functions to retrieve lists of research briefing topics, subtopics and types.}
 \usage{
 research_topics_list()
 
+hansard_research_topics_list()
+
 research_subtopics_list()
 
+hansard_research_subtopics_list()
+
 research_types_list()
+
+hansard_research_types_list()
 }
 \value{
 A list with the different research topics available.
@@ -20,11 +29,14 @@ A list with the different research subtopics available.
 A list with the different types of research briefings.
 }
 \description{
-A list of Parliamentary Research Briefings topics.
+These functions do not accept any arguments.
 
 A list of Parliamentary Research Briefings subtopics, grouped by topic.
 
 A list of types of Parliamentary Research Briefings.
+}
+\details{
+A list of Parliamentary Research Briefings topics.
 }
 \examples{
  \dontrun{
@@ -42,6 +54,9 @@ research_subtopics_list <- research_subtopics_list()
 research_types_list <- research_types_list()
 
 }
+}
+\seealso{
+\code{\link{research_briefings}}
 }
 \keyword{Briefings}
 \keyword{Parliamentary}

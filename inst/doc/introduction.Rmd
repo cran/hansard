@@ -6,17 +6,17 @@ output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{hansard}
   %\VignetteEngine{knitr::rmarkdown}
-    \usepackage[utf8]{inputenc}  
+    \usepackage[utf8]{inputenc}
 ---
 
-`hansard` is an R package to pull data from the UK parliament through the <http://www.data.parliament.uk/> API. It emphasises simplicity and ease of use, so that users unfamiliar with APIs can easily retrieve large volumes of high quality data. Each function accepts a single argument at a time, and functions that require additional information to retrieve the data you requested will ask for it after you execute the function. Functions retrieve data in json format and convert it to a data frame. The `hansard_generic` function supports the building of API requests for XML, csv or HTML formats if required. Note that the API is rate limited to returning 5500 rows per request in some circumstances.
+`hansard` is an R package to pull data from the UK parliament through the <http://www.data.parliament.uk/> API. It emphasises simplicity and ease of use, so that users unfamiliar with APIs can easily retrieve large volumes of high quality data. Each function accepts a single argument at a time, and functions that require additional information to retrieve the data you requested will ask for it after you execute the function. Functions retrieve data in json format and convert it to a tibble. The `hansard_generic` function supports the building of API requests for XML, csv or HTML formats if required. Note that the API is rate limited to returning 5500 rows per request in some circumstances.
 
 ##Installing hansard
 
 ###From CRAN
 
 ```
-install.packages("hansard")`
+install.packages("hansard")
 ```
 
 ###From GitHub (Development Version)
@@ -40,6 +40,8 @@ library(hansard)
 
 The naming convention for variables used if `tidy`==TRUE is indicated by `tidy_style`. `tidy_style` accepts one of `"snake_case"`, `"camelCase"` and `"period.case"`, defaulting to `"snake_case"`. All variable names will be converted to match the given naming convention.
 
+In addition to the more generic sounding function names, each function in hansard has a wrapper where the name is prefixed with `hansard_`. For example, both `bills()` and `hansard_bills()` will return the same result.
+
 ### Example using the `commons_divisions()` and `mp_vote_record()` functions
 
 The `commons_divisions()` function returns divisions in the House of Commons, including the result of votes and information on what we being voted on. `mp_vote_record()` returns a data frame the voting record of a given MP on each division they voted in. The example below returns all Commons Divisions where Diane Abbott voted aye in 2017. To find the parliamentary ID of Diane Abbott (or any other member of the House of Commons or House of Lords), use the [`members_search()` function described below](#special-functions).
@@ -59,7 +61,6 @@ Using `commons_divisions()`, we can see the result of one of those votes, ID 722
 x <- commons_divisions(722300)
 glimpse(x)
 ```
-
 
 With the `summary` parameter, we can return a brief summary table of votes:
 
@@ -94,12 +95,9 @@ research_types_list <- research_types_list()
 
 research_topics_list[[7]]
 
-
 research_subtopics_list[[7]][10]
 
 research_types_list[[1]]
-
-
 ```
 
 In this case I have given them the same name as their function, but you can assign any name you wish to them.
@@ -112,7 +110,6 @@ a <- research_briefings(topic = research_topics_list[[7]])
 b <- research_briefings(topic = research_topics_list[[7]], subtopic=research_subtopics_list[[7]][10])
 
 c <- research_briefings(topic = "Defence")
-
 ```
 
 If a specific subtopic is called, but the topic is not specified, the function will still return all data within that specific subtopic. Note that this is slower than specifying the topic and subtopic.
@@ -128,7 +125,6 @@ system.time(without_topic <- research_briefings(subtopic = research_subtopics_li
 system.time(with_topic <- research_briefings(topic = research_topics_list[[7]], subtopic=research_subtopics_list[[7]][10]))
 
 identical(with_topic, without_topic)
-
 ```
 
 
@@ -153,18 +149,14 @@ Looking up information on an individual MP or Lord through the Parliamentary API
 ```{r echo=TRUE}
 library(hansard)
 members_search("abbot")
-
 ```
 
-
 The same function, without the use of the tidy parameter, illustrating the differences in the variable names and the presentation of information in the first column:
-
 
 ```{r, echo=TRUE}
 library(hansard)
 members_search("abbot", tidy = FALSE)
 ```
-
 
 The same function as above, but with `tidy_style = "period.case"`, so it returns a different 
 
@@ -173,7 +165,4 @@ library(hansard)
 members_search("abbot", tidy = TRUE, tidy_style = "period.case")
 ```
 
-
-The search function is not case sensitive, and searchs in the names and constituencies of all MPs and Lords. So even though we spelled her surname incorrectly, we can still find her. This API provides limited biographical details, to retrieve more detailed biographical information, use the [`mnis`](https://cran.r-project.org/package=mnis) package to retrives data from the Members' Names Information Service.
-
-
+The search function is not case sensitive, and searchs in the names and constituencies of all MPs and Lords. So even though we spelled her surname incorrectly, we can still find her. This API provides limited biographical details, to retrieve more detailed biographical information, use the [`mnis`](https://cran.r-project.org/package=mnis) package to retrive data from the Members' Names Information Service.

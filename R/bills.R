@@ -10,6 +10,7 @@
 #' @param tidy_style The style to convert variable names to, if tidy = TRUE. Accepts one of 'snake_case', 'camelCase' and 'period.case'. Defaults to 'snake_case'.
 #' @return A tibble with details on bills before the House of Lords and the House of Commons.
 #' @keywords bills
+#' @seealso \code{\link{bill_stage_types}}
 #' @export
 #' @examples \dontrun{
 #'
@@ -19,7 +20,7 @@
 #'
 #' x <- bills(1719)
 #'
-#' x <- bills(start_date ="2016-01-01")
+#' x <- bills(start_date ='2016-01-01')
 #'
 #' }
 
@@ -45,7 +46,7 @@ bills <- function(ID = NULL, amendments = FALSE, start_date = "1900-01-01", end_
 
     bills <- jsonlite::fromJSON(paste0(baseurl, query, dates, id_query, extra_args), flatten = TRUE)
 
-    jpage <- round(bills$result$totalResults/bills$result$itemsPerPage, digits = 0)
+    jpage <- floor(bills$result$totalResults/bills$result$itemsPerPage)
 
     pages <- list()
 
@@ -82,38 +83,17 @@ bills <- function(ID = NULL, amendments = FALSE, start_date = "1900-01-01", end_
 
 
 
-#' bill_stage_types
-#'
-#' Returns a tibble with all possible bill stage types.
-#' @keywords bills
+
+
+
 #' @rdname bills
 #' @export
-#' @examples \dontrun{
-#' x <- bill_stage_types()
-#' }
 
-bill_stage_types <- function(tidy = TRUE, tidy_style = "snake_case") {
+hansard_bills <- function(ID = NULL, amendments = FALSE, start_date = "1900-01-01", end_date = Sys.Date(), extra_args = NULL, tidy = TRUE, tidy_style = "snake_case") {
 
-    stages <- jsonlite::fromJSON("http://lda.data.parliament.uk/billstagetypes.json?_pageSize=500", flatten = TRUE)
+  df <- bills(ID = ID, amendments = amendments, start_date = start_date, end_date = end_date, extra_args = extra_args, tidy = tidy, tidy_style = tidy_style)
 
-    df <- tibble::as_tibble(stages$result$items)
+  df
 
-    if (nrow(df) == 0) {
-        message("The request did not return any data. Please check your search parameters.")
-    } else {
-
-        if (tidy == TRUE) {
-
-            df <- hansard::hansard_tidy(df, tidy_style)
-
-            df
-
-        } else {
-
-            df
-
-        }
-
-    }
 
 }

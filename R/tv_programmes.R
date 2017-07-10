@@ -1,5 +1,5 @@
 
-#' Imports data on TV broadcasts. To import information on TV channel options,
+#' Imports data on TV broadcasts.
 #' @param legislature Accepts one of either 'commons' or 'lords'. If NULL, returns all TV programmes for all chambers.
 #' @param start_date The earliest date to include in the tibble. Defaults to '1900-01-01'. Accepts character values in 'YYYY-MM-DD' format, and objects of class Date, POSIXt, POSIXct, POSIXlt or anything else than can be coerced to a date with \code{as.Date()}.
 #' @param end_date The latest date to include in the tibble. Defaults to current system date. Defaults to '1900-01-01'. Accepts character values in 'YYYY-MM-DD' format, and objects of class Date, POSIXt, POSIXct, POSIXlt or anything else than can be coerced to a date with \code{as.Date()}.
@@ -41,7 +41,7 @@ tv_programmes <- function(legislature = NULL, start_date = "1900-01-01", end_dat
 
     message("Connecting to API")
 
-    jpage <- round(tv$result$totalResults/tv$result$itemsPerPage, digits = 0)
+    jpage <- floor(tv$result$totalResults/tv$result$itemsPerPage)
 
     pages <- list()
 
@@ -71,6 +71,16 @@ tv_programmes <- function(legislature = NULL, start_date = "1900-01-01", end_dat
 
             df$endDate._datatype <- "POSIXct"
 
+            df$legislature <- dplyr::bind_rows(df$legislature)
+
+            df$legislature.prefLabel._value <- df$legislature$prefLabel._value
+
+            df$legislature_about <- df$legislature$`_about`
+
+            df$legislature_about <- gsub("http://data.parliament.uk/terms/", "", df$legislature_about)
+
+            df$legislature <- NULL
+
             df <- hansard::hansard_tidy(df, tidy_style)
 
             df
@@ -84,11 +94,19 @@ tv_programmes <- function(legislature = NULL, start_date = "1900-01-01", end_dat
     }
 }
 
+#' @export
+#' @rdname tv_programmes
+hansard_tv_programmes <- function(legislature = NULL, start_date = "1900-01-01", end_date = Sys.Date(), extra_args = NULL, tidy = TRUE, tidy_style = "snake_case") {
+
+  df <- tv_programmes(legislature = legislature,start_date = start_date, end_date = end_date, extra_args = extra_args, tidy = tidy, tidy_style = tidy_style)
+
+  df
+
+}
 
 
-#' tv_clips
-#'
-#' Imports data on TV broadcasts. To import information on TV channel options,
+
+#' Imports data on TV broadcasts
 #' @param mp_id Accepts the ID of an MP or peer, and returns all clips featuring that MP or peer. If NULL, returns data on all available clips. Defaults to NULL.
 #' @return A tibble with details on TV broadcasts featuring the given MP, or all available clips.
 #' @keywords TV
@@ -112,7 +130,7 @@ tv_clips <- function(mp_id = NULL, start_date = "1900-01-01", end_date = Sys.Dat
 
     tv <- jsonlite::fromJSON(paste0(baseurl, query, dates, extra_args), flatten = TRUE)
 
-    jpage <- round(tv$result$totalResults/tv$result$itemsPerPage, digits = 0)
+    jpage <- floor(tv$result$totalResults/tv$result$itemsPerPage)
 
     pages <- list()
 
@@ -122,18 +140,40 @@ tv_clips <- function(mp_id = NULL, start_date = "1900-01-01", end_date = Sys.Dat
         pages[[i + 1]] <- mydata$result$items
     }
 
-    df <- tibble::as_tibble(dplyr::bind_rows(pages))
+    df <- as.data.frame(dplyr::bind_rows(pages))
 
     if (nrow(df) == 0) {
         message("The request did not return any data. Please check your search parameters.")
     } else {
         if (tidy == TRUE) {
 
-            df <- hansard::hansard_tidy(df, tidy_style)
+            for (i in 1:nrow(df)) {
+
+                if (is.null(df$member[[i]]) == FALSE) {
+
+                  df$member[[i]] <- hansard_tidy(df$member[[i]], tidy_style)
+
+                  df$member_about <- NA
+                  df$member_label_value <- NA
+
+                  df$member_about <- df$member[[i]]$about
+
+                  df$member_label_value <- df$member[[i]]$label_value
+
+                  df$member_about <- gsub("http://data.parliament.uk/terms/", "", df$member_about)
+
+                  df$member <- NULL
+
+                }
+            }
+
+            df <- tibble::as.tibble(hansard::hansard_tidy(df, tidy_style))
 
             df
 
         } else {
+
+            df <- tibble::as.tibble(df)
 
             df
 
@@ -142,9 +182,17 @@ tv_clips <- function(mp_id = NULL, start_date = "1900-01-01", end_date = Sys.Dat
 }
 
 
-#' tv_channels
-#'
-#' Imports data on TV broadcasts
+#' @export
+#' @rdname tv_programmes
+hansard_tv_clips <- function(mp_id = NULL, start_date = "1900-01-01", end_date = Sys.Date(), extra_args = NULL, tidy = TRUE, tidy_style = "snake_case") {
+
+  df <- tv_clips(mp_id = mp_id,start_date = start_date, end_date = end_date, extra_args = extra_args, tidy = tidy, tidy_style = tidy_style)
+
+  df
+
+}
+
+#' Returns data on the different parliamentary broadcasting channels.
 #' @rdname tv_programmes
 #' @return A tibble with details on the different broadcasting channels.
 #' @keywords TV
@@ -164,11 +212,17 @@ tv_channels <- function(tidy = TRUE, tidy_style = "snake_case") {
 
     } else {
 
-
-
         df
 
     }
 
+}
 
+#' @export
+#' @rdname tv_programmes
+hansard_tv_channels <- function(tidy = TRUE, tidy_style = "snake_case") {
+
+  df <- tv_channels(tidy = tidy, tidy_style = tidy_style)
+
+  df
 }

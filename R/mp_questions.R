@@ -1,5 +1,4 @@
 
-
 #' Accepts an ID number for a member of the House of Commons, and returns a tibble of of all their oral and written questions.
 #' @param mp_id The ID number of a member of the House of Commons. Defaults to NULL.
 #' @param question_type Accepts the arguments 'all', 'oral' and 'written'. Defaults to 'all'.
@@ -9,7 +8,12 @@
 #' @param tidy Fix the variable names in the tibble to remove special characters and superfluous text, and converts the variable names to a consistent style. Defaults to TRUE.
 #' @param tidy_style The style to convert variable names to, if tidy = TRUE. Accepts one of 'snake_case', 'camelCase' and 'period.case'. Defaults to 'snake_case'.
 #' @return A tibble with details on all questions asked by a member of the House of Commons.
-#' @seealso \code{\link{all_answered_questions}} \code{\link{commons_answered_questions}} \code{\link{commons_oral_questions}} \code{\link{commons_oral_question_times}} \code{\link{commons_written_questions}} \code{\link{lords_written_questions}}
+#' @seealso \code{\link{all_answered_questions}}
+#' @seealso \code{\link{commons_answered_questions}}
+#' @seealso \code{\link{commons_oral_questions}}
+#' @seealso \code{\link{commons_oral_question_times}}
+#' @seealso \code{\link{commons_written_questions}}
+#' @seealso \code{\link{lords_written_questions}}
 #' @keywords questions
 #' @export
 #' @examples \dontrun{
@@ -27,10 +31,12 @@ mp_questions <- function(mp_id = NULL, question_type = "all", start_date = "1900
 
     if (question_type == "all") {
         message("Retrieving oral questions:")
-        df_oral <- mp_questions(mp_id = mp_id, question_type = "oral", start_date = as.Date(start_date), end_date = as.Date(end_date), extra_args = extra_args, tidy = FALSE, tidy_style = tidy_style)
+        df_oral <- mp_questions(mp_id = mp_id, question_type = "oral", start_date = as.Date(start_date), end_date = as.Date(end_date),
+            extra_args = extra_args, tidy = FALSE, tidy_style = tidy_style)
 
         message("Retrieving written questions:")
-        df_writ <- mp_questions(mp_id = mp_id, question_type = "written", start_date = as.Date(start_date), end_date = as.Date(end_date), extra_args = extra_args, tidy = FALSE, tidy_style = tidy_style)
+        df_writ <- mp_questions(mp_id = mp_id, question_type = "written", start_date = as.Date(start_date), end_date = as.Date(end_date),
+            extra_args = extra_args, tidy = FALSE, tidy_style = tidy_style)
 
         message("Combining oral and written questions")
         if (is.null(df_oral)) {
@@ -53,7 +59,7 @@ mp_questions <- function(mp_id = NULL, question_type = "all", start_date = "1900
         oral <- jsonlite::fromJSON(paste0(baseurl_oral, mp_id, dates, "&_pageSize=500", extra_args))
 
         if (oral$result$totalResults > oral$result$itemsPerPage) {
-            oralJpage <- round(oral$result$totalResults/oral$result$itemsPerPage, digits = 0)
+            oraljpage <- floor(oral$result$totalResults/oral$result$itemsPerPage)
         } else {
             oralJpage <- 0
         }
@@ -77,7 +83,7 @@ mp_questions <- function(mp_id = NULL, question_type = "all", start_date = "1900
         writ <- jsonlite::fromJSON(paste0(baseurl, mp_id, dates, "&_pageSize=500", extra_args))
 
         if (writ$result$totalResults > writ$result$itemsPerPage) {
-            jpage <- round(writ$result$totalResults/writ$result$itemsPerPage, digits = 0)
+            jpage <- floor(writ$result$totalResults/writ$result$itemsPerPage)
         } else {
             jpage <- 0
         }
@@ -106,6 +112,12 @@ mp_questions <- function(mp_id = NULL, question_type = "all", start_date = "1900
 
             df$dateTabled._datatype <- "POSIXct"
 
+            df$tablingMemberPrinted <- unlist(df$tablingMemberPrinted)
+
+            df$AnsweringBody <- unlist(df$AnsweringBody)
+
+            df$tablingMember._about <- gsub("http://data.parliament.uk/members/", "", df$tablingMember._about)
+
             df <- hansard::hansard_tidy(df, tidy_style)
 
             df
@@ -117,4 +129,15 @@ mp_questions <- function(mp_id = NULL, question_type = "all", start_date = "1900
         }
 
     }
+}
+
+
+#' @rdname mp_questions
+#' @export
+hansard_mp_questions <- function(mp_id = NULL, question_type = "all", start_date = "1900-01-01", end_date = Sys.Date(), extra_args = NULL, tidy = TRUE, tidy_style = "snake_case") {
+
+  df <- mp_questions(mp_id = mp_id, question_type = question_type, start_date = start_date, end_date = end_date, extra_args = extra_args, tidy = tidy, tidy_style = tidy_style)
+
+  df
+
 }

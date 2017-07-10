@@ -2,9 +2,14 @@
 % Please edit documentation in R/mp_vote_record.R
 \name{mp_vote_record}
 \alias{mp_vote_record}
+\alias{hansard_mp_vote_record}
 \title{Accepts an ID number for a member of the House of Commons, and returns a tibble of their votes.}
 \usage{
 mp_vote_record(mp_id = NULL, lobby = "all", session = NULL,
+  start_date = "1900-01-01", end_date = Sys.Date(), extra_args = NULL,
+  tidy = TRUE, tidy_style = "snake_case")
+
+hansard_mp_vote_record(mp_id = NULL, lobby = "all", session = NULL,
   start_date = "1900-01-01", end_date = Sys.Date(), extra_args = NULL,
   tidy = TRUE, tidy_style = "snake_case")
 }
@@ -17,7 +22,7 @@ mp_vote_record(mp_id = NULL, lobby = "all", session = NULL,
 
 \item{start_date}{The earliest date to include in the tibble. Defaults to '1900-01-01'. Accepts character values in 'YYYY-MM-DD' format, and objects of class Date, POSIXt, POSIXct, POSIXlt or anything else than can be coerced to a date with \code{as.Date()}.}
 
-\item{end_date}{The latest date to include in the tibble. Defaults to current system date. Defaults to '1900-01-01'. Accepts character values in 'YYYY-MM-DD' format, and objects of class Date, POSIXt, POSIXct, POSIXlt or anything else than can be coerced to a date with \code{as.Date()}.}
+\item{end_date}{The latest date to include in the tibble. Defaults to current system date. Defaults to '1900-01-01'. Accepts character values in 'YYYY-MM-DD' format and objects of class Date, POSIXt, POSIXct, POSIXlt or anything else than can be coerced to a date with \code{as.Date()}.}
 
 \item{extra_args}{Additional parameters to pass to API. Defaults to NULL.}
 
@@ -40,7 +45,6 @@ x <- mp_vote_record(172, lobby='aye')
 x <- mp_vote_record(172, lobby='no')
 
 x <- mp_vote_record(172, session = '2016/17')
-
 
 }
 }

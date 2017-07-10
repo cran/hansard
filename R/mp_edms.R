@@ -42,7 +42,7 @@ mp_edms <- function(mp_id = NULL, primary_sponsor = TRUE, sponsor = FALSE, signa
 
     if (edms$result$totalResults > edms$result$itemsPerPage) {
 
-        jpage <- round(edms$result$totalResults/edms$result$itemsPerPage, digits = 0)
+        jpage <- floor(edms$result$totalResults/edms$result$itemsPerPage)
 
     } else {
 
@@ -52,7 +52,8 @@ mp_edms <- function(mp_id = NULL, primary_sponsor = TRUE, sponsor = FALSE, signa
     pages <- list()
 
     for (i in 0:jpage) {
-        mydata <- jsonlite::fromJSON(paste0(baseurl, query, query_primary_sponsor, query_sponsor, "&_pageSize=500&_page=", i, extra_args), flatten = TRUE)
+        mydata <- jsonlite::fromJSON(paste0(baseurl, query, query_primary_sponsor, query_sponsor, "&_pageSize=500&_page=", i, extra_args),
+            flatten = TRUE)
         message("Retrieving page ", i + 1, " of ", jpage + 1)
         pages[[i + 1]] <- mydata$result$items
     }
@@ -111,6 +112,10 @@ mp_edms <- function(mp_id = NULL, primary_sponsor = TRUE, sponsor = FALSE, signa
 
         df2$about <- as.character(df2$about)
 
+        df2$about <- gsub("http://data.parliament.uk/resources/", "", df2$about)
+
+        df2$about <- gsub("/signatures/.*", "", df2$about)
+
         df <- dplyr::left_join(df, df2, by = "about")
 
     }
@@ -125,6 +130,14 @@ mp_edms <- function(mp_id = NULL, primary_sponsor = TRUE, sponsor = FALSE, signa
 
             df$dateSigned._datatype <- "POSIXct"
 
+            df$member <- unlist(df$member)
+
+            df$member <- gsub("http://data.parliament.uk/members/", "", df$member)
+
+            df$primarySponsor <- gsub("http://data.parliament.uk/members/", "", df$primarySponsor)
+
+            df$creator_label <- gsub("http://data.parliament.uk/members/", "", df$creator_label)
+
             df <- hansard::hansard_tidy(df, tidy_style)
 
             df
@@ -136,4 +149,16 @@ mp_edms <- function(mp_id = NULL, primary_sponsor = TRUE, sponsor = FALSE, signa
         }
 
     }
+}
+
+
+#' @export
+#' @rdname mp_edms
+
+hansard_mp_edms <- function(mp_id = NULL, primary_sponsor = TRUE, sponsor = FALSE, signatory = FALSE, full_data = FALSE, extra_args = NULL, tidy = TRUE, tidy_style = "snake_case") {
+
+  df <- mp_edms(mp_id = mp_id, primary_sponsor = primary_sponsor, sponsor = sponsor, signatory = signatory, full_data = full_data, extra_args = extra_args, tidy = tidy, tidy_style = tidy_style)
+
+  df
+
 }

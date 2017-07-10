@@ -1,5 +1,7 @@
 
 
+#' Imports data on House of Commons answered questions.
+#'
 #' Imports data on House of Commons answered questions. If all parameters are left empty, imports all available answered questions in a tibble.
 #' @param answering_department Returns a tibble with all answered questions in the House of Commons from the given department. Defaults to NULL.
 #' @param answered_by Returns a tibble with all answered questions in the House of Commons by the given MP. Defaults to NULL.
@@ -9,14 +11,19 @@
 #' @param tidy Fix the variable names in the tibble to remove special characters and superfluous text, and converts the variable names to a consistent style. Defaults to TRUE.
 #' @param tidy_style The style to convert variable names to, if tidy = TRUE. Accepts one of 'snake_case', 'camelCase' and 'period.case'. Defaults to 'snake_case'.
 #' @return A tibble with details on all answered questions in the House of Commons.
-#' @seealso \code{\link{all_answered_questions}} \code{\link{commons_oral_questions}} \code{\link{commons_oral_question_times}} \code{\link{commons_written_questions}}  \code{\link{lords_written_questions}} \code{\link{mp_questions}}
+#' @seealso \code{\link{all_answered_questions}}
+#' @seealso \code{\link{commons_oral_questions}}
+#' @seealso \code{\link{commons_oral_question_times}}
+#' @seealso \code{\link{commons_written_questions}}
+#' @seealso \code{\link{lords_written_questions}}
+#' @seealso \code{\link{mp_questions}}
 #' @keywords bills
 #' @export
 #' @examples \dontrun{
 #'
 #' x <- commons_answered_questions(answering_department = 'health', answered_by = '4019')
 #'
-#' x <- commons_answered_questions(start_date = "2017-03-26", end_date="2017-04-01")
+#' x <- commons_answered_questions(start_date = '2017-03-26', end_date='2017-04-01')
 #'
 #' }
 
@@ -40,14 +47,16 @@ commons_answered_questions <- function(answering_department = NULL, answered_by 
 
     message("Connecting to API")
 
-    answered <- jsonlite::fromJSON(paste0(baseurl, query, ".json?", answering_department, answered_by, "&_pageSize=500", dates, extra_args), flatten = TRUE)
+    answered <- jsonlite::fromJSON(paste0(baseurl, query, ".json?", answering_department, answered_by, "&_pageSize=500", dates,
+        extra_args), flatten = TRUE)
 
-    jpage <- round(answered$result$totalResults/answered$result$itemsPerPage, digits = 0)
+    jpage <- floor(answered$result$totalResults/answered$result$itemsPerPage)
 
     pages <- list()
 
     for (i in 0:jpage) {
-        mydata <- jsonlite::fromJSON(paste0(baseurl, query, ".json?", answering_department, answered_by, "&_pageSize=500&_page=", i, dates, extra_args), flatten = TRUE)
+        mydata <- jsonlite::fromJSON(paste0(baseurl, query, ".json?", answering_department, answered_by, "&_pageSize=500&_page=",
+            i, dates, extra_args), flatten = TRUE)
         message("Retrieving page ", i + 1, " of ", jpage + 1)
         pages[[i + 1]] <- mydata$result$items
     }
@@ -66,6 +75,10 @@ commons_answered_questions <- function(answering_department = NULL, answered_by 
 
             df$dateOfAnswer._datatype <- "POSIXct"
 
+            df$answeringMember._about <- gsub("http://data.parliament.uk/members/", "", df$answeringMember._about)
+
+            df$AnsweringBody <- unlist(df$AnsweringBody)
+
             df <- hansard::hansard_tidy(df, tidy_style)
 
             df
@@ -77,5 +90,20 @@ commons_answered_questions <- function(answering_department = NULL, answered_by 
         }
 
     }
+
+}
+
+
+
+#' @rdname commons_answered_questions
+#' @export
+
+hansard_commons_answered_questions <- function(answering_department = NULL, answered_by = NULL, start_date = "1900-01-01", end_date = Sys.Date(), extra_args = NULL, tidy = TRUE, tidy_style = "snake_case") {
+
+  df <- commons_answered_questions(answering_department = NULL, answered_by = NULL, start_date = start_date, end_date = end_date, extra_args = extra_args, tidy = tidy, tidy_style = tidy_style)
+
+  df
+
+
 
 }
