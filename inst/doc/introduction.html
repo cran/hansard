@@ -12,7 +12,7 @@
 
 <meta name="author" content="Evan Odell" />
 
-<meta name="date" content="2017-07-10" />
+<meta name="date" content="2017-08-10" />
 
 <title>Introduction to hansard</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Introduction to hansard</h1>
 <h4 class="author"><em>Evan Odell</em></h4>
-<h4 class="date"><em>2017-07-10</em></h4>
+<h4 class="date"><em>2017-08-10</em></h4>
 
 
 
@@ -190,11 +190,11 @@ research_subtopics_list &lt;-<span class="st"> </span><span class="kw">research_
 <span class="kw">system.time</span>(without_topic &lt;-<span class="st"> </span><span class="kw">research_briefings</span>(<span class="dt">subtopic =</span> research_subtopics_list[[<span class="dv">7</span>]][<span class="dv">10</span>]))</code></pre></div>
 <pre><code>## Retrieving page 1 of 1</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.413   0.091  11.197</code></pre>
+##    0.31    0.11    3.82</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.time</span>(with_topic &lt;-<span class="st"> </span><span class="kw">research_briefings</span>(<span class="dt">topic =</span> research_topics_list[[<span class="dv">7</span>]], <span class="dt">subtopic=</span>research_subtopics_list[[<span class="dv">7</span>]][<span class="dv">10</span>]))</code></pre></div>
 <pre><code>## Retrieving page 1 of 1</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.028   0.002   0.190</code></pre>
+##    0.03    0.00    0.06</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">identical</span>(with_topic, without_topic)</code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>If a specified subtopic is not a subtopic of the specified topic, the function will not return any data.</p>
@@ -240,7 +240,7 @@ research_subtopics_list &lt;-<span class="st"> </span><span class="kw">research_
 ## #   familyName._value &lt;chr&gt;, fullName._value &lt;chr&gt;, gender._value &lt;chr&gt;,
 ## #   givenName._value &lt;chr&gt;, label._value &lt;chr&gt;, party._value &lt;chr&gt;,
 ## #   twitter._value &lt;chr&gt;</code></pre>
-<p>The same function as above, but with <code>tidy_style = &quot;period.case&quot;</code>, so it returns a different</p>
+<p>The same function as above, but with <code>tidy_style = &quot;period.case&quot;</code>, so it returns variables with a different naming convention.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(hansard)
 <span class="kw">members_search</span>(<span class="st">&quot;abbot&quot;</span>, <span class="dt">tidy =</span> <span class="ot">TRUE</span>, <span class="dt">tidy_style =</span> <span class="st">&quot;period.case&quot;</span>)</code></pre></div>
 <pre><code>## Connecting to API</code></pre>
