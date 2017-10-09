@@ -3,30 +3,34 @@
 \name{elections}
 \alias{elections}
 \alias{hansard_elections}
-\title{Imports data on general and by-elections from the 2010 General Election onwards.}
+\title{General and By-Elections}
 \usage{
 elections(ID = NULL, type = NULL, start_date = "1900-01-01",
-  end_date = Sys.Date(), label = NULL, tidy = TRUE,
-  tidy_style = "snake_case")
+  end_date = Sys.Date(), label = NULL, extra_args = NULL, tidy = TRUE,
+  tidy_style = "snake_case", verbose = FALSE)
 
 hansard_elections(ID = NULL, type = NULL, start_date = "1900-01-01",
-  end_date = Sys.Date(), label = NULL, tidy = TRUE,
-  tidy_style = "snake_case")
+  end_date = Sys.Date(), label = NULL, extra_args = NULL, tidy = TRUE,
+  tidy_style = "snake_case", verbose = FALSE)
 }
 \arguments{
-\item{ID}{Accepts an ID for a general or by-election from the 2010 General Election onwards, and returns the date and type of the elction. If NULL, returns the date and type of all available elections. Defaults to NULL.}
+\item{ID}{Accepts an ID for a general or by-election from the 2010 General Election onwards, and returns the date and type of the elction. If \code{NULL}, returns the date and type of all available elections, subject to other parameters. Defaults to \code{NULL}.}
 
-\item{type}{Accepts 'General Election' or 'By-election' as arguments if ID is NULL, and returns all General Elections or all By-elections, as specified.}
+\item{type}{Accepts \code{'General Election'} or \code{'By-election'} as arguments if ID is \code{NULL}, and returns all General Elections or all By-elections, as specified, subject to other parameters. Defaults to \code{NULL}.}
 
-\item{start_date}{The earliest date to include in the tibble. Defaults to '1900-01-01'. Accepts character values in 'YYYY-MM-DD' format, and objects of class Date, POSIXt, POSIXct, POSIXlt or anything else than can be coerced to a date with \code{as.Date()}.}
+\item{start_date}{Only includes elections held on or after this date. Accepts character values in \code{'YYYY-MM-DD'} format, and objects of class \code{Date}, \code{POSIXt}, \code{POSIXct}, \code{POSIXlt} or anything else than can be coerced to a date with \code{as.Date()}. Defaults to \code{'1900-01-01'}.}
 
-\item{end_date}{The latest date to include in the tibble. Defaults to current system date. Defaults to '1900-01-01'. Accepts character values in 'YYYY-MM-DD' format, and objects of class Date, POSIXt, POSIXct, POSIXlt or anything else than can be coerced to a date with \code{as.Date()}.}
+\item{end_date}{Only includes elections held on or before this date. Accepts character values in \code{'YYYY-MM-DD'} format, and objects of class \code{Date}, \code{POSIXt}, \code{POSIXct}, \code{POSIXlt} or anything else than can be coerced to a date with \code{as.Date()}. Defaults to the current system date.}
 
-\item{label}{Label of the election. By-elections are in 'dd-mmm-yyyy By-election' format; e.g. '23-Feb-2017 By-election', and general elections use 'YYYY General Election' format. The parameter cannot search, so check your format, spelling and make sure there were actually elections with the label specified. Defaults to NULL.}
+\item{label}{Label of the election. By-elections are in \code{'dd-mmm-yyyy By-election'} format; e.g. \code{'23-Feb-2017 By-election'}, and general elections use \code{'YYYY General Election'} format. The parameter cannot search, so check your formatting, spelling and make sure there were actually elections with the label specified. Defaults to \code{NULL}.}
 
-\item{tidy}{Fix the variable names in the tibble to remove special characters and superfluous text, and converts the variable names to a consistent style. Defaults to TRUE.}
+\item{extra_args}{Additional parameters to pass to API. See the \href{http://explore.data.parliament.uk/}{API documentation} or the package vignette for more details. Defaults to \code{NULL}.}
 
-\item{tidy_style}{The style to convert variable names to, if tidy = TRUE. Accepts one of 'snake_case', 'camelCase' and 'period.case'. Defaults to 'snake_case'.}
+\item{tidy}{Logical parameter. If \code{TRUE}, fixes the variable names in the tibble to remove special characters and superfluous text, and converts the variable names to a consistent style. Defaults to \code{TRUE}.}
+
+\item{tidy_style}{The style to convert variable names to, if \code{tidy = TRUE}. Accepts one of \code{'snake_case'}, \code{'camelCase'} and \code{'period.case'}. Defaults to \code{'snake_case'}.}
+
+\item{verbose}{If \code{TRUE}, returns data to console on the progress of the API request. Defaults to \code{FALSE}.}
 }
 \value{
 A tibble with details on all elections from the 2010 general election onwards, subject to function parameters. Includes the election ID, the date, and the type of election(s).
@@ -34,9 +38,11 @@ A tibble with details on all elections from the 2010 general election onwards, s
 \description{
 Imports data on general and by-elections from the 2010 General Election onwards.
 }
+\details{
+If both \code{ID} and \code{type} are used to query the API, \code{ID} takes precedence and \code{type} is ignored.
+}
 \examples{
 \dontrun{
-
 x <- elections(517994)
 }
 }
@@ -45,4 +51,3 @@ x <- elections(517994)
 
 \code{\link{election_candidates}}
 }
-\keyword{Elections}

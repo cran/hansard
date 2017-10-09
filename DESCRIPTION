@@ -1,8 +1,8 @@
 Package: hansard
 Type: Package
 Title: Provides Easy Downloading Capabilities for the UK Parliament API
-Version: 0.5.2
-Date: 2017-08-10
+Version: 0.5.5
+Date: 2017-10-04
 Authors@R: person("Evan Odell", email="evanodell91@gmail.com", role=c("aut", "cre"))
 Author: Evan Odell [aut, cre]
 Maintainer: Evan Odell <evanodell91@gmail.com>
@@ -12,11 +12,11 @@ BugReports: https://github.com/EvanOdell/hansard/issues
 License: MIT + file LICENSE
 LazyData: TRUE
 Depends: R(>= 3.1.2)
-Imports: httr, jsonlite, dplyr, tibble, lubridate, tidyr
+Imports: httr, jsonlite, dplyr, tibble, lubridate, tidyr, stringi
 RoxygenNote: 6.0.1
-Suggests: knitr, rmarkdown, testthat, covr, methods
+Suggests: knitr, rmarkdown, testthat, covr, methods, mnis
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2017-08-10 16:00:41 UTC; EOdell
+Packaged: 2017-10-09 08:44:30 UTC; EOdell
 Repository: CRAN
-Date/Publication: 2017-08-13 05:34:23 UTC
+Date/Publication: 2017-10-09 23:02:59 UTC

@@ -1,232 +1,178 @@
 
 #' TV broadcast data
 #'
-#' Imports data on TV broadcasts.
-#' @param legislature Accepts one of either 'commons' or 'lords'. If NULL, returns all TV programmes for all chambers.
-#' @param start_date The earliest date to include in the tibble. Defaults to '1900-01-01'. Accepts character values in 'YYYY-MM-DD' format, and objects of class Date, POSIXt, POSIXct, POSIXlt or anything else than can be coerced to a date with \code{as.Date()}.
-#' @param end_date The latest date to include in the tibble. Defaults to current system date. Defaults to '1900-01-01'. Accepts character values in 'YYYY-MM-DD' format, and objects of class Date, POSIXt, POSIXct, POSIXlt or anything else than can be coerced to a date with \code{as.Date()}.
-#' @param extra_args Additional parameters to pass to API. Defaults to NULL.
-#' @param tidy Fix the variable names in the tibble to remove special characters and superfluous text, and converts the variable names to a consistent style. Defaults to TRUE.
-#' @param tidy_style The style to convert variable names to, if tidy = TRUE. Accepts one of 'snake_case', 'camelCase' and 'period.case'. Defaults to 'snake_case'.
+#' Imports data on TV broadcasts, clips of individual members and parliamentary TV channels.
+#' @param legislature Accepts one of either \code{'commons'} or \code{'lords'}. If \code{NULL}, returns all TV programmes for all chambers.
+#' @param start_date Only includes broadcasts on or after this date. Accepts character values in \code{'YYYY-MM-DD'} format, and objects of class \code{Date}, \code{POSIXt}, \code{POSIXct}, \code{POSIXlt} or anything else than can be coerced to a date with \code{as.Date()}. Defaults to \code{'1900-01-01'}.
+#' @param end_date Only includes broadcasts on or before this date. Accepts character values in \code{'YYYY-MM-DD'} format, and objects of class \code{Date}, \code{POSIXt}, \code{POSIXct}, \code{POSIXlt} or anything else than can be coerced to a date with \code{as.Date()}. Defaults to the current system date.
+#' @inheritParams all_answered_questions
 #' @return A tibble with details on TV broadcasts.
-#' @keywords TV
+#'
+#' @section TV Programme functions:
+#' \describe{
+#' \item{tv_programmes}{TV programmse broadcast, per legislature and date}
+#' \item{tv_clips}{Clips of a given MP or Peer}
+#' \item{tv_channels}{Details on the different parliamentary TV channels}
+#' }
 #' @export
 #' @examples \dontrun{
-#'
-#' x <- tv_programmes('commons', start_date ='2016-11-01')
-#'
+#' x <- tv_programmes('commons', start_date ='2016-11-01', end_date='2016-12-01')
 #' }
 
-tv_programmes <- function(legislature = NULL, start_date = "1900-01-01", end_date = Sys.Date(), extra_args = NULL, tidy = TRUE, tidy_style = "snake_case") {
+tv_programmes <- function(legislature = NULL, start_date = "1900-01-01", end_date = Sys.Date(), extra_args = NULL, tidy = TRUE, tidy_style = "snake_case", verbose = FALSE) {
 
     dates <- paste0("&max-endDate=", as.Date(end_date), "T23:59:59Z", "&min-startDate=", as.Date(start_date), "T00:00:00Z")
 
     if (is.null(legislature) == FALSE) {
+
         legislature <- tolower(legislature)
+
     }
 
     if (is.null(legislature) == TRUE) {
-        query <- NULL
+
+      leg_query <- NULL
+
     } else if (legislature == "commons") {
-        query <- "&legislature.prefLabel=House of Commons"
-        query <- utils::URLencode(query)
+
+      leg_query <- utils::URLencode("&legislature.prefLabel=House of Commons")
+
     } else if (legislature == "lords") {
-        query <- "&legislature.prefLabel=House of Lords"
-        query <- utils::URLencode(query)
+
+      leg_query <- utils::URLencode("&legislature.prefLabel=House of Lords")
+
     } else {
-        query <- NULL
+
+      leg_query <- NULL
+
     }
 
-    baseurl <- "http://lda.data.parliament.uk/tvprogrammes.json?_pageSize=500"
+    baseurl <- "http://lda.data.parliament.uk/tvprogrammes.json?"
 
-    tv <- jsonlite::fromJSON(paste0(baseurl, query, dates, extra_args), flatten = TRUE)
+    tv <- jsonlite::fromJSON(paste0(baseurl, leg_query, dates, extra_args), flatten = TRUE)
 
-    message("Connecting to API")
+    if(verbose==TRUE){message("Connecting to API")}
 
-    jpage <- floor(tv$result$totalResults/tv$result$itemsPerPage)
+    jpage <- floor(tv$result$totalResults/500)
 
     pages <- list()
 
     for (i in 0:jpage) {
-        mydata <- jsonlite::fromJSON(paste0(baseurl, query, dates, "&_page=", i, extra_args), flatten = TRUE)
-        message("Retrieving page ", i + 1, " of ", jpage + 1)
+        mydata <- jsonlite::fromJSON(paste0(baseurl, leg_query, dates, extra_args, "&_pageSize=500&_page=", i), flatten = TRUE)
+        if(verbose==TRUE){message("Retrieving page ", i + 1, " of ", jpage + 1)}
         pages[[i + 1]] <- mydata$result$items
     }
 
     df <- tibble::as_tibble(dplyr::bind_rows(pages))
 
-    if (nrow(df) == 0) {
+    if (nrow(df) == 0 && verbose==TRUE) {
+
         message("The request did not return any data. Please check your search parameters.")
+
     } else {
 
         if (tidy == TRUE) {
 
-            df$startDate._value <- gsub("T", " ", df$startDate._value)
-
-            df$startDate._value <- lubridate::parse_date_time(df$startDate._value, "Y-m-d H:M:Sz!*")
-
-            df$startDate._datatype <- "POSIXct"
-
-            df$endDate._value <- gsub("T", " ", df$endDate._value)
-
-            df$endDate._value <- lubridate::parse_date_time(df$endDate._value, "Y-m-d H:M:Sz!*")
-
-            df$endDate._datatype <- "POSIXct"
-
-            df$legislature <- dplyr::bind_rows(df$legislature)
-
-            df$legislature.prefLabel._value <- df$legislature$prefLabel._value
-
-            df$legislature_about <- df$legislature$`_about`
-
-            df$legislature_about <- gsub("http://data.parliament.uk/terms/", "", df$legislature_about)
-
-            df$legislature <- NULL
-
-            df <- hansard_tidy(df, tidy_style)
-
-            df
-
-        } else {
-
-            df
+            df <- tv_tidy(df, tidy_style) ### in utils-tv.R
 
         }
+
+            df
 
     }
 }
 
 #' @export
 #' @rdname tv_programmes
-hansard_tv_programmes <- function(legislature = NULL, start_date = "1900-01-01", end_date = Sys.Date(), extra_args = NULL, tidy = TRUE, tidy_style = "snake_case") {
-
-  df <- tv_programmes(legislature = legislature,start_date = start_date, end_date = end_date, extra_args = extra_args, tidy = tidy, tidy_style = tidy_style)
-
-  df
-
-}
+hansard_tv_programmes <- tv_programmes
 
 
-
-#' Clips of individual members
-#' @param mp_id Accepts the ID of an MP or peer, and returns all clips featuring that MP or peer. If NULL, returns data on all available clips. Defaults to NULL.
+#' @param mp_id Accepts the ID of an MP or peer, and returns all clips featuring that MP or peer. If \code{NULL}, returns data on all available clips. Defaults to \code{NULL}.
 #' @return A tibble with details on TV broadcasts featuring the given MP, or all available clips.
-#' @keywords TV
+#'
 #' @export
 #' @rdname tv_programmes
 #' @examples \dontrun{
 #' x <- tv_clips(4591)
 #' }
 
-tv_clips <- function(mp_id = NULL, start_date = "1900-01-01", end_date = Sys.Date(), extra_args = NULL, tidy = TRUE, tidy_style = "snake_case") {
+tv_clips <- function(mp_id = NULL, start_date = "1900-01-01", end_date = Sys.Date(), extra_args = NULL, tidy = TRUE, tidy_style = "snake_case", verbose = FALSE) {
 
     dates <- paste0("&max-startDate=", as.Date(end_date), "T00:00:00Z", "&min-startDate=", as.Date(start_date), "T00:00:00Z")
 
     if (is.null(mp_id) == FALSE) {
-        query <- paste0("&member=http://data.parliament.uk/members/", mp_id)
+
+      member_query <- paste0("&member=http://data.parliament.uk/members/", mp_id)
+
     } else {
-        query <- NULL
+
+      member_query <- NULL
+
     }
 
-    baseurl <- "http://lda.data.parliament.uk/tvclips.json?_pageSize=500"
+    baseurl <- "http://lda.data.parliament.uk/tvclips.json?"
 
-    tv <- jsonlite::fromJSON(paste0(baseurl, query, dates, extra_args), flatten = TRUE)
+    tv <- jsonlite::fromJSON(paste0(baseurl, member_query, dates, extra_args), flatten = TRUE)
 
-    jpage <- floor(tv$result$totalResults/tv$result$itemsPerPage)
+    jpage <- floor(tv$result$totalResults/500)
 
     pages <- list()
 
     for (i in 0:jpage) {
-        mydata <- jsonlite::fromJSON(paste0(baseurl, query, dates, "&_page=", i, extra_args), flatten = TRUE)
-        message("Retrieving page ", i + 1, " of ", jpage + 1)
+        mydata <- jsonlite::fromJSON(paste0(baseurl, member_query, dates, extra_args, "&_pageSize=500&_page=", i), flatten = TRUE)
+        if(verbose==TRUE){message("Retrieving page ", i + 1, " of ", jpage + 1)}
         pages[[i + 1]] <- mydata$result$items
     }
 
     df <- as.data.frame(dplyr::bind_rows(pages))
 
-    if (nrow(df) == 0) {
+    if (nrow(df) == 0 && verbose==TRUE) {
+
         message("The request did not return any data. Please check your search parameters.")
+
     } else {
+
         if (tidy == TRUE) {
 
-            for (i in 1:nrow(df)) {
+            df <- tv_tidy2(df, mp_id, tidy_style)
 
-                if (is.null(df$member[[i]]) == FALSE) {
-
-                  df$member[[i]] <- hansard_tidy(df$member[[i]], tidy_style)
-
-                  df$member_about <- NA
-                  df$member_label_value <- NA
-
-                  df$member_about <- df$member[[i]]$about
-
-                  df$member_label_value <- df$member[[i]]$label_value
-
-                  df$member_about <- gsub("http://data.parliament.uk/terms/", "", df$member_about)
-
-                  df$member <- NULL
-
-                }
-            }
-
-            df <- tibble::as.tibble(hansard_tidy(df, tidy_style))
-
-            df
-
-        } else {
+        }
 
             df <- tibble::as.tibble(df)
 
             df
 
-        }
     }
+
 }
 
 
 #' @export
 #' @rdname tv_programmes
-hansard_tv_clips <- function(mp_id = NULL, start_date = "1900-01-01", end_date = Sys.Date(), extra_args = NULL, tidy = TRUE, tidy_style = "snake_case") {
+hansard_tv_clips <- tv_clips
 
-  df <- tv_clips(mp_id = mp_id,start_date = start_date, end_date = end_date, extra_args = extra_args, tidy = tidy, tidy_style = tidy_style)
 
-  df
-
-}
-
-#' TV Channels
-#'
-#' Returns data on the different parliamentary broadcasting channels.
 #' @rdname tv_programmes
 #' @return A tibble with details on the different broadcasting channels.
-#' @keywords TV
+#'
 #' @export
 
-tv_channels <- function(tidy = TRUE, tidy_style = "snake_case") {
+tv_channels <- function(tidy = TRUE, tidy_style = "snake_case", verbose = FALSE) {
 
-    x <- jsonlite::fromJSON("http://lda.data.parliament.uk/tvchannels.json?_pageSize=500", flatten = TRUE)
+    channels <- jsonlite::fromJSON("http://lda.data.parliament.uk/tvchannels.json?_pageSize=500", flatten = TRUE)
 
-    df <- tibble::as_tibble(x$result$items)
+    df <- tibble::as_tibble(channels$result$items)
 
     if (tidy == TRUE) {
 
         df <- hansard_tidy(df, tidy_style)
 
-        df
-
-    } else {
-
-        df
-
     }
+
+        df
 
 }
 
 #' @export
 #' @rdname tv_programmes
-hansard_tv_channels <- function(tidy = TRUE, tidy_style = "snake_case") {
-
-  df <- tv_channels(tidy = tidy, tidy_style = tidy_style)
-
-  df
-}
+hansard_tv_channels <- tv_channels

@@ -1,17 +1,25 @@
 ## ---- echo=TRUE, message=TRUE, warning=FALSE-----------------------------
 library(hansard)
-library(tibble)##for the `glimpse()` function
+library(tibble)##for the `tibble::glimpse()` function
 z <- mp_vote_record(172, "aye", start_date = "2017-01-01", end_date = "2017-05-03")
-glimpse(z)
+tibble::glimpse(z)
 
 
 ## ---- echo=TRUE, message=TRUE, warning=FALSE-----------------------------
 x <- commons_divisions(722300)
-glimpse(x)
+tibble::glimpse(x)
 
 ## ---- echo=TRUE, message=TRUE, warning=FALSE-----------------------------
 y <- commons_divisions(722300, summary=TRUE)
-glimpse(y)
+tibble::glimpse(y)
+
+## ---- echo=TRUE, message=TRUE, warning=FALSE-----------------------------
+w <- hansard_all_answered_questions(mp_id = c(4019, 3980), tabling_mp_id = c(338, 172),
+                                     answering_body = c("health", "justice"),
+                                      start_date = "2016-12-18", end_date = "2017-03-12")
+
+tibble::glimpse(w)
+
 
 ## ---- echo=TRUE, message=TRUE, warning=FALSE-----------------------------
 research_topics_list <- research_topics_list()

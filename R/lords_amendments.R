@@ -1,71 +1,65 @@
 
 #' House of Lords Amendments.
 #'
-#' Returns a tibble with all available House of Lords amendments.
-#' @param decision The decision on the amendments. Accepts one of 'Withdrawn', 'Agreed', 'Disagreed', 'Pending', 'NotMoved', 'Disposed'. Defaults to NULL.
-#' @param start_date The earliest date to include in the tibble. Defaults to '1900-01-01'. Accepts character values in 'YYYY-MM-DD' format, and objects of class Date, POSIXt, POSIXct, POSIXlt or anything else than can be coerced to a date with \code{as.Date()}.
-#' @param end_date The latest date to include in the tibble. Defaults to current system date. Defaults to '1900-01-01'. Accepts character values in 'YYYY-MM-DD' format, and objects of class Date, POSIXt, POSIXct, POSIXlt or anything else than can be coerced to a date with \code{as.Date()}.
-#' @param extra_args Additional parameters to pass to API. Defaults to NULL.
-#' @param tidy Fix the variable names in the tibble to remove special characters and superfluous text, and converts the variable names to a consistent style. Defaults to TRUE.
-#' @param tidy_style The style to convert variable names to, if tidy = TRUE. Accepts one of 'snake_case', 'camelCase' and 'period.case'. Defaults to 'snake_case'.
+#' Returns a tibble with all available House of Lords amendments, subject to parameters.
+#' @param decision The decision on the amendments. Accepts one of \code{'Withdrawn'}, \code{'Agreed'}, \code{'Disagreed'}, \code{'Pending'}, \code{'NotMoved'}, \code{'Disposed'}. This parameter is not case sensitive. Defaults to \code{NULL}.
+#' @param start_date Only includes amendments to bills introduced on or after this date. Accepts character values in \code{'YYYY-MM-DD'} format, and objects of class \code{Date}, \code{POSIXt}, \code{POSIXct}, \code{POSIXlt} or anything else than can be coerced to a date with \code{as.Date()}. Defaults to \code{'1900-01-01'}.
+#' @param end_date Only includes amendments to bills introduced on or before this date. Accepts character values in \code{'YYYY-MM-DD'} format, and objects of class \code{Date}, \code{POSIXt}, \code{POSIXct}, \code{POSIXlt} or anything else than can be coerced to a date with \code{as.Date()}. Defaults to the current system date.
+#' @inheritParams all_answered_questions
 #' @return A tibble with details on amendments proposed by the House of Lords.
-#' @keywords House of Lords Amendments
+#'
 #' @export
 #' @examples \dontrun{
-#'
 #' x <- lords_amendments()
 #'
 #' x <- lords_amendments(decision='Withdrawn')
-#'
 #' }
 
-lords_amendments <- function(decision = NULL, start_date = "1900-01-01", end_date = Sys.Date(), extra_args = NULL, tidy = TRUE,  tidy_style = "snake_case") {
+lords_amendments <- function(decision = NULL, start_date = "1900-01-01", end_date = Sys.Date(), extra_args = NULL, tidy = TRUE,  tidy_style = "snake_case", verbose = FALSE) {
 
     dates <- paste0("&min-bill.date=", as.Date(start_date), "&max-bill.date=", as.Date(end_date))
 
     if (is.null(decision) == FALSE) {
-        decision_query <- paste0("&decision=", decision)
+
+        decision_query <- paste0("&decision=", stringi::stri_trans_totitle(decision))
+
     } else {
+
         decision_query <- NULL
+
     }
 
-    baseurl <- "http://lda.data.parliament.uk/lordsbillamendments.json?_pageSize=500"
+    baseurl <- "http://lda.data.parliament.uk/lordsbillamendments.json?"
 
-    message("Connecting to API")
+    if(verbose==TRUE){message("Connecting to API")}
 
     ammend <- jsonlite::fromJSON(paste0(baseurl, decision_query, dates, extra_args), flatten = TRUE)
 
-    jpage <- floor(ammend$result$totalResults/ammend$result$itemsPerPage)
+    jpage <- floor(ammend$result$totalResults/500)
 
     pages <- list()
 
     for (i in 0:jpage) {
-        mydata <- jsonlite::fromJSON(paste0(baseurl, decision_query, dates, "&_page=", i, extra_args), flatten = TRUE)
-        message("Retrieving page ", i + 1, " of ", jpage + 1)
+        mydata <- jsonlite::fromJSON(paste0(baseurl, decision_query, dates, extra_args, "&_pageSize=500&_page=", i), flatten = TRUE)
+        if(verbose==TRUE){message("Retrieving page ", i + 1, " of ", jpage + 1)}
         pages[[i + 1]] <- mydata$result$items
     }
 
     df <- tibble::as_tibble(dplyr::bind_rows(pages))
 
-    if (nrow(df) == 0) {
+    if (nrow(df) == 0 && verbose==TRUE) {
+
         message("The request did not return any data. Please check your search parameters.")
+
     } else {
 
         if (tidy == TRUE) {
 
-            df$bill.date._value <- as.POSIXct(df$bill.date._value)
-
-            df$bill.date._datatype <- "POSIXct"
-
-            df <- hansard_tidy(df, tidy_style)
-
-            df
-
-        } else {
-
-            df
+          df <- lords_amendments_tidy(df, tidy_style)
 
         }
+
+          df
 
     }
 }
@@ -73,10 +67,4 @@ lords_amendments <- function(decision = NULL, start_date = "1900-01-01", end_dat
 
 #' @rdname lords_amendments
 #' @export
-hansard_lords_amendments <- function(decision = NULL, start_date = "1900-01-01", end_date = Sys.Date(), extra_args = NULL, tidy = TRUE, tidy_style = "snake_case") {
-
-  df <- lords_amendments(decision = decision, start_date = start_date, end_date = end_date, extra_args = extra_args, tidy = tidy, tidy_style = tidy_style)
-
-  df
-
-}
+hansard_lords_amendments <- lords_amendments

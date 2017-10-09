@@ -3,39 +3,38 @@
 \name{epetition}
 \alias{epetition}
 \alias{hansard_epetition}
-\title{Individual epititions}
+\title{Individual epetitions}
 \usage{
 epetition(ID = NULL, by_constituency = FALSE, extra_args = NULL,
-  tidy = TRUE, tidy_style = "snake_case")
+  tidy = TRUE, tidy_style = "snake_case", verbose = FALSE)
 
 hansard_epetition(ID = NULL, by_constituency = FALSE, extra_args = NULL,
-  tidy = TRUE, tidy_style = "snake_case")
+  tidy = TRUE, tidy_style = "snake_case", verbose = FALSE)
 }
 \arguments{
-\item{ID}{The ID of a given petition. If NULL, returns all petitions. Defaults to NULL. See \code{\link{epetition_tibble}} for a greater degree of flexibility when querying all petitions.}
+\item{ID}{The ID of a given petition. If \code{NULL}, returns all epetitions. Defaults to \code{NULL}. See \code{\link{epetition_tibble}} for a greater degree of flexibility when querying all epetitions.}
 
-\item{by_constituency}{Accepts either TRUE or FALSE. If TRUE, provides a tibble with a breakdown of signatures for each petition, by constituency. Defaults to FALSE.}
+\item{by_constituency}{Accepts either \code{TRUE} or \code{FALSE}. If \code{TRUE}, provides a tibble with a breakdown of signatures for each petition, by constituency. Defaults to \code{FALSE}.}
 
-\item{extra_args}{Additional parameters to pass to API. Defaults to NULL.}
+\item{extra_args}{Additional parameters to pass to API. See the \href{http://explore.data.parliament.uk/}{API documentation} or the package vignette for more details. Defaults to \code{NULL}.}
 
-\item{tidy}{Fix the variable names in the tibble to remove special characters and superfluous text, and converts the variable names to a consistent style. Defaults to TRUE.}
+\item{tidy}{Logical parameter. If \code{TRUE}, fixes the variable names in the tibble to remove special characters and superfluous text, and converts the variable names to a consistent style. Defaults to \code{TRUE}.}
 
-\item{tidy_style}{The style to convert variable names to, if tidy = TRUE. Accepts one of 'snake_case', 'camelCase' and 'period.case'. Defaults to 'snake_case'.}
+\item{tidy_style}{The style to convert variable names to, if \code{tidy = TRUE}. Accepts one of \code{'snake_case'}, \code{'camelCase'} and \code{'period.case'}. Defaults to \code{'snake_case'}.}
+
+\item{verbose}{If \code{TRUE}, returns data to console on the progress of the API request. Defaults to \code{FALSE}.}
 }
 \value{
 A tibble with details on electronic petitions submitted to parliament.
 }
 \description{
-Imports data on a given epetition. For bulk details on epitions, see \code{\link{epetition_tibble}}.
+Imports data on a given epetition. For bulk epetion data, see \code{\link{epetition_tibble}}.
 }
 \examples{
 \dontrun{
-
 x <- epetition(ID = 706964, by_constituency=TRUE)
-
 }
 }
 \seealso{
 \code{\link{epetition_tibble}}
 }
-\keyword{ePetitions}

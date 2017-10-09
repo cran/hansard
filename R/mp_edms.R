@@ -1,46 +1,47 @@
 
-#' Imports data on early day motions signed, sponsored or primarily sponsored by a given MP.
-#' @param mp_id The ID number of an MP. Required parameter, defaults to NULL. Accepts single IDs in numerical or character format, or a list, data.frame column, etc. If given multiple IDs, the results are combined into a single tibble.
-#' @param primary_sponsor Includes all early day motions where the given member is the primary sponsor in the tibble. Defaults to TRUE.
-#' @param sponsor Includes all early day motions where the given member a sponsor (but not the primary sponsor) in the tibble. Defaults to TRUE.
-#' @param signatory Includes all early day motions signed (but not sponsored or primarily sponsored) by the given member in the tibble. Defaults to TRUE.
-#' @param full_data If TRUE, returns all available data on the EDMs signed or sponsored by a member. Defaults to FALSE. Note that this can be a very slow process compared to other \code{hansard} functions.
-#' @param start_date The earliest date to include in the tibble, based on the date the MP signed the EDM. Defaults to '1900-01-01'. Accepts character values in 'YYYY-MM-DD' format, and objects of class Date, POSIXt, POSIXct, POSIXlt or anything else than can be coerced to a date with \code{as.Date()}.
-#' @param end_date The latest date to include in the tibble, based on the date the MP signed the EDM. Defaults to current system date. Defaults to '1900-01-01'. Accepts character values in 'YYYY-MM-DD' format and objects of class Date, POSIXt, POSIXct, POSIXlt or anything else than can be coerced to a date with \code{as.Date()}.
-#' @param extra_args Additional parameters to pass to API. Defaults to NULL.
-#' @param tidy Fix the variable names in the tibble to remove special characters and superfluous text, and converts the variable names to a consistent style. Defaults to TRUE.
-#' @param tidy_style The style to convert variable names to, if tidy = TRUE. Accepts one of 'snake_case', 'camelCase' and 'period.case'. Defaults to 'snake_case'.
+#' Early Day Motions by MP or Peer
+#'
+#' Imports data on early day motions signed, sponsored or primarily sponsored by a given MP or Peer.
+#' @param mp_id The ID number of an MP or Peer. Required parameter, Defaults to \code{NULL}. Accepts single IDs in numerical or character format, or a list, data.frame column, etc. If given multiple IDs, the results are combined into a single tibble.
+#' @param primary_sponsor Includes all early day motions where the given member is the primary sponsor in the tibble. Defaults to \code{TRUE}.
+#' @param sponsor Includes all early day motions where the given member a sponsor (but not the primary sponsor) in the tibble. Defaults to \code{TRUE}.
+#' @param signatory Includes all early day motions signed (but not sponsored or primarily sponsored) by the given member in the tibble. Defaults to \code{TRUE}.
+#' @param full_data If \code{TRUE}, returns all available data on the EDMs signed or sponsored by a member. Defaults to \code{FALSE}. Note that this can be a very slow process compared to other \code{hansard} functions.
+#' @param start_date Only includes early day motions signed on or after this date. Accepts character values in \code{'YYYY-MM-DD'} format, and objects of class \code{Date}, \code{POSIXt}, \code{POSIXct}, \code{POSIXlt} or anything else than can be coerced to a date with \code{as.Date()}. Defaults to \code{'1900-01-01'}.
+#' @param end_date Only includes early day motions signed on or before this date. Accepts character values in \code{'YYYY-MM-DD'} format, and objects of class \code{Date}, \code{POSIXt}, \code{POSIXct}, \code{POSIXlt} or anything else than can be coerced to a date with \code{as.Date()}. Defaults to the current system date.
+#' @inheritParams all_answered_questions
 #' @return A tibble with information on the tibbles signed, sponsored and/or primarily sponsored by the given MP.
-#' @keywords Early Day Motion EDM
+#'
 #' @seealso \code{\link{early_day_motions}}
 #' @export
 #' @examples \dontrun{
 #' x <- mp_edms(mp_id=3967, primary_sponsor=TRUE, sponsor = TRUE, signatory=TRUE)
 #'
 #' x <- mp_edms(mp_id=3967, primary_sponsor=TRUE, sponsor = TRUE, signatory=FALSE, full_data=TRUE)
-#'
 #' }
 
 
-mp_edms <- function(mp_id = NULL, primary_sponsor = TRUE, sponsor = TRUE, signatory = TRUE, full_data = FALSE, start_date = "1900-01-01", end_date = Sys.Date(), extra_args = NULL, tidy = TRUE, tidy_style = "snake_case") {
+mp_edms <- function(mp_id = NULL, primary_sponsor = TRUE, sponsor = TRUE, signatory = TRUE, full_data = FALSE, start_date = "1900-01-01", end_date = Sys.Date(), extra_args = NULL, tidy = TRUE, tidy_style = "snake_case", verbose = FALSE) {
 
   dates <- paste0("&max-dateSigned=", as.Date(end_date), "&min-dateSigned=", as.Date(start_date))
 
   if (is.null(mp_id) == TRUE) {
+
     stop("mp_id must not be empty", call. = FALSE)
+
   }
 
   if (length(mp_id) > 1) {
 
-    df <- multi_mp_edms(mp_id, extra_args, primary_sponsor, sponsor, signatory, end_date, start_date)
+    df <- multi_mp_edms(mp_id, extra_args, primary_sponsor, sponsor, signatory, end_date, start_date, verbose)
 
-  }
+  } else {
 
   z <- c(sponsor, primary_sponsor, signatory)
 
   if (length(z[z == TRUE]) > 1) {
 
-    df <- sig_type(mp_id, extra_args, primary_sponsor, sponsor, signatory, end_date, start_date)
+    df <- sig_type(mp_id, primary_sponsor, sponsor, signatory, end_date, start_date, extra_args, verbose)
 
   } else {
 
@@ -48,19 +49,19 @@ mp_edms <- function(mp_id = NULL, primary_sponsor = TRUE, sponsor = TRUE, signat
 
     baseurl <- "http://lda.data.parliament.uk/edmsignatures.json?"
 
-    edms <- jsonlite::fromJSON(paste0(baseurl, query, dates, "&_pageSize=500", extra_args), flatten = TRUE)
+    edms <- jsonlite::fromJSON(paste0(baseurl, query, dates, extra_args), flatten = TRUE)
 
-    jpage <- floor(edms$result$totalResults/edms$result$itemsPerPage)
+    jpage <- floor(edms$result$totalResults/500)
 
     pages <- list()
 
     if (edms$result$totalResults > 0) {
 
-      message("Connecting to API")
+      if(verbose==TRUE){message("Connecting to API")}
 
       for (i in 0:jpage) {
-        mydata <- jsonlite::fromJSON(paste0(baseurl, query, dates, "&_pageSize=500&_page=", i, extra_args), flatten = TRUE)
-        message("Retrieving page ", i + 1, " of ", jpage + 1)
+        mydata <- jsonlite::fromJSON(paste0(baseurl, query, dates, extra_args, "&_pageSize=500&_page=", i), flatten = TRUE)
+        if(verbose==TRUE){message("Retrieving page ", i + 1, " of ", jpage + 1)}
         pages[[i + 1]] <- mydata$result$items
       }
 
@@ -76,9 +77,11 @@ mp_edms <- function(mp_id = NULL, primary_sponsor = TRUE, sponsor = TRUE, signat
 
   }
 
+  }
+
   if (full_data == TRUE) {
 
-    df2 <- edm_search(df)
+    df2 <- edm_search(df, verbose)
 
     df <- dplyr::left_join(df, df2)
 
@@ -107,11 +110,4 @@ mp_edms <- function(mp_id = NULL, primary_sponsor = TRUE, sponsor = TRUE, signat
 
 #' @export
 #' @rdname mp_edms
-hansard_mp_edms <- function(mp_id = NULL, primary_sponsor = TRUE, sponsor = FALSE, signatory = FALSE, full_data = FALSE, extra_args = NULL, start_date = "1900-01-01", end_date = Sys.Date(), tidy = TRUE, tidy_style = "snake_case") {
-
-  df <- mp_edms(mp_id = mp_id, primary_sponsor = primary_sponsor, sponsor = sponsor, signatory = signatory, full_data = full_data, start_date = start_date, end_date = end_date, extra_args = extra_args, tidy = tidy, tidy_style = tidy_style)
-
-  df
-
-}
-
+hansard_mp_edms <- mp_edms
