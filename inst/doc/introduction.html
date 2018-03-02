@@ -12,7 +12,7 @@
 
 <meta name="author" content="Evan Odell" />
 
-<meta name="date" content="2017-10-09" />
+<meta name="date" content="2018-03-02" />
 
 <title>Introduction to hansard</title>
 
@@ -20,46 +20,256 @@
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
 
-<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#header {
+text-align: center;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
 
 </head>
 
@@ -70,7 +280,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Introduction to hansard</h1>
 <h4 class="author"><em>Evan Odell</em></h4>
-<h4 class="date"><em>2017-10-09</em></h4>
+<h4 class="date"><em>2018-03-02</em></h4>
 
 
 
@@ -118,10 +328,12 @@ devtools::install_github(&quot;EvanOdell/hansard&quot;)</code></pre>
 <div id="example-using-the-commons_divisions-and-mp_vote_record-functions" class="section level3">
 <h3>Example using the <code>commons_divisions()</code> and <code>mp_vote_record()</code> functions</h3>
 <p>The <code>commons_divisions()</code> function returns divisions in the House of Commons, including the result of votes and information on what we being voted on. <code>mp_vote_record()</code> returns a data frame the voting record of a given MP on each division they voted in. The example below returns all Commons Divisions where Diane Abbott voted aye in 2017. To find the parliamentary ID of Diane Abbott (or any other member of the House of Commons or House of Lords), use the <a href="#special-functions"><code>members_search()</code> function described below</a>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(hansard)
-<span class="kw">library</span>(tibble)##for the `tibble::glimpse()` function
-z &lt;-<span class="st"> </span><span class="kw">mp_vote_record</span>(<span class="dv">172</span>, <span class="st">&quot;aye&quot;</span>, <span class="dt">start_date =</span> <span class="st">&quot;2017-01-01&quot;</span>, <span class="dt">end_date =</span> <span class="st">&quot;2017-05-03&quot;</span>)
-tibble::<span class="kw">glimpse</span>(z)</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">library</span>(hansard)</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw">library</span>(tibble)##for the `tibble::glimpse()` function</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">z &lt;-<span class="st"> </span><span class="kw">mp_vote_record</span>(<span class="dv">172</span>, <span class="st">&quot;aye&quot;</span>, <span class="dt">start_date =</span> <span class="st">&quot;2017-01-01&quot;</span>, <span class="dt">end_date =</span> <span class="st">&quot;2017-05-03&quot;</span>)</a></code></pre></div>
+<pre><code>## Connecting to API</code></pre>
+<pre><code>## Retrieving page 1 of 1</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">tibble<span class="op">::</span><span class="kw">glimpse</span>(z)</a></code></pre></div>
 <pre><code>## Observations: 38
 ## Variables: 5
 ## $ about         &lt;chr&gt; &quot;http://data.parliament.uk/resources/722300&quot;, &quot;h...
@@ -130,8 +342,9 @@ tibble::<span class="kw">glimpse</span>(z)</code></pre></div>
 ## $ date_value    &lt;dttm&gt; 2017-04-19, 2017-03-29, 2017-03-29, 2017-03-29,...
 ## $ date_datatype &lt;chr&gt; &quot;POSIXct&quot;, &quot;POSIXct&quot;, &quot;POSIXct&quot;, &quot;POSIXct&quot;, &quot;POS...</code></pre>
 <p>Using <code>commons_divisions()</code>, we can see the result of one of those votes, ID 722300, the Early Parliamentary General Election bill that dissolved parliament for the 2017 General Election. The function default is to return a list of every MP and how they voted:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="kw">commons_divisions</span>(<span class="dv">722300</span>)
-tibble::<span class="kw">glimpse</span>(x)</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="kw">commons_divisions</span>(<span class="dv">722300</span>)</a></code></pre></div>
+<pre><code>## Connecting to API</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">tibble<span class="op">::</span><span class="kw">glimpse</span>(x)</a></code></pre></div>
 <pre><code>## Observations: 535
 ## Variables: 7
 ## $ number               &lt;chr&gt; &quot;1&quot;, &quot;10&quot;, &quot;100&quot;, &quot;101&quot;, &quot;102&quot;, &quot;103&quot;, &quot;1...
@@ -142,23 +355,24 @@ tibble::<span class="kw">glimpse</span>(x)</code></pre></div>
 ## $ about                &lt;chr&gt; &quot;172&quot;, &quot;4573&quot;, &quot;1579&quot;, &quot;4088&quot;, &quot;3950&quot;, &quot;1...
 ## $ label_value          &lt;chr&gt; &quot;Biography information for Ms Diane Abbot...</code></pre>
 <p>With the <code>summary</code> parameter, we can return a brief summary table of votes:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">y &lt;-<span class="st"> </span><span class="kw">commons_divisions</span>(<span class="dv">722300</span>, <span class="dt">summary=</span><span class="ot">TRUE</span>)
-tibble::<span class="kw">glimpse</span>(y)</code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">y &lt;-<span class="st"> </span><span class="kw">commons_divisions</span>(<span class="dv">722300</span>, <span class="dt">summary=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+<pre><code>## Connecting to API</code></pre>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">tibble<span class="op">::</span><span class="kw">glimpse</span>(y)</a></code></pre></div>
 <pre><code>## Observations: 1
 ## Variables: 13
-## $ abstain_count                 &lt;chr&gt; &quot;0&quot;
-## $ ayes_count                    &lt;chr&gt; &quot;522&quot;
-## $ noesvotecount                 &lt;chr&gt; &quot;13&quot;
-## $ didnotvotecount               &lt;chr&gt; &quot;0&quot;
-## $ errorvotecount                &lt;chr&gt; &quot;0&quot;
-## $ noneligiblecount              &lt;chr&gt; &quot;0&quot;
-## $ suspendedorexpelledvotescount &lt;chr&gt; &quot;0&quot;
-## $ margin                        &lt;chr&gt; &quot;509&quot;
-## $ date                          &lt;dttm&gt; 2017-04-19
-## $ division_number               &lt;chr&gt; &quot;196&quot;
-## $ session                       &lt;chr&gt; &quot;2016/17&quot;
-## $ title                         &lt;chr&gt; &quot;Early Parliamentary General Ele...
-## $ uin                           &lt;chr&gt; &quot;CD:2017-04-19:264&quot;</code></pre>
+## $ abstain_count                     &lt;chr&gt; &quot;0&quot;
+## $ ayes_count                        &lt;chr&gt; &quot;522&quot;
+## $ noes_vote_count                   &lt;chr&gt; &quot;13&quot;
+## $ did_not_vote_count                &lt;chr&gt; &quot;0&quot;
+## $ error_vote_count                  &lt;chr&gt; &quot;0&quot;
+## $ non_eligible_count                &lt;chr&gt; &quot;0&quot;
+## $ suspended_or_expelled_votes_count &lt;chr&gt; &quot;0&quot;
+## $ margin                            &lt;chr&gt; &quot;509&quot;
+## $ date                              &lt;dttm&gt; 2017-04-19
+## $ division_number                   &lt;chr&gt; &quot;196&quot;
+## $ session                           &lt;chr&gt; &quot;2016/17&quot;
+## $ title                             &lt;chr&gt; &quot;Early Parliamentary General...
+## $ uin                               &lt;chr&gt; &quot;CD:2017-04-19:264&quot;</code></pre>
 <p>The results of votes in the House of Lords can be retrieved with the <code>lords_divisions</code> function. The voting record of individual Lords can be retrieved using the <code>lords_vote_record</code> functions.</p>
 </div>
 <div id="multiple-parameter-functions" class="section level3">
@@ -173,19 +387,43 @@ tibble::<span class="kw">glimpse</span>(y)</code></pre></div>
 <li><p><code>mp_edms()</code></p></li>
 </ul>
 <p>For example, the following function returns all questions answered by Nichola Blackwood (4019) or Sam Gyimah (3980), asked by Keith Vaz (338) or Diane Abbot (172), and covered by the Department for Health or the Ministry of Justice, between 2016-12-18 and 2017-03-12.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">w &lt;-<span class="st"> </span><span class="kw">hansard_all_answered_questions</span>(<span class="dt">mp_id =</span> <span class="kw">c</span>(<span class="dv">4019</span>, <span class="dv">3980</span>), <span class="dt">tabling_mp_id =</span> <span class="kw">c</span>(<span class="dv">338</span>, <span class="dv">172</span>),
-                                     <span class="dt">answering_body =</span> <span class="kw">c</span>(<span class="st">&quot;health&quot;</span>, <span class="st">&quot;justice&quot;</span>),
-                                      <span class="dt">start_date =</span> <span class="st">&quot;2016-12-18&quot;</span>, <span class="dt">end_date =</span> <span class="st">&quot;2017-03-12&quot;</span>)
-
-tibble::<span class="kw">glimpse</span>(w)</code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">w &lt;-<span class="st"> </span><span class="kw">hansard_all_answered_questions</span>(<span class="dt">mp_id =</span> <span class="kw">c</span>(<span class="dv">4019</span>, <span class="dv">3980</span>), <span class="dt">tabling_mp_id =</span> <span class="kw">c</span>(<span class="dv">338</span>, <span class="dv">172</span>),</a>
+<a class="sourceLine" id="cb17-2" data-line-number="2">                                     <span class="dt">answering_body =</span> <span class="kw">c</span>(<span class="st">&quot;health&quot;</span>, <span class="st">&quot;justice&quot;</span>),</a>
+<a class="sourceLine" id="cb17-3" data-line-number="3">                                      <span class="dt">start_date =</span> <span class="st">&quot;2016-12-18&quot;</span>, <span class="dt">end_date =</span> <span class="st">&quot;2017-03-12&quot;</span>)</a></code></pre></div>
+<pre><code>## Connecting to API</code></pre>
+<pre><code>## Retrieving page 1 of 1</code></pre>
+<pre><code>## Connecting to API</code></pre>
+<pre><code>## Retrieving page 1 of 1</code></pre>
+<pre><code>## The request did not return any data.
+##               Please check your parameters.</code></pre>
+<pre><code>## Connecting to API</code></pre>
+<pre><code>## Retrieving page 1 of 1</code></pre>
+<pre><code>## The request did not return any data.
+##               Please check your parameters.</code></pre>
+<pre><code>## Connecting to API</code></pre>
+<pre><code>## Retrieving page 1 of 1</code></pre>
+<pre><code>## The request did not return any data.
+##               Please check your parameters.</code></pre>
+<pre><code>## Connecting to API</code></pre>
+<pre><code>## Retrieving page 1 of 1</code></pre>
+<pre><code>## The request did not return any data.
+##               Please check your parameters.</code></pre>
+<pre><code>## Connecting to API</code></pre>
+<pre><code>## Retrieving page 1 of 1</code></pre>
+<pre><code>## Connecting to API</code></pre>
+<pre><code>## Retrieving page 1 of 1</code></pre>
+<pre><code>## The request did not return any data.
+##               Please check your parameters.</code></pre>
+<pre><code>## Connecting to API</code></pre>
+<pre><code>## Retrieving page 1 of 1</code></pre>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1">tibble<span class="op">::</span><span class="kw">glimpse</span>(w)</a></code></pre></div>
 <pre><code>## Observations: 23
-## Variables: 32
-## $ about                               &lt;chr&gt; &quot;http://data.parliament.uk...
+## Variables: 31
+## $ about                               &lt;chr&gt; &quot;705625&quot;, &quot;705626&quot;, &quot;70562...
 ## $ answering_body                      &lt;chr&gt; &quot;Department of Health&quot;, &quot;D...
 ## $ question_text                       &lt;chr&gt; &quot;To ask the Secretary of S...
 ## $ tabling_member_printed              &lt;chr&gt; &quot;Keith Vaz&quot;, &quot;Keith Vaz&quot;, ...
 ## $ uin                                 &lt;chr&gt; &quot;65590&quot;, &quot;65591&quot;, &quot;65592&quot;,...
-## $ about                               &lt;chr&gt; &quot;http://data.parliament.uk...
 ## $ attachment                          &lt;list&gt; [&lt;c(&quot;http://data.parliame...
 ## $ grouped_question_uin                &lt;list&gt; [&quot;list(c(\&quot;65591\&quot;, \&quot;655...
 ## $ answer_text_value                   &lt;chr&gt; &quot;&lt;p&gt;73 clinical commission...
@@ -198,9 +436,9 @@ tibble::<span class="kw">glimpse</span>(w)</code></pre></div>
 ## $ date_of_answer_datatype             &lt;chr&gt; &quot;POXIXct&quot;, &quot;POXIXct&quot;, &quot;POX...
 ## $ is_ministerial_correction_value     &lt;chr&gt; &quot;false&quot;, &quot;false&quot;, &quot;false&quot;,...
 ## $ is_ministerial_correction_datatype  &lt;chr&gt; &quot;boolean&quot;, &quot;boolean&quot;, &quot;boo...
-## $ ng_dept_id_value                    &lt;chr&gt; &quot;17&quot;, &quot;17&quot;, &quot;17&quot;, &quot;17&quot;, &quot;1...
-## $ ng_dept_short_name_value            &lt;chr&gt; &quot;Health&quot;, &quot;Health&quot;, &quot;Healt...
-## $ ng_dept_sort_name_value             &lt;chr&gt; &quot;Health&quot;, &quot;Health&quot;, &quot;Healt...
+## $ answering_dept_id_value             &lt;chr&gt; &quot;17&quot;, &quot;17&quot;, &quot;17&quot;, &quot;17&quot;, &quot;1...
+## $ answering_dept_short_name_value     &lt;chr&gt; &quot;Health&quot;, &quot;Health&quot;, &quot;Healt...
+## $ answering_dept_sort_name_value      &lt;chr&gt; &quot;Health&quot;, &quot;Health&quot;, &quot;Healt...
 ## $ date_value                          &lt;chr&gt; &quot;2017-02-27&quot;, &quot;2017-02-27&quot;...
 ## $ date_datatype                       &lt;chr&gt; &quot;dateTime&quot;, &quot;dateTime&quot;, &quot;d...
 ## $ hansard_heading_value               &lt;chr&gt; &quot;Diabetes&quot;, &quot;Diabetes&quot;, &quot;D...
@@ -225,89 +463,99 @@ tibble::<span class="kw">glimpse</span>(w)</code></pre></div>
 <div id="the-research_briefings-function" class="section level3">
 <h3>The <code>research_briefings()</code> function</h3>
 <p>The <code>research_briefings()</code> function includes the feature of requesting data using lists created using the <code>research_briefings_lists</code> functions:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">research_topics_list &lt;-<span class="st"> </span><span class="kw">research_topics_list</span>()
-
-research_subtopics_list &lt;-<span class="st"> </span><span class="kw">research_subtopics_list</span>()
-
-research_types_list &lt;-<span class="st"> </span><span class="kw">research_types_list</span>()
-
-research_topics_list[[<span class="dv">7</span>]]</code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1">research_topics_list &lt;-<span class="st"> </span><span class="kw">research_topics_list</span>()</a>
+<a class="sourceLine" id="cb41-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb41-3" data-line-number="3">research_subtopics_list &lt;-<span class="st"> </span><span class="kw">research_subtopics_list</span>()</a>
+<a class="sourceLine" id="cb41-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb41-5" data-line-number="5">research_types_list &lt;-<span class="st"> </span><span class="kw">research_types_list</span>()</a>
+<a class="sourceLine" id="cb41-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb41-7" data-line-number="7">research_topics_list[[<span class="dv">7</span>]]</a></code></pre></div>
 <pre><code>## [1] &quot;Defence&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">research_subtopics_list[[<span class="dv">7</span>]][<span class="dv">10</span>]</code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1">research_subtopics_list[[<span class="dv">7</span>]][<span class="dv">10</span>]</a></code></pre></div>
 <pre><code>## [1] &quot;Falkland Islands&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">research_types_list[[<span class="dv">1</span>]]</code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1">research_types_list[[<span class="dv">1</span>]]</a></code></pre></div>
 <pre><code>## [1] &quot;Lords Library notes&quot;</code></pre>
 <p>In this case I have given them the same name as their function, but you can assign any name you wish to them.</p>
 <p>Having created the lists, they can be used to specify which topics and subtopics to call, although strings can also be used. In the example below, <code>a</code> and <code>c</code> contain the same data.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">a &lt;-<span class="st"> </span><span class="kw">research_briefings</span>(<span class="dt">topic =</span> research_topics_list[[<span class="dv">7</span>]])
-
-b &lt;-<span class="st"> </span><span class="kw">research_briefings</span>(<span class="dt">topic =</span> research_topics_list[[<span class="dv">7</span>]], <span class="dt">subtopic=</span>research_subtopics_list[[<span class="dv">7</span>]][<span class="dv">10</span>])
-
-c &lt;-<span class="st"> </span><span class="kw">research_briefings</span>(<span class="dt">topic =</span> <span class="st">&quot;Defence&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1">a &lt;-<span class="st"> </span><span class="kw">research_briefings</span>(<span class="dt">topic =</span> research_topics_list[[<span class="dv">7</span>]])</a></code></pre></div>
+<pre><code>## Connecting to API</code></pre>
+<pre><code>## Retrieving page 1 of 1</code></pre>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" data-line-number="1">b &lt;-<span class="st"> </span><span class="kw">research_briefings</span>(<span class="dt">topic =</span> research_topics_list[[<span class="dv">7</span>]], <span class="dt">subtopic=</span>research_subtopics_list[[<span class="dv">7</span>]][<span class="dv">10</span>])</a></code></pre></div>
+<pre><code>## Connecting to API
+## Retrieving page 1 of 1</code></pre>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" data-line-number="1">c &lt;-<span class="st"> </span><span class="kw">research_briefings</span>(<span class="dt">topic =</span> <span class="st">&quot;Defence&quot;</span>)</a></code></pre></div>
+<pre><code>## Connecting to API
+## Retrieving page 1 of 1</code></pre>
 <p>If a specific subtopic is called, but the topic is not specified, the function will still return all data within that specific subtopic. Note that this is slower than specifying the topic and subtopic.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">research_topics_list &lt;-<span class="st"> </span><span class="kw">research_topics_list</span>()
-
-research_subtopics_list &lt;-<span class="st"> </span><span class="kw">research_subtopics_list</span>()
-
-<span class="kw">system.time</span>(without_topic &lt;-<span class="st"> </span><span class="kw">research_briefings</span>(<span class="dt">subtopic =</span> research_subtopics_list[[<span class="dv">7</span>]][<span class="dv">10</span>]))</code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" data-line-number="1">research_topics_list &lt;-<span class="st"> </span><span class="kw">research_topics_list</span>()</a>
+<a class="sourceLine" id="cb54-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb54-3" data-line-number="3">research_subtopics_list &lt;-<span class="st"> </span><span class="kw">research_subtopics_list</span>()</a>
+<a class="sourceLine" id="cb54-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb54-5" data-line-number="5"><span class="kw">system.time</span>(without_topic &lt;-<span class="st"> </span><span class="kw">research_briefings</span>(<span class="dt">subtopic =</span> research_subtopics_list[[<span class="dv">7</span>]][<span class="dv">10</span>]))</a></code></pre></div>
+<pre><code>## Connecting to API</code></pre>
+<pre><code>## Retrieving page 1 of 1</code></pre>
 <pre><code>##    user  system elapsed 
-##    0.28    0.09    3.65</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.time</span>(with_topic &lt;-<span class="st"> </span><span class="kw">research_briefings</span>(<span class="dt">topic =</span> research_topics_list[[<span class="dv">7</span>]], <span class="dt">subtopic=</span>research_subtopics_list[[<span class="dv">7</span>]][<span class="dv">10</span>]))</code></pre></div>
+##   0.462   0.136   7.358</code></pre>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1"><span class="kw">system.time</span>(with_topic &lt;-<span class="st"> </span><span class="kw">research_briefings</span>(<span class="dt">topic =</span> research_topics_list[[<span class="dv">7</span>]], <span class="dt">subtopic=</span>research_subtopics_list[[<span class="dv">7</span>]][<span class="dv">10</span>]))</a></code></pre></div>
+<pre><code>## Connecting to API
+## Retrieving page 1 of 1</code></pre>
 <pre><code>##    user  system elapsed 
-##    0.03    0.00    0.11</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">identical</span>(with_topic, without_topic)</code></pre></div>
+##   0.031   0.003   0.621</code></pre>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb61-1" data-line-number="1"><span class="kw">identical</span>(with_topic, without_topic)</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>If a specified subtopic is not a subtopic of the specified topic, the function will not return any data.</p>
 </div>
 <div id="the-hansard_generic-function" class="section level3">
 <h3>The <code>hansard_generic()</code> function</h3>
 <p>The <code>hansard_generic()</code> function allows you to put in your own paths to the API. Information on all the paths available in the API can be found on the <a href="http://explore.data.parliament.uk/">DDP Explorer website</a>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="kw">hansard_generic</span>(<span class="st">&quot;commonsansweredquestions.json&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="kw">hansard_generic</span>(<span class="st">&quot;commonsansweredquestions.json&quot;</span>)</a></code></pre></div>
 <p>Note that the API defaults to returning 10 items per page, but allows up to 500 items per page, the default used by <code>hansard</code>.</p>
 </div>
 <div id="the-members_search-function" class="section level3">
 <h3>The <code>members_search()</code> function</h3>
 <p>Looking up information on an individual MP or Lord through the Parliamentary API requires knowing their parliamentary ID number. This can be hard to find on the web, but luckily you can look it up through the API. We want information on the voting record of the Labour MP for Hackney North and Stoke Newington Diane Abbott, but we don’t know her ID number, so we search for her:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(hansard)
-<span class="kw">members_search</span>(<span class="st">&quot;abbot&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1"><span class="kw">library</span>(hansard)</a>
+<a class="sourceLine" id="cb64-2" data-line-number="2"><span class="kw">members_search</span>(<span class="st">&quot;abbot&quot;</span>)</a></code></pre></div>
+<pre><code>## Connecting to API</code></pre>
+<pre><code>## Retrieving page 1 of 1</code></pre>
 <pre><code>## # A tibble: 4 x 12
-##   mnis_id                         home_page additional_name_value
-##     &lt;chr&gt;                             &lt;chr&gt;                 &lt;chr&gt;
-## 1     172     http://www.dianeabbott.org.uk                 Julie
-## 2    1651                              &lt;NA&gt;             Granville
-## 3    4249 http://www.annemariemorris.co.uk/                  &lt;NA&gt;
-## 4    3827       http://www.judiciary.gov.uk                Edmond
-## # ... with 9 more variables: constituency_about &lt;chr&gt;,
-## #   constituency_label_value &lt;chr&gt;, family_name_value &lt;chr&gt;,
+##   mnis_id home_page   additional_name_… constituency_abo… constituency_la…
+##   &lt;chr&gt;   &lt;chr&gt;       &lt;chr&gt;             &lt;chr&gt;             &lt;chr&gt;           
+## 1 172     http://www… Julie             http://data.parl… Hackney North a…
+## 2 1651    &lt;NA&gt;        Granville         &lt;NA&gt;              &lt;NA&gt;            
+## 3 4249    http://www… &lt;NA&gt;              http://data.parl… Newton Abbot    
+## 4 3827    http://www… &lt;NA&gt;              &lt;NA&gt;              &lt;NA&gt;            
+## # ... with 7 more variables: family_name_value &lt;chr&gt;,
 ## #   full_name_value &lt;chr&gt;, gender_value &lt;chr&gt;, given_name_value &lt;chr&gt;,
 ## #   label_value &lt;chr&gt;, party_value &lt;chr&gt;, twitter_value &lt;chr&gt;</code></pre>
 <p>The same function, without the use of the tidy parameter, illustrating the differences in the variable names and the presentation of information in the first column:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(hansard)
-<span class="kw">members_search</span>(<span class="st">&quot;abbot&quot;</span>, <span class="dt">tidy =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1"><span class="kw">library</span>(hansard)</a>
+<a class="sourceLine" id="cb68-2" data-line-number="2"><span class="kw">members_search</span>(<span class="st">&quot;abbot&quot;</span>, <span class="dt">tidy =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<pre><code>## Connecting to API</code></pre>
+<pre><code>## Retrieving page 1 of 1</code></pre>
 <pre><code>## # A tibble: 4 x 12
-##                                 `_about`                          homePage
-##                                    &lt;chr&gt;                             &lt;chr&gt;
-## 1  http://data.parliament.uk/members/172     http://www.dianeabbott.org.uk
-## 2 http://data.parliament.uk/members/1651                              &lt;NA&gt;
-## 3 http://data.parliament.uk/members/4249 http://www.annemariemorris.co.uk/
-## 4 http://data.parliament.uk/members/3827       http://www.judiciary.gov.uk
-## # ... with 10 more variables: additionalName._value &lt;chr&gt;,
-## #   constituency._about &lt;chr&gt;, constituency.label._value &lt;chr&gt;,
-## #   familyName._value &lt;chr&gt;, fullName._value &lt;chr&gt;, gender._value &lt;chr&gt;,
-## #   givenName._value &lt;chr&gt;, label._value &lt;chr&gt;, party._value &lt;chr&gt;,
-## #   twitter._value &lt;chr&gt;</code></pre>
+##   `_about`   homePage  additionalName.… constituency._ab… constituency.la…
+##   &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;            &lt;chr&gt;             &lt;chr&gt;           
+## 1 http://da… http://w… Julie            http://data.parl… Hackney North a…
+## 2 http://da… &lt;NA&gt;      Granville        &lt;NA&gt;              &lt;NA&gt;            
+## 3 http://da… http://w… &lt;NA&gt;             http://data.parl… Newton Abbot    
+## 4 http://da… http://w… &lt;NA&gt;             &lt;NA&gt;              &lt;NA&gt;            
+## # ... with 7 more variables: familyName._value &lt;chr&gt;,
+## #   fullName._value &lt;chr&gt;, gender._value &lt;chr&gt;, givenName._value &lt;chr&gt;,
+## #   label._value &lt;chr&gt;, party._value &lt;chr&gt;, twitter._value &lt;chr&gt;</code></pre>
 <p>The same function as above, but with <code>tidy_style = &quot;period.case&quot;</code>, so it returns variables with a different naming convention.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(hansard)
-<span class="kw">members_search</span>(<span class="st">&quot;abbot&quot;</span>, <span class="dt">tidy =</span> <span class="ot">TRUE</span>, <span class="dt">tidy_style =</span> <span class="st">&quot;period.case&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" data-line-number="1"><span class="kw">library</span>(hansard)</a>
+<a class="sourceLine" id="cb72-2" data-line-number="2"><span class="kw">members_search</span>(<span class="st">&quot;abbot&quot;</span>, <span class="dt">tidy =</span> <span class="ot">TRUE</span>, <span class="dt">tidy_style =</span> <span class="st">&quot;period.case&quot;</span>)</a></code></pre></div>
+<pre><code>## Connecting to API</code></pre>
+<pre><code>## Retrieving page 1 of 1</code></pre>
 <pre><code>## # A tibble: 4 x 12
-##   mnis.id                         home.page additional.name.value
-##     &lt;chr&gt;                             &lt;chr&gt;                 &lt;chr&gt;
-## 1     172     http://www.dianeabbott.org.uk                 Julie
-## 2    1651                              &lt;NA&gt;             Granville
-## 3    4249 http://www.annemariemorris.co.uk/                  &lt;NA&gt;
-## 4    3827       http://www.judiciary.gov.uk                Edmond
-## # ... with 9 more variables: constituency.about &lt;chr&gt;,
-## #   constituency.label.value &lt;chr&gt;, family.name.value &lt;chr&gt;,
+##   mnis.id home.page   additional.name.… constituency.abo… constituency.la…
+##   &lt;chr&gt;   &lt;chr&gt;       &lt;chr&gt;             &lt;chr&gt;             &lt;chr&gt;           
+## 1 172     http://www… Julie             http://data.parl… Hackney North a…
+## 2 1651    &lt;NA&gt;        Granville         &lt;NA&gt;              &lt;NA&gt;            
+## 3 4249    http://www… &lt;NA&gt;              http://data.parl… Newton Abbot    
+## 4 3827    http://www… &lt;NA&gt;              &lt;NA&gt;              &lt;NA&gt;            
+## # ... with 7 more variables: family.name.value &lt;chr&gt;,
 ## #   full.name.value &lt;chr&gt;, gender.value &lt;chr&gt;, given.name.value &lt;chr&gt;,
 ## #   label.value &lt;chr&gt;, party.value &lt;chr&gt;, twitter.value &lt;chr&gt;</code></pre>
 <p>The search function is not case sensitive, and searchs in the names and constituencies of all MPs and Lords. So even though we spelled her surname incorrectly, we can still find her. This API provides limited biographical details, to retrieve more detailed biographical information, use the <a href="https://cran.r-project.org/package=mnis"><code>mnis</code></a> package to retrive data from the Members’ Names Information Service.</p>
