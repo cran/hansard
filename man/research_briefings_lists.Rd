@@ -34,21 +34,22 @@ These functions do not accept any arguments.
 \item{research_topics_list}{A list with the different research
 topics available}
 \item{research_subtopics_list}{A list of Parliamentary Research
- Briefings topics}
+Briefings topics}
 \item{research_types_list}{A list of types of Parliamentary
 Research Briefings}
 }
 }
 
 \examples{
- \dontrun{
+\dontrun{
 research_topics_list <- research_topics_list()
 
 research_subtopics_list <- research_subtopics_list()
 
 research_types_list <- research_types_list()
 }
+
 }
 \seealso{
-\code{\link{research_briefings}}
+\code{\link[=research_briefings]{research_briefings()}}
 }

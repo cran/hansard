@@ -6,12 +6,14 @@
 \title{House of Lords divisions}
 \usage{
 lords_divisions(division_id = NULL, summary = FALSE,
-  start_date = "1900-01-01", end_date = Sys.Date(), extra_args = NULL,
-  tidy = TRUE, tidy_style = "snake_case", verbose = TRUE)
+  start_date = "1900-01-01", end_date = Sys.Date(),
+  extra_args = NULL, tidy = TRUE, tidy_style = "snake_case",
+  verbose = TRUE)
 
 hansard_lords_divisions(division_id = NULL, summary = FALSE,
-  start_date = "1900-01-01", end_date = Sys.Date(), extra_args = NULL,
-  tidy = TRUE, tidy_style = "snake_case", verbose = TRUE)
+  start_date = "1900-01-01", end_date = Sys.Date(),
+  extra_args = NULL, tidy = TRUE, tidy_style = "snake_case",
+  verbose = TRUE)
 }
 \arguments{
 \item{division_id}{The id of a particular vote. If empty, returns a tibble
@@ -47,8 +49,8 @@ converts the variable names to a consistent style. Defaults to \code{TRUE}.}
 \code{tidy = TRUE}. Accepts one of \code{'snake_case'}, \code{'camelCase'}
 and \code{'period.case'}. Defaults to \code{'snake_case'}.}
 
-\item{verbose}{If \code{TRUE}, returns data to console on the progress
-of the API request. Defaults to \code{TRUE}.}
+\item{verbose}{If \code{TRUE}, displayes messages on the console on the
+progress of the API request. Defaults to \code{TRUE}.}
 }
 \value{
 A tibble with the results of divisions in the House of Lords.
@@ -66,7 +68,10 @@ x <- lords_divisions(division_id = 705891, summary = TRUE)
 x <- lords_divisions(division_id = 705891, summary = FALSE)
 
 # Return all lords divisions in 2016
-x <- lords_divisions(NULL, FALSE, start_date = '2016-01-01',
-                     end_date = '2016-12-31')
+x <- lords_divisions(NULL, FALSE,
+  start_date = "2016-01-01",
+  end_date = "2016-12-31"
+)
 }
+
 }

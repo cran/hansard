@@ -5,7 +5,8 @@
 \alias{hansard_bill_stage_types}
 \title{Bill Stage Types}
 \usage{
-bill_stage_types(tidy = TRUE, tidy_style = "snake_case", verbose = TRUE)
+bill_stage_types(tidy = TRUE, tidy_style = "snake_case",
+  verbose = TRUE)
 
 hansard_bill_stage_types(tidy = TRUE, tidy_style = "snake_case",
   verbose = TRUE)
@@ -19,8 +20,8 @@ converts the variable names to a consistent style. Defaults to \code{TRUE}.}
 \code{tidy = TRUE}. Accepts one of \code{'snake_case'}, \code{'camelCase'}
 and \code{'period.case'}. Defaults to \code{'snake_case'}.}
 
-\item{verbose}{If \code{TRUE}, returns data to console on the progress
-of the API request. Defaults to \code{TRUE}.}
+\item{verbose}{If \code{TRUE}, displayes messages on the console on the
+progress of the API request. Defaults to \code{TRUE}.}
 }
 \value{
 A tibble of bill stage types.
@@ -32,9 +33,10 @@ Returns a tibble with all possible bill stage types.
 \dontrun{
 x <- bill_stage_types()
 }
+
 }
 \seealso{
-\code{\link{bills}}
+\code{\link[=bills]{bills()}}
 
-\code{\link{bill_publications}}
+\code{\link[=bill_publications]{bill_publications()}}
 }

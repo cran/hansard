@@ -3,38 +3,49 @@
 #'
 #' Imports data in a tibble on House of Commons written questions.
 #'
+#'
 #' @param mp_id Accepts a member ID or a list of member IDs and returns a
 #' tibble with all written questions asked by that MP or list of MPs. If
-#' \code{NULL}, mp_id is not included as a query parameter.
-#' Defaults to \code{NULL}.
+#' `NULL`, mp_id is not included as a query parameter.
+#' Defaults to `NULL`.
+#'
 #' @param answering_department Accepts a string with a department name or
 #' partial name, or a list of such strings. The query acts as a search, so
-#' passing \code{'health'} will return all questions answered by the
-#' Department of Health. If \code{NULL}, answering_department is not included
-#' as a query parameter. Defaults to \code{NULL}.
+#' passing `'health'` will return all questions answered by the
+#' Department of Health. If `NULL`, answering_department is not included
+#' as a query parameter. Defaults to `NULL`.
+#'
 #' @param start_date Only includes questions tabled on or after this date.
-#' Accepts character values in \code{'YYYY-MM-DD'} format, and objects of
-#' class \code{Date}, \code{POSIXt}, \code{POSIXct}, \code{POSIXlt} or
-#' anything else that can be coerced to a date with \code{as.Date()}.
-#' Defaults to \code{'1900-01-01'}.
+#' Accepts character values in `'YYYY-MM-DD'` format, and objects of
+#' class `Date`, `POSIXt`, `POSIXct`, `POSIXlt` or
+#' anything else that can be coerced to a date with `as.Date()`.
+#' Defaults to `'1900-01-01'`.
+#'
 #' @param end_date Only includes questions tabled on or before this date.
-#' Accepts character values in \code{'YYYY-MM-DD'} format, and objects of
-#' class \code{Date}, \code{POSIXt}, \code{POSIXct}, \code{POSIXlt} or
-#' anything else that can be coerced to a date with \code{as.Date()}.
+#' Accepts character values in `'YYYY-MM-DD'` format, and objects of
+#' class `Date`, `POSIXt`, `POSIXct`, `POSIXlt` or
+#' anything else that can be coerced to a date with `as.Date()`.
 #' Defaults to the current system date.
 #' @inheritParams all_answered_questions
 #' @return A tibble with details on written questions in the House of Commons.
 #' @export
-#' @examples \dontrun{
-#' x <- commons_written_questions(mp_id=410, 'cabinet office')
+#' @examples
+#' \dontrun{
 #' # Returns a tibble with written questions from Jon Trickett,
 #' # answered by the Cabinet Office.
-#'
-#' x <- commons_written_questions(mp_id=c(410,172), c('cabinet','home'))
+#' x <- commons_written_questions(
+#'   mp_id = 410,
+#'   answering_department = "cabinet office"
+#' )
+#' 
 #' # Returns a tibble with written questions from Jon Trickett or Diane Abbott,
 #' # and answered by the Cabinet Office or the Home Office.
+#' x <- commons_written_questions(
+#'   mp_id = c(410, 172),
+#'   answering_department = c("cabinet", "home")
+#' )
 #' }
-
+#' 
 commons_written_questions <- function(mp_id = NULL,
                                       answering_department = NULL,
                                       start_date = "1900-01-01",
@@ -43,73 +54,72 @@ commons_written_questions <- function(mp_id = NULL,
                                       tidy = TRUE,
                                       tidy_style = "snake_case",
                                       verbose = TRUE) {
+  ## For lists queries
+  if (length(mp_id) > 1 || length(answering_department) > 1) {
+    df <- commons_written_questions_multi(
+      mp_id, answering_department,
+      start_date, end_date,
+      extra_args, verbose
+    )
+  } else {
+    dates <- paste0(
+      "&_properties=dateTabled&max-dateTabled=",
+      as.Date(end_date),
+      "&min-dateTabled=",
+      as.Date(start_date)
+    )
 
-    if (length(mp_id) > 1 || length(answering_department) > 1) {
-        ## For lists queries
+    mp_id_query <- ifelse(
+      is.null(mp_id) &&
+        is.na(mp_id), "",
+      utils::URLencode(
+        paste0(
+          "&tablingMember=http://data.parliament.uk/members/", mp_id
+        )
+      )
+    )
 
-        df <- commons_written_questions_multi(mp_id, answering_department,
-                                              start_date, end_date,
-                                              extra_args, verbose)
+    json_query <- ifelse(
+      is.null(answering_department) &&
+        is.na(answering_department), ".json?",
+      utils::URLencode(
+        paste0("/answeringdepartment.json?q=", answering_department)
+      )
+    )
 
-    } else {
+    baseurl <- paste0(url_util, "commonswrittenquestions")
 
-        dates <- paste0("&_properties=dateTabled&max-dateTabled=",
-                        as.Date(end_date),
-                        "&min-dateTabled=",
-                        as.Date(start_date))
-
-        mp_id_query <- dplyr::if_else(
-          is.null(mp_id) == FALSE &&
-            is.na(mp_id) == FALSE,
-          utils::URLencode(
-            paste0(
-              "&tablingMember=http://data.parliament.uk/members/", mp_id)
-            ),
-          "")
-
-        json_query <- dplyr::if_else(
-          is.null(answering_department) == FALSE &&
-            is.na(answering_department) == FALSE,
-          utils::URLencode(
-            paste0("/answeringdepartment.json?q=", answering_department)),
-                                     ".json?")
-
-        baseurl <- paste0(url_util,  "commonswrittenquestions")
-
-        if (verbose == TRUE) {
-            message("Connecting to API")
-        }
-
-        writ <- jsonlite::fromJSON(paste0(baseurl, json_query, mp_id_query,
-                                          dates, extra_args, "&_pageSize=1"),
-                                   flatten = TRUE)
-
-        jpage <- floor(writ$result$totalResults/500)
-
-        query <- paste0(baseurl, json_query, mp_id_query, dates,
-                        extra_args, "&_pageSize=500&_page=")
-
-        df <- loop_query(query, jpage, verbose) # in utils-loop.R
-
+    if (verbose == TRUE) {
+      message("Connecting to API")
     }
 
-    if (nrow(df) == 0) {
+    writ <- jsonlite::fromJSON(paste0(
+      baseurl, json_query, mp_id_query,
+      dates, extra_args, "&_pageSize=1"
+    ),
+    flatten = TRUE
+    )
 
-        message("The request did not return any data.
+    jpage <- floor(writ$result$totalResults / 100)
+
+    query <- paste0(
+      baseurl, json_query, mp_id_query, dates,
+      extra_args, "&_pageSize=100&_page="
+    )
+
+    df <- loop_query(query, jpage, verbose) # in utils-loop.R
+  }
+
+  if (nrow(df) == 0) {
+    message("The request did not return any data.
                 Please check your parameters.")
-
-    } else {
-
-        if (tidy == TRUE) {
-
-            df <- cwq_tidy(df, tidy_style)  ## in utils-commons.R
-
-        }
-
-        df
-
+  } else {
+    if (tidy == TRUE) {
+      df <- cwq_tidy(df, tidy_style) ## in utils-commons.R
     }
 
+    df
+  }
 }
 
 

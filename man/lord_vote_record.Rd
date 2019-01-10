@@ -5,17 +5,19 @@
 \alias{hansard_lord_vote_record}
 \title{Voting record of members of the House of Lords}
 \usage{
-lord_vote_record(peer_id = NULL, lobby = "all", start_date = "1900-01-01",
-  end_date = Sys.Date(), extra_args = NULL, tidy = TRUE,
-  tidy_style = "snake_case", verbose = TRUE)
+lord_vote_record(peer_id = NULL, lobby = "all",
+  start_date = "1900-01-01", end_date = Sys.Date(),
+  extra_args = NULL, tidy = TRUE, tidy_style = "snake_case",
+  verbose = TRUE)
 
 hansard_lord_vote_record(peer_id = NULL, lobby = "all",
-  start_date = "1900-01-01", end_date = Sys.Date(), extra_args = NULL,
-  tidy = TRUE, tidy_style = "snake_case", verbose = TRUE)
+  start_date = "1900-01-01", end_date = Sys.Date(),
+  extra_args = NULL, tidy = TRUE, tidy_style = "snake_case",
+  verbose = TRUE)
 }
 \arguments{
 \item{peer_id}{The ID number of a member of the House of Lords. A value
-must be included for this parameter. Use the \code{\link{lords_members}}
+must be included for this parameter. Use the \code{\link[=lords_members]{lords_members()}}
 to find IDs for members of the House of Lords. Defaults to \code{NULL}.}
 
 \item{lobby}{Accepts one of \code{'all'}, \code{'content'},
@@ -49,8 +51,8 @@ converts the variable names to a consistent style. Defaults to \code{TRUE}.}
 \code{tidy = TRUE}. Accepts one of \code{'snake_case'}, \code{'camelCase'}
 and \code{'period.case'}. Defaults to \code{'snake_case'}.}
 
-\item{verbose}{If \code{TRUE}, returns data to console on the progress
-of the API request. Defaults to \code{TRUE}.}
+\item{verbose}{If \code{TRUE}, displayes messages on the console on the
+progress of the API request. Defaults to \code{TRUE}.}
 }
 \value{
 A tibble with details on the voting record of a
@@ -62,13 +64,14 @@ tibble of their votes.
 }
 \examples{
 \dontrun{
-x <- lord_vote_record(530, lobby='all')
+x <- lord_vote_record(530, lobby = "all")
 
-x <- lord_vote_record(530, lobby='content')
+x <- lord_vote_record(530, lobby = "content")
 
-x <- lord_vote_record(530, lobby='notcontent')
+x <- lord_vote_record(530, lobby = "notcontent")
 
-x <- lord_vote_record(530, lobby='not-content')
+x <- lord_vote_record(530, lobby = "not-content")
 # This will also work
 }
+
 }

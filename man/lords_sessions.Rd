@@ -8,8 +8,9 @@
 lords_sessions(start_date = "1900-01-01", end_date = Sys.Date(),
   tidy = TRUE, tidy_style = "snake_case", verbose = TRUE)
 
-hansard_lords_sessions(start_date = "1900-01-01", end_date = Sys.Date(),
-  tidy = TRUE, tidy_style = "snake_case", verbose = TRUE)
+hansard_lords_sessions(start_date = "1900-01-01",
+  end_date = Sys.Date(), tidy = TRUE, tidy_style = "snake_case",
+  verbose = TRUE)
 }
 \arguments{
 \item{start_date}{Only includes sessions starting on or after this date.
@@ -32,8 +33,8 @@ converts the variable names to a consistent style. Defaults to \code{TRUE}.}
 \code{tidy = TRUE}. Accepts one of \code{'snake_case'}, \code{'camelCase'}
 and \code{'period.case'}. Defaults to \code{'snake_case'}.}
 
-\item{verbose}{If \code{TRUE}, returns data to console on the progress
-of the API request. Defaults to \code{TRUE}.}
+\item{verbose}{If \code{TRUE}, displayes messages on the console on the
+progress of the API request. Defaults to \code{TRUE}.}
 }
 \description{
 Returns the session code and other basic details for individual
@@ -44,11 +45,11 @@ updated with data after 2017-01-31.
 \dontrun{
 
 a <- lords_sessions(start_date = "2017-01-01", end_date = "2017-01-31")
-
 }
+
 }
 \seealso{
-\code{\link{lords_attendance_session}}
+\code{\link[=lords_attendance_session]{lords_attendance_session()}}
 
-\code{\link{sessions_info}}
+\code{\link[=sessions_info]{sessions_info()}}
 }

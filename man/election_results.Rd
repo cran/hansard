@@ -5,13 +5,15 @@
 \alias{hansard_election_results}
 \title{General and By-Election Results}
 \usage{
-election_results(ID = NULL, all_data = FALSE, calculate_percent = FALSE,
-  constit_details = FALSE, extra_args = NULL, tidy = TRUE,
-  tidy_style = "snake_case", verbose = TRUE)
+election_results(ID = NULL, all_data = FALSE,
+  calculate_percent = FALSE, constit_details = FALSE,
+  extra_args = NULL, tidy = TRUE, tidy_style = "snake_case",
+  verbose = TRUE)
 
 hansard_election_results(ID = NULL, all_data = FALSE,
-  calculate_percent = FALSE, constit_details = FALSE, extra_args = NULL,
-  tidy = TRUE, tidy_style = "snake_case", verbose = TRUE)
+  calculate_percent = FALSE, constit_details = FALSE,
+  extra_args = NULL, tidy = TRUE, tidy_style = "snake_case",
+  verbose = TRUE)
 }
 \arguments{
 \item{ID}{Accepts an ID for a general or by-election from the 2010 General
@@ -52,8 +54,8 @@ converts the variable names to a consistent style. Defaults to \code{TRUE}.}
 \code{tidy = TRUE}. Accepts one of \code{'snake_case'}, \code{'camelCase'}
 and \code{'period.case'}. Defaults to \code{'snake_case'}.}
 
-\item{verbose}{If \code{TRUE}, returns data to console on the progress
-of the API request. Defaults to \code{TRUE}.}
+\item{verbose}{If \code{TRUE}, displayes messages on the console on the
+progress of the API request. Defaults to \code{TRUE}.}
 }
 \value{
 A tibble with the results of all general and by-elections, or of
@@ -65,17 +67,18 @@ Imports results from general and by-elections from the
 }
 \examples{
 \dontrun{
-x <- election_results(ID=382037)
+x <- election_results(ID = 382037)
 
 y <- election_results()
 
 z <- election_results(calculate_percent = TRUE, constit_details = TRUE)
 
-w <- election_results(ID=730039, all_data=TRUE)
+w <- election_results(ID = 730039, all_data = TRUE)
 }
+
 }
 \seealso{
-\code{\link{elections}}
+\code{\link[=elections]{elections()}}
 
-\code{\link{election_candidates}}
+\code{\link[=election_candidates]{election_candidates()}}
 }

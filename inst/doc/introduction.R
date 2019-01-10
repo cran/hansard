@@ -10,7 +10,7 @@ x <- commons_divisions(722300)
 tibble::glimpse(x)
 
 ## ---- echo=TRUE, message=TRUE, warning=FALSE-----------------------------
-y <- commons_divisions(722300, summary=TRUE)
+y <- commons_divisions(722300, summary = TRUE)
 tibble::glimpse(y)
 
 ## ---- echo=TRUE, message=TRUE, warning=FALSE-----------------------------

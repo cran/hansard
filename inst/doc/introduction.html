@@ -12,17 +12,17 @@
 
 <meta name="author" content="Evan Odell" />
 
-<meta name="date" content="2018-03-02" />
+<meta name="date" content="2019-01-10" />
 
 <title>Introduction to hansard</title>
 
 
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
+<style type="text/css" data-origin="pandoc">
 a.sourceLine { display: inline-block; line-height: 1.25; }
 a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; position: absolute; }
+a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
@@ -35,13 +35,11 @@ code.sourceCode { white-space: pre-wrap; }
 a.sourceLine { text-indent: -1em; padding-left: 1em; }
 }
 pre.numberSource a.sourceLine
-  { position: relative; }
-pre.numberSource a.sourceLine:empty
-  { position: absolute; }
+  { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
-    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all;
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -83,7 +81,29 @@ code span.st { color: #4070a0; } /* String */
 code span.va { color: #19177c; } /* Variable */
 code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
 </style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
 
 
 
@@ -280,7 +300,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">Introduction to hansard</h1>
 <h4 class="author"><em>Evan Odell</em></h4>
-<h4 class="date"><em>2018-03-02</em></h4>
+<h4 class="date"><em>2019-01-10</em></h4>
 
 
 
@@ -306,7 +326,7 @@ devtools::install_github(&quot;EvanOdell/hansard&quot;)</code></pre>
 <p><code>hansard</code> contains functions for calling data for the UK Parliament API. The functions are designed to call data from a specific <a href="http://www.data.parliament.uk/" class="uri">http://www.data.parliament.uk/</a> API. The parameter options for each function vary, depending on the specific information available from each API, but there are four constant parameters in every function (with the exception of the <code>hansard_generic()</code> and <code>research_topics_list()</code> functions <a href="#special-functions">described below</a>): <code>extra_args</code>, <code>tidy</code>, <code>tidy_style</code> and <code>verbose</code>.</p>
 <div id="extra_args" class="section level4">
 <h4><code>extra_args</code></h4>
-<p>The <code>extra_args</code> parameters allows additional arguments and queries to be passed to the API. This can include searching, limiting the parameters actually returned and ordering data. <code>extra_args</code> queries must follow the syntax used by the API, which requires an ampersand at the beginning of each argument e.g. <code>&amp;_search=education</code>. Multiple arguments can be included, e.g. <code>&amp;_search=education&amp;_sort=title</code>. See the <a href="API%20documentation%20for%20more%20details.">http://explore.data.parliament.uk/</a></p>
+<p>The <code>extra_args</code> parameters allows additional arguments and queries to be passed to the API. This can include searching, limiting the parameters actually returned and ordering data. <code>extra_args</code> queries must follow the syntax used by the API, which requires an ampersand at the beginning of each argument e.g. <code>&amp;_search=education</code>. Multiple arguments can be included, e.g. <code>&amp;_search=education&amp;_sort=title</code>. See the <a href="API%20documentation%20for%20more%20details.">http://explore.data.parliament.uk/</a></p>
 </div>
 <div id="tidy" class="section level4">
 <h4><code>tidy</code></h4>
@@ -328,23 +348,23 @@ devtools::install_github(&quot;EvanOdell/hansard&quot;)</code></pre>
 <div id="example-using-the-commons_divisions-and-mp_vote_record-functions" class="section level3">
 <h3>Example using the <code>commons_divisions()</code> and <code>mp_vote_record()</code> functions</h3>
 <p>The <code>commons_divisions()</code> function returns divisions in the House of Commons, including the result of votes and information on what we being voted on. <code>mp_vote_record()</code> returns a data frame the voting record of a given MP on each division they voted in. The example below returns all Commons Divisions where Diane Abbott voted aye in 2017. To find the parliamentary ID of Diane Abbott (or any other member of the House of Commons or House of Lords), use the <a href="#special-functions"><code>members_search()</code> function described below</a>.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">library</span>(hansard)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw">library</span>(tibble)##for the `tibble::glimpse()` function</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">z &lt;-<span class="st"> </span><span class="kw">mp_vote_record</span>(<span class="dv">172</span>, <span class="st">&quot;aye&quot;</span>, <span class="dt">start_date =</span> <span class="st">&quot;2017-01-01&quot;</span>, <span class="dt">end_date =</span> <span class="st">&quot;2017-05-03&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">library</span>(hansard)</a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="kw">library</span>(tibble)<span class="co">##for the `tibble::glimpse()` function</span></a>
+<a class="sourceLine" id="cb4-3" title="3">z &lt;-<span class="st"> </span><span class="kw">mp_vote_record</span>(<span class="dv">172</span>, <span class="st">&quot;aye&quot;</span>, <span class="dt">start_date =</span> <span class="st">&quot;2017-01-01&quot;</span>, <span class="dt">end_date =</span> <span class="st">&quot;2017-05-03&quot;</span>)</a></code></pre></div>
 <pre><code>## Connecting to API</code></pre>
 <pre><code>## Retrieving page 1 of 1</code></pre>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">tibble<span class="op">::</span><span class="kw">glimpse</span>(z)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">tibble<span class="op">::</span><span class="kw">glimpse</span>(z)</a></code></pre></div>
 <pre><code>## Observations: 38
 ## Variables: 5
-## $ about         &lt;chr&gt; &quot;http://data.parliament.uk/resources/722300&quot;, &quot;h...
+## $ about         &lt;chr&gt; &quot;722300&quot;, &quot;714865&quot;, &quot;714866&quot;, &quot;714868&quot;, &quot;713962&quot;...
 ## $ title         &lt;chr&gt; &quot;Early Parliamentary General Election&quot;, &quot;Pension...
 ## $ uin           &lt;chr&gt; &quot;CD:2017-04-19:264&quot;, &quot;CD:2017-03-29:260&quot;, &quot;CD:20...
 ## $ date_value    &lt;dttm&gt; 2017-04-19, 2017-03-29, 2017-03-29, 2017-03-29,...
 ## $ date_datatype &lt;chr&gt; &quot;POSIXct&quot;, &quot;POSIXct&quot;, &quot;POSIXct&quot;, &quot;POSIXct&quot;, &quot;POS...</code></pre>
 <p>Using <code>commons_divisions()</code>, we can see the result of one of those votes, ID 722300, the Early Parliamentary General Election bill that dissolved parliament for the 2017 General Election. The function default is to return a list of every MP and how they voted:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="kw">commons_divisions</span>(<span class="dv">722300</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1">x &lt;-<span class="st"> </span><span class="kw">commons_divisions</span>(<span class="dv">722300</span>)</a></code></pre></div>
 <pre><code>## Connecting to API</code></pre>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">tibble<span class="op">::</span><span class="kw">glimpse</span>(x)</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1">tibble<span class="op">::</span><span class="kw">glimpse</span>(x)</a></code></pre></div>
 <pre><code>## Observations: 535
 ## Variables: 7
 ## $ number               &lt;chr&gt; &quot;1&quot;, &quot;10&quot;, &quot;100&quot;, &quot;101&quot;, &quot;102&quot;, &quot;103&quot;, &quot;1...
@@ -355,9 +375,9 @@ devtools::install_github(&quot;EvanOdell/hansard&quot;)</code></pre>
 ## $ about                &lt;chr&gt; &quot;172&quot;, &quot;4573&quot;, &quot;1579&quot;, &quot;4088&quot;, &quot;3950&quot;, &quot;1...
 ## $ label_value          &lt;chr&gt; &quot;Biography information for Ms Diane Abbot...</code></pre>
 <p>With the <code>summary</code> parameter, we can return a brief summary table of votes:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">y &lt;-<span class="st"> </span><span class="kw">commons_divisions</span>(<span class="dv">722300</span>, <span class="dt">summary=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1">y &lt;-<span class="st"> </span><span class="kw">commons_divisions</span>(<span class="dv">722300</span>, <span class="dt">summary =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <pre><code>## Connecting to API</code></pre>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">tibble<span class="op">::</span><span class="kw">glimpse</span>(y)</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1">tibble<span class="op">::</span><span class="kw">glimpse</span>(y)</a></code></pre></div>
 <pre><code>## Observations: 1
 ## Variables: 13
 ## $ abstain_count                     &lt;chr&gt; &quot;0&quot;
@@ -387,9 +407,9 @@ devtools::install_github(&quot;EvanOdell/hansard&quot;)</code></pre>
 <li><p><code>mp_edms()</code></p></li>
 </ul>
 <p>For example, the following function returns all questions answered by Nichola Blackwood (4019) or Sam Gyimah (3980), asked by Keith Vaz (338) or Diane Abbot (172), and covered by the Department for Health or the Ministry of Justice, between 2016-12-18 and 2017-03-12.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">w &lt;-<span class="st"> </span><span class="kw">hansard_all_answered_questions</span>(<span class="dt">mp_id =</span> <span class="kw">c</span>(<span class="dv">4019</span>, <span class="dv">3980</span>), <span class="dt">tabling_mp_id =</span> <span class="kw">c</span>(<span class="dv">338</span>, <span class="dv">172</span>),</a>
-<a class="sourceLine" id="cb17-2" data-line-number="2">                                     <span class="dt">answering_body =</span> <span class="kw">c</span>(<span class="st">&quot;health&quot;</span>, <span class="st">&quot;justice&quot;</span>),</a>
-<a class="sourceLine" id="cb17-3" data-line-number="3">                                      <span class="dt">start_date =</span> <span class="st">&quot;2016-12-18&quot;</span>, <span class="dt">end_date =</span> <span class="st">&quot;2017-03-12&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1">w &lt;-<span class="st"> </span><span class="kw">hansard_all_answered_questions</span>(<span class="dt">mp_id =</span> <span class="kw">c</span>(<span class="dv">4019</span>, <span class="dv">3980</span>), <span class="dt">tabling_mp_id =</span> <span class="kw">c</span>(<span class="dv">338</span>, <span class="dv">172</span>),</a>
+<a class="sourceLine" id="cb17-2" title="2">                                     <span class="dt">answering_body =</span> <span class="kw">c</span>(<span class="st">&quot;health&quot;</span>, <span class="st">&quot;justice&quot;</span>),</a>
+<a class="sourceLine" id="cb17-3" title="3">                                      <span class="dt">start_date =</span> <span class="st">&quot;2016-12-18&quot;</span>, <span class="dt">end_date =</span> <span class="st">&quot;2017-03-12&quot;</span>)</a></code></pre></div>
 <pre><code>## Connecting to API</code></pre>
 <pre><code>## Retrieving page 1 of 1</code></pre>
 <pre><code>## Connecting to API</code></pre>
@@ -416,7 +436,7 @@ devtools::install_github(&quot;EvanOdell/hansard&quot;)</code></pre>
 ##               Please check your parameters.</code></pre>
 <pre><code>## Connecting to API</code></pre>
 <pre><code>## Retrieving page 1 of 1</code></pre>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1">tibble<span class="op">::</span><span class="kw">glimpse</span>(w)</a></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" title="1">tibble<span class="op">::</span><span class="kw">glimpse</span>(w)</a></code></pre></div>
 <pre><code>## Observations: 23
 ## Variables: 31
 ## $ about                               &lt;chr&gt; &quot;705625&quot;, &quot;705626&quot;, &quot;70562...
@@ -424,7 +444,7 @@ devtools::install_github(&quot;EvanOdell/hansard&quot;)</code></pre>
 ## $ question_text                       &lt;chr&gt; &quot;To ask the Secretary of S...
 ## $ tabling_member_printed              &lt;chr&gt; &quot;Keith Vaz&quot;, &quot;Keith Vaz&quot;, ...
 ## $ uin                                 &lt;chr&gt; &quot;65590&quot;, &quot;65591&quot;, &quot;65592&quot;,...
-## $ attachment                          &lt;list&gt; [&lt;c(&quot;http://data.parliame...
+## $ attachment                          &lt;list&gt; [&lt;data.frame[2 x 3]&gt;, &lt;da...
 ## $ grouped_question_uin                &lt;list&gt; [&quot;list(c(\&quot;65591\&quot;, \&quot;655...
 ## $ answer_text_value                   &lt;chr&gt; &quot;&lt;p&gt;73 clinical commission...
 ## $ answering_member_about              &lt;chr&gt; &quot;4019&quot;, &quot;4019&quot;, &quot;4019&quot;, &quot;4...
@@ -463,101 +483,91 @@ devtools::install_github(&quot;EvanOdell/hansard&quot;)</code></pre>
 <div id="the-research_briefings-function" class="section level3">
 <h3>The <code>research_briefings()</code> function</h3>
 <p>The <code>research_briefings()</code> function includes the feature of requesting data using lists created using the <code>research_briefings_lists</code> functions:</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1">research_topics_list &lt;-<span class="st"> </span><span class="kw">research_topics_list</span>()</a>
-<a class="sourceLine" id="cb41-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb41-3" data-line-number="3">research_subtopics_list &lt;-<span class="st"> </span><span class="kw">research_subtopics_list</span>()</a>
-<a class="sourceLine" id="cb41-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb41-5" data-line-number="5">research_types_list &lt;-<span class="st"> </span><span class="kw">research_types_list</span>()</a>
-<a class="sourceLine" id="cb41-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb41-7" data-line-number="7">research_topics_list[[<span class="dv">7</span>]]</a></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" title="1">research_topics_list &lt;-<span class="st"> </span><span class="kw">research_topics_list</span>()</a>
+<a class="sourceLine" id="cb41-2" title="2"></a>
+<a class="sourceLine" id="cb41-3" title="3">research_subtopics_list &lt;-<span class="st"> </span><span class="kw">research_subtopics_list</span>()</a>
+<a class="sourceLine" id="cb41-4" title="4"></a>
+<a class="sourceLine" id="cb41-5" title="5">research_types_list &lt;-<span class="st"> </span><span class="kw">research_types_list</span>()</a>
+<a class="sourceLine" id="cb41-6" title="6"></a>
+<a class="sourceLine" id="cb41-7" title="7">research_topics_list[[<span class="dv">7</span>]]</a></code></pre></div>
 <pre><code>## [1] &quot;Defence&quot;</code></pre>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1">research_subtopics_list[[<span class="dv">7</span>]][<span class="dv">10</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" title="1">research_subtopics_list[[<span class="dv">7</span>]][<span class="dv">10</span>]</a></code></pre></div>
 <pre><code>## [1] &quot;Falkland Islands&quot;</code></pre>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1">research_types_list[[<span class="dv">1</span>]]</a></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" title="1">research_types_list[[<span class="dv">1</span>]]</a></code></pre></div>
 <pre><code>## [1] &quot;Lords Library notes&quot;</code></pre>
 <p>In this case I have given them the same name as their function, but you can assign any name you wish to them.</p>
 <p>Having created the lists, they can be used to specify which topics and subtopics to call, although strings can also be used. In the example below, <code>a</code> and <code>c</code> contain the same data.</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1">a &lt;-<span class="st"> </span><span class="kw">research_briefings</span>(<span class="dt">topic =</span> research_topics_list[[<span class="dv">7</span>]])</a></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" title="1">a &lt;-<span class="st"> </span><span class="kw">research_briefings</span>(<span class="dt">topic =</span> research_topics_list[[<span class="dv">7</span>]])</a></code></pre></div>
+<pre><code>## Connecting to API</code></pre>
+<pre><code>## Retrieving page 1 of 5</code></pre>
+<pre><code>## Retrieving page 2 of 5</code></pre>
+<pre><code>## Retrieving page 3 of 5</code></pre>
+<pre><code>## Retrieving page 4 of 5</code></pre>
+<pre><code>## Retrieving page 5 of 5</code></pre>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" title="1">b &lt;-<span class="st"> </span><span class="kw">research_briefings</span>(<span class="dt">topic =</span> research_topics_list[[<span class="dv">7</span>]], <span class="dt">subtopic=</span>research_subtopics_list[[<span class="dv">7</span>]][<span class="dv">10</span>])</a></code></pre></div>
 <pre><code>## Connecting to API</code></pre>
 <pre><code>## Retrieving page 1 of 1</code></pre>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" data-line-number="1">b &lt;-<span class="st"> </span><span class="kw">research_briefings</span>(<span class="dt">topic =</span> research_topics_list[[<span class="dv">7</span>]], <span class="dt">subtopic=</span>research_subtopics_list[[<span class="dv">7</span>]][<span class="dv">10</span>])</a></code></pre></div>
-<pre><code>## Connecting to API
-## Retrieving page 1 of 1</code></pre>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" data-line-number="1">c &lt;-<span class="st"> </span><span class="kw">research_briefings</span>(<span class="dt">topic =</span> <span class="st">&quot;Defence&quot;</span>)</a></code></pre></div>
-<pre><code>## Connecting to API
-## Retrieving page 1 of 1</code></pre>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" title="1">c &lt;-<span class="st"> </span><span class="kw">research_briefings</span>(<span class="dt">topic =</span> <span class="st">&quot;Defence&quot;</span>)</a></code></pre></div>
+<pre><code>## Connecting to API</code></pre>
+<pre><code>## Retrieving page 1 of 5</code></pre>
+<pre><code>## Retrieving page 2 of 5</code></pre>
+<pre><code>## Retrieving page 3 of 5</code></pre>
+<pre><code>## Retrieving page 4 of 5</code></pre>
+<pre><code>## Retrieving page 5 of 5</code></pre>
 <p>If a specific subtopic is called, but the topic is not specified, the function will still return all data within that specific subtopic. Note that this is slower than specifying the topic and subtopic.</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" data-line-number="1">research_topics_list &lt;-<span class="st"> </span><span class="kw">research_topics_list</span>()</a>
-<a class="sourceLine" id="cb54-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb54-3" data-line-number="3">research_subtopics_list &lt;-<span class="st"> </span><span class="kw">research_subtopics_list</span>()</a>
-<a class="sourceLine" id="cb54-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb54-5" data-line-number="5"><span class="kw">system.time</span>(without_topic &lt;-<span class="st"> </span><span class="kw">research_briefings</span>(<span class="dt">subtopic =</span> research_subtopics_list[[<span class="dv">7</span>]][<span class="dv">10</span>]))</a></code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" title="1">research_topics_list &lt;-<span class="st"> </span><span class="kw">research_topics_list</span>()</a>
+<a class="sourceLine" id="cb64-2" title="2"></a>
+<a class="sourceLine" id="cb64-3" title="3">research_subtopics_list &lt;-<span class="st"> </span><span class="kw">research_subtopics_list</span>()</a>
+<a class="sourceLine" id="cb64-4" title="4"></a>
+<a class="sourceLine" id="cb64-5" title="5"><span class="kw">system.time</span>(without_topic &lt;-<span class="st"> </span><span class="kw">research_briefings</span>(<span class="dt">subtopic =</span> research_subtopics_list[[<span class="dv">7</span>]][<span class="dv">10</span>]))</a></code></pre></div>
 <pre><code>## Connecting to API</code></pre>
 <pre><code>## Retrieving page 1 of 1</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.462   0.136   7.358</code></pre>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1"><span class="kw">system.time</span>(with_topic &lt;-<span class="st"> </span><span class="kw">research_briefings</span>(<span class="dt">topic =</span> research_topics_list[[<span class="dv">7</span>]], <span class="dt">subtopic=</span>research_subtopics_list[[<span class="dv">7</span>]][<span class="dv">10</span>]))</a></code></pre></div>
+##    0.52    0.17    3.67</code></pre>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" title="1"><span class="kw">system.time</span>(with_topic &lt;-<span class="st"> </span><span class="kw">research_briefings</span>(<span class="dt">topic =</span> research_topics_list[[<span class="dv">7</span>]], <span class="dt">subtopic=</span>research_subtopics_list[[<span class="dv">7</span>]][<span class="dv">10</span>]))</a></code></pre></div>
 <pre><code>## Connecting to API
 ## Retrieving page 1 of 1</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.031   0.003   0.621</code></pre>
-<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb61-1" data-line-number="1"><span class="kw">identical</span>(with_topic, without_topic)</a></code></pre></div>
+##    0.01    0.02    0.14</code></pre>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb71-1" title="1"><span class="kw">identical</span>(with_topic, without_topic)</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>If a specified subtopic is not a subtopic of the specified topic, the function will not return any data.</p>
 </div>
 <div id="the-hansard_generic-function" class="section level3">
 <h3>The <code>hansard_generic()</code> function</h3>
 <p>The <code>hansard_generic()</code> function allows you to put in your own paths to the API. Information on all the paths available in the API can be found on the <a href="http://explore.data.parliament.uk/">DDP Explorer website</a>.</p>
-<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="kw">hansard_generic</span>(<span class="st">&quot;commonsansweredquestions.json&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb73-1" title="1">x &lt;-<span class="st"> </span><span class="kw">hansard_generic</span>(<span class="st">&quot;commonsansweredquestions.json&quot;</span>)</a></code></pre></div>
 <p>Note that the API defaults to returning 10 items per page, but allows up to 500 items per page, the default used by <code>hansard</code>.</p>
 </div>
 <div id="the-members_search-function" class="section level3">
 <h3>The <code>members_search()</code> function</h3>
 <p>Looking up information on an individual MP or Lord through the Parliamentary API requires knowing their parliamentary ID number. This can be hard to find on the web, but luckily you can look it up through the API. We want information on the voting record of the Labour MP for Hackney North and Stoke Newington Diane Abbott, but we don’t know her ID number, so we search for her:</p>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1"><span class="kw">library</span>(hansard)</a>
-<a class="sourceLine" id="cb64-2" data-line-number="2"><span class="kw">members_search</span>(<span class="st">&quot;abbot&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" title="1"><span class="kw">library</span>(hansard)</a>
+<a class="sourceLine" id="cb74-2" title="2"><span class="kw">members_search</span>(<span class="st">&quot;abbot&quot;</span>)</a></code></pre></div>
+<pre><code>## Warning in members_search(&quot;abbot&quot;): Search functions are not consistently
+## working on the API</code></pre>
 <pre><code>## Connecting to API</code></pre>
 <pre><code>## Retrieving page 1 of 1</code></pre>
-<pre><code>## # A tibble: 4 x 12
-##   mnis_id home_page   additional_name_… constituency_abo… constituency_la…
-##   &lt;chr&gt;   &lt;chr&gt;       &lt;chr&gt;             &lt;chr&gt;             &lt;chr&gt;           
-## 1 172     http://www… Julie             http://data.parl… Hackney North a…
-## 2 1651    &lt;NA&gt;        Granville         &lt;NA&gt;              &lt;NA&gt;            
-## 3 4249    http://www… &lt;NA&gt;              http://data.parl… Newton Abbot    
-## 4 3827    http://www… &lt;NA&gt;              &lt;NA&gt;              &lt;NA&gt;            
-## # ... with 7 more variables: family_name_value &lt;chr&gt;,
-## #   full_name_value &lt;chr&gt;, gender_value &lt;chr&gt;, given_name_value &lt;chr&gt;,
-## #   label_value &lt;chr&gt;, party_value &lt;chr&gt;, twitter_value &lt;chr&gt;</code></pre>
+<pre><code>## The request did not return any data.
+##                 Please check your parameters.</code></pre>
 <p>The same function, without the use of the tidy parameter, illustrating the differences in the variable names and the presentation of information in the first column:</p>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1"><span class="kw">library</span>(hansard)</a>
-<a class="sourceLine" id="cb68-2" data-line-number="2"><span class="kw">members_search</span>(<span class="st">&quot;abbot&quot;</span>, <span class="dt">tidy =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb79-1" title="1"><span class="kw">library</span>(hansard)</a>
+<a class="sourceLine" id="cb79-2" title="2"><span class="kw">members_search</span>(<span class="st">&quot;abbot&quot;</span>, <span class="dt">tidy =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<pre><code>## Warning in members_search(&quot;abbot&quot;, tidy = FALSE): Search functions are not
+## consistently working on the API</code></pre>
 <pre><code>## Connecting to API</code></pre>
 <pre><code>## Retrieving page 1 of 1</code></pre>
-<pre><code>## # A tibble: 4 x 12
-##   `_about`   homePage  additionalName.… constituency._ab… constituency.la…
-##   &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;            &lt;chr&gt;             &lt;chr&gt;           
-## 1 http://da… http://w… Julie            http://data.parl… Hackney North a…
-## 2 http://da… &lt;NA&gt;      Granville        &lt;NA&gt;              &lt;NA&gt;            
-## 3 http://da… http://w… &lt;NA&gt;             http://data.parl… Newton Abbot    
-## 4 http://da… http://w… &lt;NA&gt;             &lt;NA&gt;              &lt;NA&gt;            
-## # ... with 7 more variables: familyName._value &lt;chr&gt;,
-## #   fullName._value &lt;chr&gt;, gender._value &lt;chr&gt;, givenName._value &lt;chr&gt;,
-## #   label._value &lt;chr&gt;, party._value &lt;chr&gt;, twitter._value &lt;chr&gt;</code></pre>
+<pre><code>## The request did not return any data.
+##                 Please check your parameters.</code></pre>
 <p>The same function as above, but with <code>tidy_style = &quot;period.case&quot;</code>, so it returns variables with a different naming convention.</p>
-<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" data-line-number="1"><span class="kw">library</span>(hansard)</a>
-<a class="sourceLine" id="cb72-2" data-line-number="2"><span class="kw">members_search</span>(<span class="st">&quot;abbot&quot;</span>, <span class="dt">tidy =</span> <span class="ot">TRUE</span>, <span class="dt">tidy_style =</span> <span class="st">&quot;period.case&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb84-1" title="1"><span class="kw">library</span>(hansard)</a>
+<a class="sourceLine" id="cb84-2" title="2"><span class="kw">members_search</span>(<span class="st">&quot;abbot&quot;</span>, <span class="dt">tidy =</span> <span class="ot">TRUE</span>, <span class="dt">tidy_style =</span> <span class="st">&quot;period.case&quot;</span>)</a></code></pre></div>
+<pre><code>## Warning in members_search(&quot;abbot&quot;, tidy = TRUE, tidy_style =
+## &quot;period.case&quot;): Search functions are not consistently working on the API</code></pre>
 <pre><code>## Connecting to API</code></pre>
 <pre><code>## Retrieving page 1 of 1</code></pre>
-<pre><code>## # A tibble: 4 x 12
-##   mnis.id home.page   additional.name.… constituency.abo… constituency.la…
-##   &lt;chr&gt;   &lt;chr&gt;       &lt;chr&gt;             &lt;chr&gt;             &lt;chr&gt;           
-## 1 172     http://www… Julie             http://data.parl… Hackney North a…
-## 2 1651    &lt;NA&gt;        Granville         &lt;NA&gt;              &lt;NA&gt;            
-## 3 4249    http://www… &lt;NA&gt;              http://data.parl… Newton Abbot    
-## 4 3827    http://www… &lt;NA&gt;              &lt;NA&gt;              &lt;NA&gt;            
-## # ... with 7 more variables: family.name.value &lt;chr&gt;,
-## #   full.name.value &lt;chr&gt;, gender.value &lt;chr&gt;, given.name.value &lt;chr&gt;,
-## #   label.value &lt;chr&gt;, party.value &lt;chr&gt;, twitter.value &lt;chr&gt;</code></pre>
+<pre><code>## The request did not return any data.
+##                 Please check your parameters.</code></pre>
 <p>The search function is not case sensitive, and searchs in the names and constituencies of all MPs and Lords. So even though we spelled her surname incorrectly, we can still find her. This API provides limited biographical details, to retrieve more detailed biographical information, use the <a href="https://cran.r-project.org/package=mnis"><code>mnis</code></a> package to retrive data from the Members’ Names Information Service.</p>
 </div>
 </div>

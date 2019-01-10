@@ -6,12 +6,14 @@
 \title{House of Commons Oral Questions}
 \usage{
 commons_oral_questions(mp_id = NULL, answering_department = NULL,
-  start_date = "1900-01-01", end_date = Sys.Date(), extra_args = NULL,
-  tidy = TRUE, tidy_style = "snake_case", verbose = TRUE)
+  start_date = "1900-01-01", end_date = Sys.Date(),
+  extra_args = NULL, tidy = TRUE, tidy_style = "snake_case",
+  verbose = TRUE)
 
-hansard_commons_oral_questions(mp_id = NULL, answering_department = NULL,
-  start_date = "1900-01-01", end_date = Sys.Date(), extra_args = NULL,
-  tidy = TRUE, tidy_style = "snake_case", verbose = TRUE)
+hansard_commons_oral_questions(mp_id = NULL,
+  answering_department = NULL, start_date = "1900-01-01",
+  end_date = Sys.Date(), extra_args = NULL, tidy = TRUE,
+  tidy_style = "snake_case", verbose = TRUE)
 }
 \arguments{
 \item{mp_id}{The ID of a given MP asking an oral question, or a list of
@@ -23,7 +25,8 @@ departments. Defaults to \code{NULL}.}
 \item{start_date}{Only includes questions answered on or after this date.
 Accepts character values in \code{'YYYY-MM-DD'} format, and objects of
 class \code{Date}, \code{POSIXt}, \code{POSIXct}, \code{POSIXlt} or anything
-else that can be coerced to a date with \code{as.Date()}. Defaults to \code{'1900-01-01'}.}
+else that can be coerced to a date with \code{as.Date()}. ]
+Defaults to \code{'1900-01-01'}.}
 
 \item{end_date}{Only includes questions answered on or before this date.
 Accepts character values in \code{'YYYY-MM-DD'} format, and objects of class
@@ -44,8 +47,8 @@ converts the variable names to a consistent style. Defaults to \code{TRUE}.}
 \code{tidy = TRUE}. Accepts one of \code{'snake_case'}, \code{'camelCase'}
 and \code{'period.case'}. Defaults to \code{'snake_case'}.}
 
-\item{verbose}{If \code{TRUE}, returns data to console on the progress
-of the API request. Defaults to \code{TRUE}.}
+\item{verbose}{If \code{TRUE}, displayes messages on the console on the
+progress of the API request. Defaults to \code{TRUE}.}
 }
 \value{
 A tibble with details on all oral questions in the House of Commons.
@@ -58,22 +61,29 @@ names, or a list of IDs or department names, respectively.
 }
 \examples{
 \dontrun{
-x <- commons_oral_questions(mp_id=4019, answering_department = 'education')
 
-x <- commons_oral_questions(mp_id=c(4019,4051,4588),
-                            answering_department = c('education', 'health'))
+# Oral questions from a single MP to a single department
+x <- commons_oral_questions(mp_id = 4019, answering_department = "education")
+
+
+## Questions from multiple MPs and to multiple departments
+y <- commons_oral_questions(
+  mp_id = c(4019, 4051, 4588),
+  answering_department = c("education", "health")
+)
 }
+
 }
 \seealso{
-\code{\link{all_answered_questions}}
+\code{\link[=all_answered_questions]{all_answered_questions()}}
 
-\code{\link{commons_answered_questions}}
+\code{\link[=commons_answered_questions]{commons_answered_questions()}}
 
-\code{\link{commons_oral_question_times}}
+\code{\link[=commons_oral_question_times]{commons_oral_question_times()}}
 
-\code{\link{commons_written_questions}}
+\code{\link[=commons_written_questions]{commons_written_questions()}}
 
-\code{\link{lords_written_questions}}
+\code{\link[=lords_written_questions]{lords_written_questions()}}
 
-\code{\link{mp_questions}}
+\code{\link[=mp_questions]{mp_questions()}}
 }

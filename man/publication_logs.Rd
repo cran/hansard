@@ -10,8 +10,9 @@ publication_logs(ID = NULL, house = NULL, start_date = "1900-01-01",
   tidy_style = "snake_case", verbose = TRUE)
 
 hansard_publication_logs(ID = NULL, house = NULL,
-  start_date = "1900-01-01", end_date = Sys.Date(), extra_args = NULL,
-  tidy = TRUE, tidy_style = "snake_case", verbose = TRUE)
+  start_date = "1900-01-01", end_date = Sys.Date(),
+  extra_args = NULL, tidy = TRUE, tidy_style = "snake_case",
+  verbose = TRUE)
 }
 \arguments{
 \item{ID}{Publication ID. Defaults to \code{NULL}. If not \code{NULL},
@@ -47,8 +48,8 @@ converts the variable names to a consistent style. Defaults to \code{TRUE}.}
 \code{tidy = TRUE}. Accepts one of \code{'snake_case'}, \code{'camelCase'}
 and \code{'period.case'}. Defaults to \code{'snake_case'}.}
 
-\item{verbose}{If \code{TRUE}, returns data to console on the progress
-of the API request. Defaults to \code{TRUE}.}
+\item{verbose}{If \code{TRUE}, displayes messages on the console on the
+progress of the API request. Defaults to \code{TRUE}.}
 }
 \value{
 A tibble with details from publications in the House of
@@ -59,8 +60,11 @@ Imports data on House of Commons and House of Lords publications.
 }
 \examples{
 \dontrun{
-x <- publication_logs(house='commons')
+# All publications in the house of commons
+x <- publication_logs(house = "commons")
 
-x <- publication_logs(683267)
+# Returns a given publication
+y <- publication_logs(683267)
 }
+
 }

@@ -6,12 +6,12 @@
 \title{General and By-Elections}
 \usage{
 elections(ID = NULL, type = NULL, start_date = "1900-01-01",
-  end_date = Sys.Date(), label = NULL, extra_args = NULL, tidy = TRUE,
-  tidy_style = "snake_case", verbose = TRUE)
+  end_date = Sys.Date(), label = NULL, extra_args = NULL,
+  tidy = TRUE, tidy_style = "snake_case", verbose = TRUE)
 
 hansard_elections(ID = NULL, type = NULL, start_date = "1900-01-01",
-  end_date = Sys.Date(), label = NULL, extra_args = NULL, tidy = TRUE,
-  tidy_style = "snake_case", verbose = TRUE)
+  end_date = Sys.Date(), label = NULL, extra_args = NULL,
+  tidy = TRUE, tidy_style = "snake_case", verbose = TRUE)
 }
 \arguments{
 \item{ID}{Accepts an ID for a general or by-election from the 2010 General
@@ -41,7 +41,7 @@ Defaults to the current system date.}
 e.g. \code{'23-Feb-2017 By-election'}, and general elections use
 \code{'YYYY General Election'} format. The parameter cannot search,
 so check your formatting, spelling and make sure there were actually
-elections with the label specified. If NULL, returns all
+elections with the label specified. If \code{NULL}, returns all
 Elections/By-elections subject to other parameters.
 Defaults to \code{NULL}.}
 
@@ -58,8 +58,8 @@ converts the variable names to a consistent style. Defaults to \code{TRUE}.}
 \code{tidy = TRUE}. Accepts one of \code{'snake_case'}, \code{'camelCase'}
 and \code{'period.case'}. Defaults to \code{'snake_case'}.}
 
-\item{verbose}{If \code{TRUE}, returns data to console on the progress
-of the API request. Defaults to \code{TRUE}.}
+\item{verbose}{If \code{TRUE}, displayes messages on the console on the
+progress of the API request. Defaults to \code{TRUE}.}
 }
 \value{
 A tibble with details on all elections from the 2010 General
@@ -69,18 +69,18 @@ ID, the date, and the type of election(s).
 \description{
 Imports data on general and by-elections from the
 2010 General Election onwards.
-}
-\details{
-If both \code{ID} and \code{type} are used to query the API, \code{ID}
-takes precedence and \code{type} is ignored.
+
+If both \code{ID} and \code{type} are used to query the API,
+\code{ID} takes precedence and \code{type} is ignored.
 }
 \examples{
 \dontrun{
 x <- elections(517994)
 }
+
 }
 \seealso{
-\code{\link{election_results}}
+\code{\link[=election_results]{election_results()}}
 
-\code{\link{election_candidates}}
+\code{\link[=election_candidates]{election_candidates()}}
 }

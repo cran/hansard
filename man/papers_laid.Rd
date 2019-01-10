@@ -5,13 +5,15 @@
 \alias{hansard_papers_laid}
 \title{Papers laid}
 \usage{
-papers_laid(withdrawn = FALSE, house = NULL, start_date = "1900-01-01",
-  end_date = Sys.Date(), extra_args = NULL, tidy = TRUE,
-  tidy_style = "snake_case", verbose = TRUE)
+papers_laid(withdrawn = FALSE, house = NULL,
+  start_date = "1900-01-01", end_date = Sys.Date(),
+  extra_args = NULL, tidy = TRUE, tidy_style = "snake_case",
+  verbose = TRUE)
 
 hansard_papers_laid(withdrawn = FALSE, house = NULL,
-  start_date = "1900-01-01", end_date = Sys.Date(), extra_args = NULL,
-  tidy = TRUE, tidy_style = "snake_case", verbose = TRUE)
+  start_date = "1900-01-01", end_date = Sys.Date(),
+  extra_args = NULL, tidy = TRUE, tidy_style = "snake_case",
+  verbose = TRUE)
 }
 \arguments{
 \item{withdrawn}{If \code{TRUE}, only returns withdrawn papers.
@@ -46,8 +48,8 @@ converts the variable names to a consistent style. Defaults to \code{TRUE}.}
 \code{tidy = TRUE}. Accepts one of \code{'snake_case'}, \code{'camelCase'}
 and \code{'period.case'}. Defaults to \code{'snake_case'}.}
 
-\item{verbose}{If \code{TRUE}, returns data to console on the progress
-of the API request. Defaults to \code{TRUE}.}
+\item{verbose}{If \code{TRUE}, displayes messages on the console on the
+progress of the API request. Defaults to \code{TRUE}.}
 }
 \value{
 A tibble with details on papers laid before the given House.
@@ -57,8 +59,9 @@ Imports data on papers laid before the House.
 }
 \examples{
 \dontrun{
-x <- papers_laid(withdrawn = FALSE, house = 'commons')
+x <- papers_laid(withdrawn = FALSE, house = "commons")
 
 x <- papers_laid(withdrawn = TRUE, house = NULL)
 }
+
 }

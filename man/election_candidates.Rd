@@ -5,8 +5,9 @@
 \alias{hansard_election_candidates}
 \title{Election candidate details}
 \usage{
-election_candidates(ID = NULL, constit_details = FALSE, extra_args = NULL,
-  tidy = TRUE, tidy_style = "snake_case", verbose = TRUE)
+election_candidates(ID = NULL, constit_details = FALSE,
+  extra_args = NULL, tidy = TRUE, tidy_style = "snake_case",
+  verbose = TRUE)
 
 hansard_election_candidates(ID = NULL, constit_details = FALSE,
   extra_args = NULL, tidy = TRUE, tidy_style = "snake_case",
@@ -34,8 +35,8 @@ converts the variable names to a consistent style. Defaults to \code{TRUE}.}
 \code{tidy = TRUE}. Accepts one of \code{'snake_case'}, \code{'camelCase'}
 and \code{'period.case'}. Defaults to \code{'snake_case'}.}
 
-\item{verbose}{If \code{TRUE}, returns data to console on the progress
-of the API request. Defaults to \code{TRUE}.}
+\item{verbose}{If \code{TRUE}, displayes messages on the console on the
+progress of the API request. Defaults to \code{TRUE}.}
 }
 \description{
 Returns the name and party of all candidates standing in an election, for
@@ -44,7 +45,7 @@ large tibble with hundreds of variables.
 }
 \examples{
 \dontrun{
-x <- election_candidates(ID=382037)
+x <- election_candidates(ID = 382037)
 
 y <- election_candidates()
 
@@ -53,7 +54,7 @@ z <- election_candidates(constit_details = TRUE)
 
 }
 \seealso{
-\code{\link{elections}}
+\code{\link[=elections]{elections()}}
 
-\code{\link{election_results}}
+\code{\link[=election_results]{election_results()}}
 }

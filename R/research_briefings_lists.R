@@ -7,7 +7,7 @@
 #' @rdname research_briefings_lists
 #' @return A list with the different research topics/subtopics/types available.
 #' @export
-#' @seealso \code{\link{research_briefings}}
+#' @seealso [research_briefings()]
 #'
 #' @section Member details functions:
 #' \describe{
@@ -18,23 +18,23 @@
 #' \item{research_types_list}{A list of types of Parliamentary
 #' Research Briefings}
 #' }
-#' @examples  \dontrun{
+#' @examples
+#' \dontrun{
 #' research_topics_list <- research_topics_list()
-#'
+#' 
 #' research_subtopics_list <- research_subtopics_list()
-#'
+#' 
 #' research_types_list <- research_types_list()
 #' }
-
+#' 
 research_topics_list <- function() {
+  x <- jsonlite::fromJSON(paste0(url_util, "researchbriefingtopics.json?"),
+    flatten = TRUE
+  )
 
-    x <- jsonlite::fromJSON(paste0(url_util, "researchbriefingtopics.json?"),
-                            flatten = TRUE)
+  research_topics_list <- as.list(x$result$items$prefLabel._value)
 
-    research_topics_list <- as.list(x$result$items$prefLabel._value)
-
-    research_topics_list
-
+  research_topics_list
 }
 
 
@@ -47,29 +47,28 @@ hansard_research_topics_list <- research_topics_list
 #' @rdname research_briefings_lists
 #' @export
 research_subtopics_list <- function() {
+  x <- jsonlite::fromJSON(paste0(url_util, "researchbriefingtopics.json?"),
+    flatten = TRUE
+  )
 
-    x <- jsonlite::fromJSON(paste0(url_util, "researchbriefingtopics.json?"),
-                            flatten = TRUE)
+  research_topics_list <- as.list(x$result$items$prefLabel._value)
 
-    research_topics_list <- as.list(x$result$items$prefLabel._value)
+  research_subtopics_list <- list()
 
-    research_subtopics_list <- list()
+  for (i in research_topics_list) {
+    i <- utils::URLencode(i)
 
-    for (i in research_topics_list) {
+    g <- jsonlite::fromJSON(paste0(
+      url_util, "researchbriefingsubtopics/",
+      i, ".json?"
+    ), flatten = TRUE)
 
-        i <- utils::URLencode(i)
+    i <- utils::URLdecode(i)
 
-        g <- jsonlite::fromJSON(paste0(url_util, "researchbriefingsubtopics/",
-            i, ".json?"), flatten = TRUE)
+    research_subtopics_list[[i]] <- g$result$items$prefLabel._value
+  }
 
-        i <- utils::URLdecode(i)
-
-        research_subtopics_list[[i]] <- g$result$items$prefLabel._value
-
-    }
-
-    research_subtopics_list
-
+  research_subtopics_list
 }
 
 #' @rdname research_briefings_lists
@@ -80,12 +79,11 @@ hansard_research_subtopics_list <- research_subtopics_list
 #' @rdname research_briefings_lists
 #' @export
 research_types_list <- function() {
+  x <- jsonlite::fromJSON(paste0(url_util, "researchbriefingtypes.json?"))
 
-    x <- jsonlite::fromJSON(paste0(url_util, "researchbriefingtypes.json?"))
+  research_types_list <- as.list(x$result$items$prefLabel$`_value`)
 
-    research_types_list <- as.list(x$result$items$prefLabel$`_value`)
-
-    research_types_list
+  research_types_list
 }
 
 

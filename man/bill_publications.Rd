@@ -6,12 +6,14 @@
 \title{Bill Publications}
 \usage{
 bill_publications(ID = NULL, publication_type = NULL,
-  start_date = "1900-01-01", end_date = Sys.Date(), extra_args = NULL,
-  tidy = TRUE, tidy_style = "snake_case", verbose = FALSE)
+  start_date = "1900-01-01", end_date = Sys.Date(),
+  extra_args = NULL, tidy = TRUE, tidy_style = "snake_case",
+  verbose = FALSE)
 
 hansard_bill_publications(ID = NULL, publication_type = NULL,
-  start_date = "1900-01-01", end_date = Sys.Date(), extra_args = NULL,
-  tidy = TRUE, tidy_style = "snake_case", verbose = FALSE)
+  start_date = "1900-01-01", end_date = Sys.Date(),
+  extra_args = NULL, tidy = TRUE, tidy_style = "snake_case",
+  verbose = FALSE)
 }
 \arguments{
 \item{ID}{The ID of a specific bill to return publications for.
@@ -20,7 +22,7 @@ Defaults to \code{NULL}.}
 
 \item{publication_type}{The type of bill publication to return, in the form
 of a string. For a character vector of bill publication types, see
-\code{\link{bill_publication_types}}. If \code{NULL}, returns all
+\code{\link[=bill_publication_types]{bill_publication_types()}}. If \code{NULL}, returns all
 publications of all types, subject to other parameters.
 Defaults to \code{NULL}.}
 
@@ -49,8 +51,8 @@ converts the variable names to a consistent style. Defaults to \code{TRUE}.}
 \code{tidy = TRUE}. Accepts one of \code{'snake_case'}, \code{'camelCase'}
 and \code{'period.case'}. Defaults to \code{'snake_case'}.}
 
-\item{verbose}{If \code{TRUE}, returns data to console on the progress
-of the API request. Defaults to \code{TRUE}.}
+\item{verbose}{If \code{TRUE}, displayes messages on the console on the
+progress of the API request. Defaults to \code{TRUE}.}
 }
 \value{
 A tibble with details on bill publications.
@@ -61,17 +63,17 @@ or all bills.
 }
 \examples{
 \dontrun{
+# Requesting a specific publication
+x <- bill_publications(ID = 752025)
 
-x <- bill_publications(ID=752025)
-
+# Requesting all publications after a given date
 y <- bill_publications(start_date = "2018-01-01")
-
 }
 }
 \seealso{
-\code{\link{bill_stage_types}}
+\code{\link[=bill_stage_types]{bill_stage_types()}}
 
-\code{\link{bills}}
+\code{\link[=bills]{bills()}}
 
-\code{\link{bill_publication_types}}
+\code{\link[=bill_publication_types]{bill_publication_types()}}
 }

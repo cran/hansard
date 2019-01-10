@@ -44,8 +44,8 @@ converts the variable names to a consistent style. Defaults to \code{TRUE}.}
 \code{tidy = TRUE}. Accepts one of \code{'snake_case'}, \code{'camelCase'}
 and \code{'period.case'}. Defaults to \code{'snake_case'}.}
 
-\item{verbose}{If \code{TRUE}, returns data to console on the progress
-of the API request. Defaults to \code{TRUE}.}
+\item{verbose}{If \code{TRUE}, displayes messages on the console on the
+progress of the API request. Defaults to \code{TRUE}.}
 }
 \value{
 A tibble with details on amendments proposed by the House of Lords.
@@ -58,6 +58,7 @@ to parameters.
 \dontrun{
 x <- lords_amendments()
 
-x <- lords_amendments(decision='Withdrawn')
+x <- lords_amendments(decision = "Withdrawn")
 }
+
 }

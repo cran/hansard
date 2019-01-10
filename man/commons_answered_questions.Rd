@@ -5,14 +5,15 @@
 \alias{hansard_commons_answered_questions}
 \title{House of Commons answered questions}
 \usage{
-commons_answered_questions(answering_department = NULL, answered_by = NULL,
-  start_date = "1900-01-01", end_date = Sys.Date(), extra_args = NULL,
-  tidy = TRUE, tidy_style = "snake_case", verbose = TRUE)
+commons_answered_questions(answering_department = NULL,
+  answered_by = NULL, start_date = "1900-01-01",
+  end_date = Sys.Date(), extra_args = NULL, tidy = TRUE,
+  tidy_style = "snake_case", verbose = TRUE)
 
 hansard_commons_answered_questions(answering_department = NULL,
-  answered_by = NULL, start_date = "1900-01-01", end_date = Sys.Date(),
-  extra_args = NULL, tidy = TRUE, tidy_style = "snake_case",
-  verbose = TRUE)
+  answered_by = NULL, start_date = "1900-01-01",
+  end_date = Sys.Date(), extra_args = NULL, tidy = TRUE,
+  tidy_style = "snake_case", verbose = TRUE)
 }
 \arguments{
 \item{answering_department}{Accepts the name of a department or a
@@ -48,44 +49,47 @@ converts the variable names to a consistent style. Defaults to \code{TRUE}.}
 \code{tidy = TRUE}. Accepts one of \code{'snake_case'}, \code{'camelCase'}
 and \code{'period.case'}. Defaults to \code{'snake_case'}.}
 
-\item{verbose}{If \code{TRUE}, returns data to console on the progress
-of the API request. Defaults to \code{TRUE}.}
+\item{verbose}{If \code{TRUE}, displayes messages on the console on the
+progress of the API request. Defaults to \code{TRUE}.}
 }
 \value{
 A tibble with details on all answered questions in the
 House of Commons.
 }
 \description{
-Imports data on House of Commons answered questions. If all parameters
-are left empty, imports all available answered questions in a tibble.
-}
-\details{
-If \code{answering_department} and/or \code{answered_by} are given
-a vector with multiple deparments/IDs, all possible combination of those
-criteria are returned.
+Imports data on House of Commons answered questions. If all
+parameters are left empty, imports all available answered questions in a
+tibble.
+
+If \code{answering_department} and/or \code{answered_by} are
+given a vector with multiple deparments/IDs, all possible combination of
+those criteria are returned.
 }
 \examples{
 \dontrun{
 x <- commons_answered_questions(
-     answering_department = c('health','education'),
-     answered_by = c('4019', '1542', '111'),
-     start_date = '2017-01-01'
-     )
+  answering_department = c("health", "education"),
+  answered_by = c("4019", "1542", "111"),
+  start_date = "2017-01-01"
+)
 
-x <- commons_answered_questions(start_date = '2017-03-26',
-                                end_date='2017-04-01')
+y <- commons_answered_questions(
+  start_date = "2017-03-26",
+  end_date = "2017-04-01"
+)
 }
+
 }
 \seealso{
-\code{\link{all_answered_questions}}
+\code{\link[=all_answered_questions]{all_answered_questions()}}
 
-\code{\link{commons_oral_questions}}
+\code{\link[=commons_oral_questions]{commons_oral_questions()}}
 
-\code{\link{commons_oral_question_times}}
+\code{\link[=commons_oral_question_times]{commons_oral_question_times()}}
 
-\code{\link{commons_written_questions}}
+\code{\link[=commons_written_questions]{commons_written_questions()}}
 
-\code{\link{lords_written_questions}}
+\code{\link[=lords_written_questions]{lords_written_questions()}}
 
-\code{\link{mp_questions}}
+\code{\link[=mp_questions]{mp_questions()}}
 }

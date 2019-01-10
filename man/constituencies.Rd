@@ -8,8 +8,8 @@
 constituencies(current = NULL, extra_args = NULL, tidy = TRUE,
   tidy_style = "snake_case", verbose = TRUE)
 
-hansard_constituencies(current = NULL, extra_args = NULL, tidy = TRUE,
-  tidy_style = "snake_case", verbose = TRUE)
+hansard_constituencies(current = NULL, extra_args = NULL,
+  tidy = TRUE, tidy_style = "snake_case", verbose = TRUE)
 }
 \arguments{
 \item{current}{If \code{TRUE}, returns only current constituencies. If
@@ -29,8 +29,8 @@ converts the variable names to a consistent style. Defaults to \code{TRUE}.}
 \code{tidy = TRUE}. Accepts one of \code{'snake_case'}, \code{'camelCase'}
 and \code{'period.case'}. Defaults to \code{'snake_case'}.}
 
-\item{verbose}{If \code{TRUE}, returns data to console on the progress
-of the API request. Defaults to \code{TRUE}.}
+\item{verbose}{If \code{TRUE}, displayes messages on the console on the
+progress of the API request. Defaults to \code{TRUE}.}
 }
 \value{
 A tibble with details of Westminster constituencies.
@@ -45,4 +45,5 @@ x <- constituencies()
 
 y <- constituencies(current = FALSE)
 }
+
 }

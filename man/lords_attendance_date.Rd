@@ -5,8 +5,8 @@
 \alias{hansard_lords_attendance_date}
 \title{House of Lords attendance by date}
 \usage{
-lords_attendance_date(date = NULL, tidy = TRUE, tidy_style = "snake_case",
-  verbose = TRUE)
+lords_attendance_date(date = NULL, tidy = TRUE,
+  tidy_style = "snake_case", verbose = TRUE)
 
 hansard_lords_attendance_date(date = NULL, tidy = TRUE,
   tidy_style = "snake_case", verbose = TRUE)
@@ -26,8 +26,8 @@ converts the variable names to a consistent style. Defaults to \code{TRUE}.}
 \code{tidy = TRUE}. Accepts one of \code{'snake_case'}, \code{'camelCase'}
 and \code{'period.case'}. Defaults to \code{'snake_case'}.}
 
-\item{verbose}{If \code{TRUE}, returns data to console on the progress
-of the API request. Defaults to \code{TRUE}.}
+\item{verbose}{If \code{TRUE}, displayes messages on the console on the
+progress of the API request. Defaults to \code{TRUE}.}
 }
 \value{
 A tibble with details on the lords who attended on a given date.
@@ -45,9 +45,10 @@ updated with data after 2017-01-31.
 }
 \examples{
 \dontrun{
-x <- lords_attendance_date(date = '2016-03-01')
+x <- lords_attendance_date(date = "2016-03-01")
 }
+
 }
 \seealso{
-\code{\link{lords_attendance_session}}
+\code{\link[=lords_attendance_session]{lords_attendance_session()}}
 }

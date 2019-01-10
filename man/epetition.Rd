@@ -8,12 +8,13 @@
 epetition(ID = NULL, by_constituency = FALSE, extra_args = NULL,
   tidy = TRUE, tidy_style = "snake_case", verbose = TRUE)
 
-hansard_epetition(ID = NULL, by_constituency = FALSE, extra_args = NULL,
-  tidy = TRUE, tidy_style = "snake_case", verbose = TRUE)
+hansard_epetition(ID = NULL, by_constituency = FALSE,
+  extra_args = NULL, tidy = TRUE, tidy_style = "snake_case",
+  verbose = TRUE)
 }
 \arguments{
 \item{ID}{The ID of a given petition. If \code{NULL}, returns all
-epetitions. Defaults to \code{NULL}. See \code{\link{epetition_tibble}}
+epetitions. Defaults to \code{NULL}. See \code{\link[=epetition_tibble]{epetition_tibble()}}
 for a greater degree of flexibility when querying all epetitions.}
 
 \item{by_constituency}{Accepts either \code{TRUE} or \code{FALSE}.
@@ -33,8 +34,8 @@ converts the variable names to a consistent style. Defaults to \code{TRUE}.}
 \code{tidy = TRUE}. Accepts one of \code{'snake_case'}, \code{'camelCase'}
 and \code{'period.case'}. Defaults to \code{'snake_case'}.}
 
-\item{verbose}{If \code{TRUE}, returns data to console on the progress
-of the API request. Defaults to \code{TRUE}.}
+\item{verbose}{If \code{TRUE}, displayes messages on the console on the
+progress of the API request. Defaults to \code{TRUE}.}
 }
 \value{
 A tibble with details on electronic petitions
@@ -42,13 +43,14 @@ submitted to parliament.
 }
 \description{
 Imports data on a given epetition. For bulk epetion data,
-see \code{\link{epetition_tibble}}.
+see \code{\link[=epetition_tibble]{epetition_tibble()}}.
 }
 \examples{
 \dontrun{
-x <- epetition(ID = 706964, by_constituency=TRUE)
+x <- epetition(ID = 706964, by_constituency = TRUE)
 }
+
 }
 \seealso{
-\code{\link{epetition_tibble}}
+\code{\link[=epetition_tibble]{epetition_tibble()}}
 }

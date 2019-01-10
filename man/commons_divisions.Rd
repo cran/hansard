@@ -6,12 +6,14 @@
 \title{House of Commons divisions}
 \usage{
 commons_divisions(division_id = NULL, summary = FALSE,
-  start_date = "1900-01-01", end_date = Sys.Date(), extra_args = NULL,
-  tidy = TRUE, tidy_style = "snake_case", verbose = TRUE)
+  start_date = "1900-01-01", end_date = Sys.Date(),
+  extra_args = NULL, tidy = TRUE, tidy_style = "snake_case",
+  verbose = TRUE)
 
 hansard_commons_divisions(division_id = NULL, summary = FALSE,
-  start_date = "1900-01-01", end_date = Sys.Date(), extra_args = NULL,
-  tidy = TRUE, tidy_style = "snake_case", verbose = TRUE)
+  start_date = "1900-01-01", end_date = Sys.Date(),
+  extra_args = NULL, tidy = TRUE, tidy_style = "snake_case",
+  verbose = TRUE)
 }
 \arguments{
 \item{division_id}{The id of a particular vote. If empty, returns a
@@ -22,7 +24,7 @@ at a time, but to return details on a list of division IDs use with
 
 \item{summary}{If \code{TRUE}, returns a small tibble summarising a
 division outcome. Otherwise returns a tibble with details on how each
-MP voted. Has no effect if `division_id` is empty. Defaults to \code{FALSE}.}
+MP voted. Has no effect if \code{division_id} is empty. Defaults to \code{FALSE}.}
 
 \item{start_date}{Only includes divisions on or after this date. Accepts
 character values in \code{'YYYY-MM-DD'} format, and objects of class
@@ -49,8 +51,8 @@ converts the variable names to a consistent style. Defaults to \code{TRUE}.}
 \code{tidy = TRUE}. Accepts one of \code{'snake_case'}, \code{'camelCase'}
 and \code{'period.case'}. Defaults to \code{'snake_case'}.}
 
-\item{verbose}{If \code{TRUE}, returns data to console on the progress
-of the API request. Defaults to \code{TRUE}.}
+\item{verbose}{If \code{TRUE}, displayes messages on the console on the
+progress of the API request. Defaults to \code{TRUE}.}
 }
 \value{
 A tibble with the results of divisions in the House of Commons.
@@ -61,8 +63,12 @@ on how each member voted, or a summary of vote totals.
 }
 \examples{
 \dontrun{
+
+## All commons divisions
 x <- commons_divisions()
 
-x <- commons_divisions(division_id = 694163, summary = FALSE)
+## Vote breakdown of specific commons division
+y <- commons_divisions(division_id = 694163, summary = FALSE)
 }
+
 }

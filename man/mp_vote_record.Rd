@@ -6,12 +6,14 @@
 \title{Individual MP voting records}
 \usage{
 mp_vote_record(mp_id = NULL, lobby = "all", session = NULL,
-  start_date = "1900-01-01", end_date = Sys.Date(), extra_args = NULL,
-  tidy = TRUE, tidy_style = "snake_case", verbose = TRUE)
+  start_date = "1900-01-01", end_date = Sys.Date(),
+  extra_args = NULL, tidy = TRUE, tidy_style = "snake_case",
+  verbose = TRUE)
 
 hansard_mp_vote_record(mp_id = NULL, lobby = "all", session = NULL,
-  start_date = "1900-01-01", end_date = Sys.Date(), extra_args = NULL,
-  tidy = TRUE, tidy_style = "snake_case", verbose = TRUE)
+  start_date = "1900-01-01", end_date = Sys.Date(),
+  extra_args = NULL, tidy = TRUE, tidy_style = "snake_case",
+  verbose = TRUE)
 }
 \arguments{
 \item{mp_id}{The ID number of a member of the House of Commons.}
@@ -50,8 +52,8 @@ converts the variable names to a consistent style. Defaults to \code{TRUE}.}
 \code{tidy = TRUE}. Accepts one of \code{'snake_case'}, \code{'camelCase'}
 and \code{'period.case'}. Defaults to \code{'snake_case'}.}
 
-\item{verbose}{If \code{TRUE}, returns data to console on the progress
-of the API request. Defaults to \code{TRUE}.}
+\item{verbose}{If \code{TRUE}, displayes messages on the console on the
+progress of the API request. Defaults to \code{TRUE}.}
 }
 \value{
 A tibble with details on the voting record of the given MP.
@@ -62,12 +64,13 @@ tibble of their votes.
 }
 \examples{
 \dontrun{
-x <- mp_vote_record(172, lobby='all')
+x <- mp_vote_record(172, lobby = "all")
 
-x <- mp_vote_record(172, lobby='aye')
+x <- mp_vote_record(172, lobby = "aye")
 
-x <- mp_vote_record(172, lobby='no')
+x <- mp_vote_record(172, lobby = "no")
 
-x <- mp_vote_record(172, session = '2016/17')
+x <- mp_vote_record(172, session = "2016/17")
 }
+
 }

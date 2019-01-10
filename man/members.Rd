@@ -15,14 +15,14 @@ members(ID = NULL, extra_args = NULL, tidy = TRUE,
 hansard_members(ID = NULL, extra_args = NULL, tidy = TRUE,
   tidy_style = "snake_case", verbose = TRUE)
 
-commons_members(extra_args = NULL, tidy = TRUE, tidy_style = "snake_case",
-  verbose = TRUE)
+commons_members(extra_args = NULL, tidy = TRUE,
+  tidy_style = "snake_case", verbose = TRUE)
 
 hansard_commons_members(extra_args = NULL, tidy = TRUE,
   tidy_style = "snake_case", verbose = TRUE)
 
-lords_members(extra_args = NULL, tidy = TRUE, tidy_style = "snake_case",
-  verbose = TRUE)
+lords_members(extra_args = NULL, tidy = TRUE,
+  tidy_style = "snake_case", verbose = TRUE)
 
 hansard_lords_members(extra_args = NULL, tidy = TRUE,
   tidy_style = "snake_case", verbose = TRUE)
@@ -45,13 +45,13 @@ converts the variable names to a consistent style. Defaults to \code{TRUE}.}
 \code{tidy = TRUE}. Accepts one of \code{'snake_case'}, \code{'camelCase'}
 and \code{'period.case'}. Defaults to \code{'snake_case'}.}
 
-\item{verbose}{If \code{TRUE}, returns data to console on the progress
-of the API request. Defaults to \code{TRUE}.}
+\item{verbose}{If \code{TRUE}, displayes messages on the console on the
+progress of the API request. Defaults to \code{TRUE}.}
 }
 \value{
 A tibble with data on members of the House of Commons
-(`commons_members()`), the House of Lords, (`lords_members()`),
-or both (`members()`).
+(\code{commons_members()}), the House of Lords, (\code{lords_members()}),
+or both (\code{members()}).
 }
 \description{
 Imports basic details on current and former Members of Parliament including
@@ -61,9 +61,9 @@ the Lords and the Commons. For more details on a given member see
 \section{Member details functions}{
 
 \describe{
-\item{`members`}{Basic details on a given member from either house}
-\item{`commons_members`}{MPs in the House of Commons}
-\item{`lords_members`}{Peers in the House of Lords}
+\item{\code{members}}{Basic details on a given member from either house}
+\item{\code{commons_members}}{MPs in the House of Commons}
+\item{\code{lords_members}}{Peers in the House of Lords}
 }
 }
 
@@ -77,7 +77,8 @@ y <- commons_members()
 
 z <- lords_members()
 }
+
 }
 \seealso{
-`\link{members_search}`
+\code{\link[=members_search]{members_search()}}
 }

@@ -8,8 +8,8 @@
 commons_division_date(date = NULL, extra_args = NULL, tidy = TRUE,
   tidy_style = "snake_case", verbose = TRUE)
 
-hansard_commons_division_date(date = NULL, extra_args = NULL, tidy = TRUE,
-  tidy_style = "snake_case", verbose = TRUE)
+hansard_commons_division_date(date = NULL, extra_args = NULL,
+  tidy = TRUE, tidy_style = "snake_case", verbose = TRUE)
 }
 \arguments{
 \item{date}{Returns all divisions on a given date.
@@ -38,6 +38,8 @@ House of Commons on a given date.
 }
 \examples{
 \dontrun{
-x <- commons_division_date('2017-04-19')
+# all commons divisions on 19 April 2017
+x <- commons_division_date("2017-04-19")
 }
+
 }

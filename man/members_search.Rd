@@ -12,9 +12,10 @@ hansard_members_search(search = NULL, tidy = TRUE,
   tidy_style = "snake_case", verbose = TRUE)
 }
 \arguments{
-\item{search}{Accepts any string. Defaults to \code{NULL}. If \code{NULL},
-returns a tibble with all members of both houses of parliament. Searchs are
-not case sensitive.}
+\item{search}{Accepts any lucene query string, using * as a multiple
+character wildcard, and ? as the single character wildcard. Searchs are
+not case sensitive. If \code{NULL}, returns a tibble with all members of
+both houses of parliament. Defaults to \code{NULL}.}
 
 \item{tidy}{Logical parameter. If \code{TRUE}, fixes the variable names
 in the tibble to remove special characters and superfluous text, and
@@ -24,8 +25,8 @@ converts the variable names to a consistent style. Defaults to \code{TRUE}.}
 \code{tidy = TRUE}. Accepts one of \code{'snake_case'}, \code{'camelCase'}
 and \code{'period.case'}. Defaults to \code{'snake_case'}.}
 
-\item{verbose}{If \code{TRUE}, returns data to console on the progress
-of the API request. Defaults to \code{TRUE}.}
+\item{verbose}{If \code{TRUE}, displayes messages on the console on the
+progress of the API request. Defaults to \code{TRUE}.}
 }
 \value{
 A tibble with the results of the search.
@@ -39,11 +40,12 @@ same result as \code{members()}.
 }
 \examples{
 \dontrun{
-x <- members_search('chris')
+x <- members_search("*chris*")
 
-x <- members_search(search='chris')
+x <- members_search(search = "*chris*")
 }
+
 }
 \seealso{
-\code{\link{members}}
+\code{\link[=members]{members()}}
 }

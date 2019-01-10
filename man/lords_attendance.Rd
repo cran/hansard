@@ -4,8 +4,8 @@
 \alias{lords_attendance}
 \alias{hansard_lords_attendance}
 \title{House of Lords attendance - Deprecated
-Deprecated function, please see \code{\link{lords_attendance_date}} and
-\code{\link{lords_attendance_session}}.}
+Deprecated function, please see \code{\link[=lords_attendance_date]{lords_attendance_date()}} and
+\code{\link[=lords_attendance_session]{lords_attendance_session()}}.}
 \usage{
 lords_attendance(session_id = NULL, start_date = "1900-01-01",
   end_date = Sys.Date(), extra_args = NULL, tidy = TRUE,
@@ -45,8 +45,8 @@ converts the variable names to a consistent style. Defaults to \code{TRUE}.}
 \code{tidy = TRUE}. Accepts one of \code{'snake_case'}, \code{'camelCase'}
 and \code{'period.case'}. Defaults to \code{'snake_case'}.}
 
-\item{verbose}{If \code{TRUE}, returns data to console on the progress
-of the API request. Defaults to \code{TRUE}.}
+\item{verbose}{If \code{TRUE}, displayes messages on the console on the
+progress of the API request. Defaults to \code{TRUE}.}
 }
 \value{
 A tibble with details on the lords who attended a given session.

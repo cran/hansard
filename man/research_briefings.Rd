@@ -9,9 +9,9 @@ research_briefings(topic = NULL, subtopic = NULL, type = NULL,
   extra_args = NULL, tidy = TRUE, tidy_style = "snake_case",
   verbose = TRUE)
 
-hansard_research_briefings(topic = NULL, subtopic = NULL, type = NULL,
-  extra_args = NULL, tidy = TRUE, tidy_style = "snake_case",
-  verbose = TRUE)
+hansard_research_briefings(topic = NULL, subtopic = NULL,
+  type = NULL, extra_args = NULL, tidy = TRUE,
+  tidy_style = "snake_case", verbose = TRUE)
 }
 \arguments{
 \item{topic}{The topic of the parliamentary briefing.
@@ -35,8 +35,8 @@ converts the variable names to a consistent style. Defaults to \code{TRUE}.}
 \code{tidy = TRUE}. Accepts one of \code{'snake_case'}, \code{'camelCase'}
 and \code{'period.case'}. Defaults to \code{'snake_case'}.}
 
-\item{verbose}{If \code{TRUE}, returns data to console on the progress
-of the API request. Defaults to \code{TRUE}.}
+\item{verbose}{If \code{TRUE}, displayes messages on the console on the
+progress of the API request. Defaults to \code{TRUE}.}
 }
 \value{
 A tibble with details on parliamentary research briefings on
@@ -44,15 +44,15 @@ the given topic.
 }
 \description{
 Imports data on  Parliamentary Research Briefings. To see a list of possible
-topics call \code{\link{research_topics_list}} or
-\code{\link{research_subtopics_list}} for both topics and subtopics. To
-see a list of briefing types, call \code{\link{research_types_list}}. This
+topics call \code{\link[=research_topics_list]{research_topics_list()}} or
+\code{\link[=research_subtopics_list]{research_subtopics_list()}} for both topics and subtopics. To
+see a list of briefing types, call \code{\link[=research_types_list]{research_types_list()}}. This
 function can return results with newlines in the text of the abstract or
 description of the research briefing, represented as \code{'\\n'}.
 }
 \examples{
 \dontrun{
-x <- research_briefings('Housing and planning')
+x <- research_briefings("Housing and planning")
 
 # Requests can be made using lists created using `research_topics_list`
 # and `research_subtopics_list`
@@ -72,11 +72,12 @@ research_types_list <- research_types_list()
 
 x <- research_briefings(type = research_types_list[[3]])
 }
+
 }
 \seealso{
-\code{\link{research_subtopics_list}}
+\code{\link[=research_subtopics_list]{research_subtopics_list()}}
 
-\code{\link{research_types_list}}
+\code{\link[=research_types_list]{research_types_list()}}
 
-\code{\link{research_topics_list}}
+\code{\link[=research_topics_list]{research_topics_list()}}
 }
