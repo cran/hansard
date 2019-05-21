@@ -1,6 +1,22 @@
+# hansard 0.7.0
 
+## Changes
 
-# hansard 0.6.2.9000
+* Now using the `snakecase` package to tidy tibble names. This has resulted
+  in minor changes to style options, please check the `tidy_style` parameter
+  values if there are errors.
+  
+* `commons_divisions()` now accepts `division_id` or `division_uin` (#13). 
+  Thanks to @basilesimon for getting the ball rolling with this parameter.
+
+## Bug Fixes
+
+* Fixed vignette to reduce calls to API when building, to eliminate CRAN errors
+  and prevent hammering the API.
+
+* Fixed a couple typos in custom tidying functions.
+
+# hansard 0.6.3
 
 ## Bug Fixes
 
