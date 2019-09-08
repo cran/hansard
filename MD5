@@ -1,7 +1,7 @@
-cda7c05ff74cd0c667547aea3b7be61a *DESCRIPTION
+fbf37f16fe57108b22f09591a3c9d8e7 *DESCRIPTION
 1dc9582765988306ee53954d32981a6b *LICENSE
 797400c7ef85046e18707ddffd97d740 *NAMESPACE
-f9267aa3720e9011b31f5a502e638133 *NEWS.md
+588e79d49a9eadfb407ddf1d37c3ae7e *NEWS.md
 15fa3ae0f614f23eb4ded8755d2e47a3 *R/all_answered_questions.R
 b7551aa89a7204ba156f813810bb6baa *R/bill_publications.R
 401bf26d3905b1d916ae28e18b1a1ee8 *R/bill_stage_types.R
@@ -61,13 +61,13 @@ ebe4b7f8cbe43e58524e12cb0d8a4844 *R/utils-epetition.R
 fa894193e3a6af8dc807783220ab97a4 *R/utils-research.R
 b45cce04046729fb39aa9352481a891a *R/utils-sessions.R
 10ed8a3c942c6523dab9513e87ad4a2a *R/utils-tv.R
-c397e0a030769a487b37ec325baf32a5 *README.md
-5f78a26360ea78709c01ff6a7f1580fb *build/vignette.rds
+325e879f857c7c17a1602e056868d4a6 *README.md
+1a91103ad85f1eb5bd1ec4e34d5ceb39 *build/vignette.rds
 a2d51972fbd7d2708c8836389438aa1a *data/bill_publication_types.rda
 5baf3f30bfba109f37dd63d9a4269b98 *inst/CITATION
-eb9581f1a2e3bfd484a1285a2b34e097 *inst/doc/introduction.R
-ffc29202ad5e70c756fc9ea32adc52dd *inst/doc/introduction.Rmd
-34ff934e8e5cb20f75141444b619d070 *inst/doc/introduction.html
+8fad0bc89553207428fcc24e412dea48 *inst/doc/introduction.R
+f7e28e47c8eefbf79a80712b843d21db *inst/doc/introduction.Rmd
+3e134a2beb24b59ddc11ba24efc9ffe8 *inst/doc/introduction.html
 0e660756a4850dffcf7ba2b058c94533 *inst/figures/imgfile.png
 1925ff26ebbe88d68b93cc9cd4a94976 *man/all_answered_questions.Rd
 2bcbfbbaf9977fdcf4869693b7d6dee7 *man/bill_publication_types.Rd
@@ -144,4 +144,4 @@ c676f74f463be6451c9324b3adcc9243 *tests/testthat/test_members.R
 5bb8f00083f92a59eb8a9bda010657bc *tests/testthat/test_misc2.R
 e5449ec323de5ba9955ede30fb64943b *tests/testthat/test_mp_misc.R
 79983b54d97763fa5e3d4a265fd28312 *tests/testthat/test_research_briefings.R
-ffc29202ad5e70c756fc9ea32adc52dd *vignettes/introduction.Rmd
+f7e28e47c8eefbf79a80712b843d21db *vignettes/introduction.Rmd

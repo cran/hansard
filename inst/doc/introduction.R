@@ -72,12 +72,12 @@ y <- tibble(abstain_count = "0", ayes_count = "522", noes_vote_count = "13",
             uin = "CD:2017-04-19:264")
 tibble::glimpse(y)
 
-## ---- echo=TRUE, message=TRUE, warning=FALSE-----------------------------
-w <- all_answered_questions(mp_id = c(4019, 3980), tabling_mp_id = c(338, 172),
-                            answering_body = c("health", "justice"),
-                            start_date = "2016-12-18", end_date = "2017-03-12")
-
-tibble::glimpse(w) ## need to fix this
+## ----echo=TRUE, eval=FALSE, message=TRUE, warning=FALSE------------------
+#  w <- all_answered_questions(mp_id = c(4019, 3980), tabling_mp_id = c(338, 172),
+#                              answering_body = c("health", "justice"),
+#                              start_date = "2016-12-18", end_date = "2017-03-12")
+#  
+#  tibble::glimpse(w) ## need to fix this
 
 ## ---- echo=FALSE---------------------------------------------------------
 about <- c("705625", "705626", "705627", "678067", "678080", "675525", "675527",
@@ -165,7 +165,7 @@ legislature_pref_label_value<- c(rep("House of Commons", 23))
 legislature_about <- c(rep("25259", 23))
 
 w <- tibble::tibble(about, answering_body, question_text, tabling_member_printed, uin,attachment, grouped_question_uin, answer_text_value, answering_member_about, answering_member_label_value, answering_member_constituency_value,answering_member_printed_value, date_of_answer_value, answer_date_time, date_of_answer_datatype, is_ministerial_correction_value, is_ministerial_correction_datatype, answering_dept_id_value, answering_dept_short_name_value, answering_dept_sort_name_value, date_value, date_datatype, hansard_heading_value, house_id_value, registered_interest_value, registered_interest_datatype, tabling_member_about, tabling_member_label_value, tabling_member_constituency_value, legislature_pref_label_value, legislature_about)
-glimpse(w)
+tibble::glimpse(w)
 
 ## ----eval=FALSE, message=TRUE, warning=FALSE-----------------------------
 #  research_topics_list <- research_topics_list()
