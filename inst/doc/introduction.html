@@ -13,7 +13,7 @@
 
 <meta name="author" content="Evan Odell" />
 
-<meta name="date" content="2019-09-08" />
+<meta name="date" content="2019-11-13" />
 
 <title>Introduction to hansard</title>
 
@@ -21,9 +21,9 @@
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
@@ -33,16 +33,14 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
 }
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
+    border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -51,9 +49,9 @@ pre.numberSource code > span > a:first-child::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {   }
+  {  }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+a.sourceLine::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -306,7 +304,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">Introduction to hansard</h1>
 <h4 class="author">Evan Odell</h4>
-<h4 class="date">2019-09-08</h4>
+<h4 class="date">2019-11-13</h4>
 
 
 
@@ -350,39 +348,39 @@ devtools::install_github(&quot;EvanOdell/hansard&quot;)</code></pre>
 <div id="example-using-the-commons_divisions-and-mp_vote_record-functions" class="section level3">
 <h3>Example using the <code>commons_divisions()</code> and <code>mp_vote_record()</code> functions</h3>
 <p>The <code>commons_divisions()</code> function returns divisions in the House of Commons, including the result of votes and information on what we being voted on. <code>mp_vote_record()</code> returns a data frame the voting record of a given MP on each division they voted in. The example below returns all Commons Divisions where Diane Abbott voted aye in 2017. To find the parliamentary ID of Diane Abbott (or any other member of the House of Commons or House of Lords), use the <a href="#special-functions"><code>members_search()</code> function described below</a>.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">library</span>(hansard)</span>
-<span id="cb4-2"><a href="#cb4-2"></a>z &lt;-<span class="st"> </span><span class="kw">mp_vote_record</span>(<span class="dv">172</span>, <span class="st">&quot;aye&quot;</span>, <span class="dt">start_date =</span> <span class="st">&quot;2017-01-01&quot;</span>,</span>
-<span id="cb4-3"><a href="#cb4-3"></a>                    <span class="dt">end_date =</span> <span class="st">&quot;2017-02-07&quot;</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb4-4"><a href="#cb4-4"></a>z</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">library</span>(hansard)</a>
+<a class="sourceLine" id="cb4-2" title="2">z &lt;-<span class="st"> </span><span class="kw">mp_vote_record</span>(<span class="dv">172</span>, <span class="st">&quot;aye&quot;</span>, <span class="dt">start_date =</span> <span class="st">&quot;2017-01-01&quot;</span>,</a>
+<a class="sourceLine" id="cb4-3" title="3">                    <span class="dt">end_date =</span> <span class="st">&quot;2017-02-07&quot;</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb4-4" title="4">z</a></code></pre></div>
 <pre><code>## # A tibble: 11 x 5
 ##    about  title                         uin       date_value  date_datatype
 ##    &lt;chr&gt;  &lt;chr&gt;                         &lt;chr&gt;     &lt;chr&gt;       &lt;chr&gt;        
-##  1 685695 EU (Notification of Withdraw… CD:2017-… 2017-02-07… POSIXct      
-##  2 685768 EU (Notification of Withdraw… CD:2017-… 2017-02-07… POSIXct      
-##  3 685669 EU (Notification of Withdraw… CD:2017-… 2017-02-06… POSIXct      
-##  4 685670 EU (Notification of Withdraw… CD:2017-… 2017-02-06… POSIXct      
-##  5 685672 EU (Notification of Withdraw… CD:2017-… 2017-02-06… POSIXct      
-##  6 678297 Opposition Motion: Prisons    CD:2017-… 2017-01-25… POSIXct      
-##  7 678341 Opposition Motion: School Fu… CD:2017-… 2017-01-25… POSIXct      
-##  8 677700 Wales Bill: Lords Amendment … CD:2017-… 2017-01-24… POSIXct      
-##  9 671450 Opposition Motion: NHS and s… CD:2017-… 2017-01-11… POSIXct      
-## 10 670447 Commonwealth Development Cor… CD:2017-… 2017-01-10… POSIXct      
-## 11 670448 Commonwealth Development Cor… CD:2017-… 2017-01-10… POSIXct</code></pre>
+##  1 685695 EU (Notification of Withdraw~ CD:2017-~ 2017-02-07~ POSIXct      
+##  2 685768 EU (Notification of Withdraw~ CD:2017-~ 2017-02-07~ POSIXct      
+##  3 685669 EU (Notification of Withdraw~ CD:2017-~ 2017-02-06~ POSIXct      
+##  4 685670 EU (Notification of Withdraw~ CD:2017-~ 2017-02-06~ POSIXct      
+##  5 685672 EU (Notification of Withdraw~ CD:2017-~ 2017-02-06~ POSIXct      
+##  6 678297 Opposition Motion: Prisons    CD:2017-~ 2017-01-25~ POSIXct      
+##  7 678341 Opposition Motion: School Fu~ CD:2017-~ 2017-01-25~ POSIXct      
+##  8 677700 Wales Bill: Lords Amendment ~ CD:2017-~ 2017-01-24~ POSIXct      
+##  9 671450 Opposition Motion: NHS and s~ CD:2017-~ 2017-01-11~ POSIXct      
+## 10 670447 Commonwealth Development Cor~ CD:2017-~ 2017-01-10~ POSIXct      
+## 11 670448 Commonwealth Development Cor~ CD:2017-~ 2017-01-10~ POSIXct</code></pre>
 <p>Using <code>commons_divisions()</code>, we can see the result of one of those votes, ID 722300, the Early Parliamentary General Election bill that dissolved parliament for the 2017 General Election. The function default is to return a list of every MP and how they voted:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>x &lt;-<span class="st"> </span><span class="kw">commons_divisions</span>(<span class="dv">722300</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="kw">head</span>(x)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">x &lt;-<span class="st"> </span><span class="kw">commons_divisions</span>(<span class="dv">722300</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="kw">head</span>(x)</a></code></pre></div>
 <pre><code>## # A tibble: 6 x 7
-##   number member_party  type   member_printed_… vote_id about label_value   
+##   number member_party  type   member_printed_~ vote_id about label_value   
 ##   &lt;chr&gt;  &lt;chr&gt;         &lt;chr&gt;  &lt;chr&gt;            &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;         
-## 1 1      Labour        aye_v… Ms Diane Abbott  722300  172   Biography inf…
-## 2 10     Labour        aye_v… Dr Rosena Allin… 722300  4573  Biography inf…
-## 3 100    Labour        aye_v… Mary Creagh      722300  1579  Biography inf…
-## 4 101    Labour (Co-o… aye_v… Stella Creasy    722300  4088  Biography inf…
-## 5 102    Conservative  aye_v… Tracey Crouch    722300  3950  Biography inf…
-## 6 103    Labour        aye_v… Jon Cruddas      722300  1406  Biography inf…</code></pre>
+## 1 1      Labour        aye_v~ Ms Diane Abbott  722300  172   Biography inf~
+## 2 10     Labour        aye_v~ Dr Rosena Allin~ 722300  4573  Biography inf~
+## 3 100    Labour        aye_v~ Mary Creagh      722300  1579  Biography inf~
+## 4 101    Labour (Co-o~ aye_v~ Stella Creasy    722300  4088  Biography inf~
+## 5 102    Conservative  aye_v~ Tracey Crouch    722300  3950  Biography inf~
+## 6 103    Labour        aye_v~ Jon Cruddas      722300  1406  Biography inf~</code></pre>
 <p>With the <code>summary</code> parameter, we can return a brief summary table of votes:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>y &lt;-<span class="st"> </span><span class="kw">commons_divisions</span>(<span class="dt">division_id =</span> <span class="dv">722300</span>, <span class="dt">summary =</span> <span class="ot">TRUE</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb8-2"><a href="#cb8-2"></a>tibble<span class="op">::</span><span class="kw">glimpse</span>(y)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">y &lt;-<span class="st"> </span><span class="kw">commons_divisions</span>(<span class="dt">division_id =</span> <span class="dv">722300</span>, <span class="dt">summary =</span> <span class="ot">TRUE</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb8-2" title="2">tibble<span class="op">::</span><span class="kw">glimpse</span>(y)</a></code></pre></div>
 <pre><code>## Observations: 1
 ## Variables: 13
 ## $ abstain_count                     &lt;chr&gt; &quot;0&quot;
@@ -396,7 +394,7 @@ devtools::install_github(&quot;EvanOdell/hansard&quot;)</code></pre>
 ## $ date                              &lt;dttm&gt; 2017-04-19
 ## $ division_number                   &lt;chr&gt; &quot;196&quot;
 ## $ session                           &lt;chr&gt; &quot;2016/17&quot;
-## $ title                             &lt;chr&gt; &quot;Early Parliamentary General E…
+## $ title                             &lt;chr&gt; &quot;Early Parliamentary General...
 ## $ uin                               &lt;chr&gt; &quot;CD:2017-04-19:264&quot;</code></pre>
 <p>The results of votes in the House of Lords can be retrieved with the <code>lords_divisions</code> function. The voting record of individual Lords can be retrieved using the <code>lords_vote_record</code> functions.</p>
 </div>
@@ -412,44 +410,44 @@ devtools::install_github(&quot;EvanOdell/hansard&quot;)</code></pre>
 <li><p><code>mp_edms()</code></p></li>
 </ul>
 <p>For example, the following function returns all questions answered by Nichola Blackwood (4019) or Sam Gyimah (3980), asked by Keith Vaz (338) or Diane Abbot (172), and covered by the Department for Health or the Ministry of Justice, between 2016-12-18 and 2017-03-12.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>w &lt;-<span class="st"> </span><span class="kw">all_answered_questions</span>(<span class="dt">mp_id =</span> <span class="kw">c</span>(<span class="dv">4019</span>, <span class="dv">3980</span>), <span class="dt">tabling_mp_id =</span> <span class="kw">c</span>(<span class="dv">338</span>, <span class="dv">172</span>),</span>
-<span id="cb10-2"><a href="#cb10-2"></a>                            <span class="dt">answering_body =</span> <span class="kw">c</span>(<span class="st">&quot;health&quot;</span>, <span class="st">&quot;justice&quot;</span>),</span>
-<span id="cb10-3"><a href="#cb10-3"></a>                            <span class="dt">start_date =</span> <span class="st">&quot;2016-12-18&quot;</span>, <span class="dt">end_date =</span> <span class="st">&quot;2017-03-12&quot;</span>)</span>
-<span id="cb10-4"><a href="#cb10-4"></a></span>
-<span id="cb10-5"><a href="#cb10-5"></a>tibble<span class="op">::</span><span class="kw">glimpse</span>(w) <span class="co">## need to fix this</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1">w &lt;-<span class="st"> </span><span class="kw">all_answered_questions</span>(<span class="dt">mp_id =</span> <span class="kw">c</span>(<span class="dv">4019</span>, <span class="dv">3980</span>), <span class="dt">tabling_mp_id =</span> <span class="kw">c</span>(<span class="dv">338</span>, <span class="dv">172</span>),</a>
+<a class="sourceLine" id="cb10-2" title="2">                            <span class="dt">answering_body =</span> <span class="kw">c</span>(<span class="st">&quot;health&quot;</span>, <span class="st">&quot;justice&quot;</span>),</a>
+<a class="sourceLine" id="cb10-3" title="3">                            <span class="dt">start_date =</span> <span class="st">&quot;2016-12-18&quot;</span>, <span class="dt">end_date =</span> <span class="st">&quot;2017-03-12&quot;</span>)</a>
+<a class="sourceLine" id="cb10-4" title="4"></a>
+<a class="sourceLine" id="cb10-5" title="5">tibble<span class="op">::</span><span class="kw">glimpse</span>(w) <span class="co">## need to fix this</span></a></code></pre></div>
 <pre><code>## Observations: 23
 ## Variables: 31
-## $ about                               &lt;chr&gt; &quot;705625&quot;, &quot;705626&quot;, &quot;705627&quot;…
-## $ answering_body                      &lt;chr&gt; &quot;Department of Health&quot;, &quot;Dep…
-## $ question_text                       &lt;chr&gt; &quot;To ask the Secretary of Sta…
-## $ tabling_member_printed              &lt;chr&gt; &quot;Keith Vaz&quot;, &quot;Keith Vaz&quot;, &quot;K…
-## $ uin                                 &lt;chr&gt; &quot;65590&quot;, &quot;65591&quot;, &quot;65592&quot;, &quot;…
-## $ attachment                          &lt;list&gt; [&lt;data.frame[2 x 3]&gt;, &lt;data…
-## $ grouped_question_uin                &lt;list&gt; [&quot;list(c(\&quot;65591\&quot;, \&quot;65592…
-## $ answer_text_value                   &lt;chr&gt; &quot;&lt;p&gt;73 clinical commissionin…
-## $ answering_member_about              &lt;chr&gt; &quot;4019&quot;, &quot;4019&quot;, &quot;4019&quot;, &quot;401…
-## $ answering_member_label_value        &lt;chr&gt; &quot;Biography information for B…
-## $ answering_member_constituency_value &lt;chr&gt; &quot;Oxford West and Abingdon&quot;, …
-## $ answering_member_printed_value      &lt;chr&gt; &quot;Nicola Blackwood&quot;, &quot;Nicola …
-## $ date_of_answer_value                &lt;dttm&gt; 2017-03-07, 2017-03-07, 201…
-## $ answer_date_time                    &lt;dttm&gt; 2017-03-07 17:15:39, 2017-0…
-## $ date_of_answer_datatype             &lt;chr&gt; &quot;POXIXct&quot;, &quot;POXIXct&quot;, &quot;POXIX…
-## $ is_ministerial_correction_value     &lt;chr&gt; &quot;false&quot;, &quot;false&quot;, &quot;false&quot;, &quot;…
-## $ is_ministerial_correction_datatype  &lt;chr&gt; &quot;boolean&quot;, &quot;boolean&quot;, &quot;boole…
-## $ answering_dept_id_value             &lt;chr&gt; &quot;17&quot;, &quot;17&quot;, &quot;17&quot;, &quot;17&quot;, &quot;17&quot;…
-## $ answering_dept_short_name_value     &lt;chr&gt; &quot;Health&quot;, &quot;Health&quot;, &quot;Health&quot;…
-## $ answering_dept_sort_name_value      &lt;chr&gt; &quot;Health&quot;, &quot;Health&quot;, &quot;Health&quot;…
-## $ date_value                          &lt;chr&gt; &quot;2017-02-27&quot;, &quot;2017-02-27&quot;, …
-## $ date_datatype                       &lt;chr&gt; &quot;dateTime&quot;, &quot;dateTime&quot;, &quot;dat…
-## $ hansard_heading_value               &lt;chr&gt; &quot;Diabetes&quot;, &quot;Diabetes&quot;, &quot;Dia…
-## $ house_id_value                      &lt;chr&gt; &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;…
-## $ registered_interest_value           &lt;chr&gt; &quot;false&quot;, &quot;false&quot;, &quot;false&quot;, &quot;…
-## $ registered_interest_datatype        &lt;chr&gt; &quot;boolean&quot;, &quot;boolean&quot;, &quot;boole…
-## $ tabling_member_about                &lt;chr&gt; &quot;338&quot;, &quot;338&quot;, &quot;338&quot;, &quot;338&quot;, …
-## $ tabling_member_label_value          &lt;chr&gt; &quot;Biography information for K…
-## $ tabling_member_constituency_value   &lt;chr&gt; &quot;Leicester East&quot;, &quot;Leicester…
-## $ legislature_pref_label_value        &lt;chr&gt; &quot;House of Commons&quot;, &quot;House o…
-## $ legislature_about                   &lt;chr&gt; &quot;25259&quot;, &quot;25259&quot;, &quot;25259&quot;, &quot;…</code></pre>
+## $ about                               &lt;chr&gt; &quot;705625&quot;, &quot;705626&quot;, &quot;70562...
+## $ answering_body                      &lt;chr&gt; &quot;Department of Health&quot;, &quot;D...
+## $ question_text                       &lt;chr&gt; &quot;To ask the Secretary of S...
+## $ tabling_member_printed              &lt;chr&gt; &quot;Keith Vaz&quot;, &quot;Keith Vaz&quot;, ...
+## $ uin                                 &lt;chr&gt; &quot;65590&quot;, &quot;65591&quot;, &quot;65592&quot;,...
+## $ attachment                          &lt;list&gt; [&lt;data.frame[2 x 3]&gt;, &lt;da...
+## $ grouped_question_uin                &lt;list&gt; [&quot;list(c(\&quot;65591\&quot;, \&quot;655...
+## $ answer_text_value                   &lt;chr&gt; &quot;&lt;p&gt;73 clinical commission...
+## $ answering_member_about              &lt;chr&gt; &quot;4019&quot;, &quot;4019&quot;, &quot;4019&quot;, &quot;4...
+## $ answering_member_label_value        &lt;chr&gt; &quot;Biography information for...
+## $ answering_member_constituency_value &lt;chr&gt; &quot;Oxford West and Abingdon&quot;...
+## $ answering_member_printed_value      &lt;chr&gt; &quot;Nicola Blackwood&quot;, &quot;Nicol...
+## $ date_of_answer_value                &lt;dttm&gt; 2017-03-07, 2017-03-07, 2...
+## $ answer_date_time                    &lt;dttm&gt; 2017-03-07 17:15:39, 2017...
+## $ date_of_answer_datatype             &lt;chr&gt; &quot;POXIXct&quot;, &quot;POXIXct&quot;, &quot;POX...
+## $ is_ministerial_correction_value     &lt;chr&gt; &quot;false&quot;, &quot;false&quot;, &quot;false&quot;,...
+## $ is_ministerial_correction_datatype  &lt;chr&gt; &quot;boolean&quot;, &quot;boolean&quot;, &quot;boo...
+## $ answering_dept_id_value             &lt;chr&gt; &quot;17&quot;, &quot;17&quot;, &quot;17&quot;, &quot;17&quot;, &quot;1...
+## $ answering_dept_short_name_value     &lt;chr&gt; &quot;Health&quot;, &quot;Health&quot;, &quot;Healt...
+## $ answering_dept_sort_name_value      &lt;chr&gt; &quot;Health&quot;, &quot;Health&quot;, &quot;Healt...
+## $ date_value                          &lt;chr&gt; &quot;2017-02-27&quot;, &quot;2017-02-27&quot;...
+## $ date_datatype                       &lt;chr&gt; &quot;dateTime&quot;, &quot;dateTime&quot;, &quot;d...
+## $ hansard_heading_value               &lt;chr&gt; &quot;Diabetes&quot;, &quot;Diabetes&quot;, &quot;D...
+## $ house_id_value                      &lt;chr&gt; &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;...
+## $ registered_interest_value           &lt;chr&gt; &quot;false&quot;, &quot;false&quot;, &quot;false&quot;,...
+## $ registered_interest_datatype        &lt;chr&gt; &quot;boolean&quot;, &quot;boolean&quot;, &quot;boo...
+## $ tabling_member_about                &lt;chr&gt; &quot;338&quot;, &quot;338&quot;, &quot;338&quot;, &quot;338&quot;...
+## $ tabling_member_label_value          &lt;chr&gt; &quot;Biography information for...
+## $ tabling_member_constituency_value   &lt;chr&gt; &quot;Leicester East&quot;, &quot;Leicest...
+## $ legislature_pref_label_value        &lt;chr&gt; &quot;House of Commons&quot;, &quot;House...
+## $ legislature_about                   &lt;chr&gt; &quot;25259&quot;, &quot;25259&quot;, &quot;25259&quot;,...</code></pre>
 </div>
 <div id="special-functions" class="section level3">
 <h3>Special functions</h3>
@@ -463,22 +461,22 @@ devtools::install_github(&quot;EvanOdell/hansard&quot;)</code></pre>
 <div id="the-research_briefings-function" class="section level3">
 <h3>The <code>research_briefings()</code> function</h3>
 <p>The <code>research_briefings()</code> function includes the feature of requesting data using lists created using the <code>research_briefings_lists</code> functions:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>research_topics_list &lt;-<span class="st"> </span><span class="kw">research_topics_list</span>()</span>
-<span id="cb12-2"><a href="#cb12-2"></a></span>
-<span id="cb12-3"><a href="#cb12-3"></a>research_topics_list[[<span class="dv">7</span>]]</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1">research_topics_list &lt;-<span class="st"> </span><span class="kw">research_topics_list</span>()</a>
+<a class="sourceLine" id="cb12-2" title="2"></a>
+<a class="sourceLine" id="cb12-3" title="3">research_topics_list[[<span class="dv">7</span>]]</a></code></pre></div>
 <pre><code>## [1] &quot;Defence&quot;</code></pre>
 <p>In this case I have given them the same name as their function, but you can assign any name you wish to them.</p>
 <p>Having created the lists, they can be used to specify which topics and subtopics to call, although strings can also be used. In the example below, <code>a</code> and <code>c</code> contain the same data.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>a &lt;-<span class="st"> </span><span class="kw">research_briefings</span>(<span class="dt">topic =</span> research_topics_list[[<span class="dv">7</span>]])</span>
-<span id="cb14-2"><a href="#cb14-2"></a></span>
-<span id="cb14-3"><a href="#cb14-3"></a>c &lt;-<span class="st"> </span><span class="kw">research_briefings</span>(<span class="dt">topic =</span> <span class="st">&quot;Defence&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1">a &lt;-<span class="st"> </span><span class="kw">research_briefings</span>(<span class="dt">topic =</span> research_topics_list[[<span class="dv">7</span>]])</a>
+<a class="sourceLine" id="cb14-2" title="2"></a>
+<a class="sourceLine" id="cb14-3" title="3">c &lt;-<span class="st"> </span><span class="kw">research_briefings</span>(<span class="dt">topic =</span> <span class="st">&quot;Defence&quot;</span>)</a></code></pre></div>
 <p>If a specific subtopic is called, but the topic is not specified, the function will still return all data within that specific subtopic. Note that this is slower than specifying the topic and subtopic.</p>
 <p>If a specified subtopic is not a subtopic of the specified topic, the function will not return any data.</p>
 </div>
 <div id="the-hansard_generic-function" class="section level3">
 <h3>The <code>hansard_generic()</code> function</h3>
 <p>The <code>hansard_generic()</code> function allows you to put in your own paths to the API. Information on all the paths available in the API can be found on the <a href="http://explore.data.parliament.uk/">DDP Explorer website</a>.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>x &lt;-<span class="st"> </span><span class="kw">hansard_generic</span>(<span class="st">&quot;commonsansweredquestions.json&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1">x &lt;-<span class="st"> </span><span class="kw">hansard_generic</span>(<span class="st">&quot;commonsansweredquestions.json&quot;</span>)</a></code></pre></div>
 <p>Note that the API defaults to returning 10 items per page, but allows up to 500 items per page, the default used by <code>hansard</code>.</p>
 </div>
 </div>

@@ -55,21 +55,14 @@ election_candidates <- function(ID = NULL, constit_details = FALSE,
 
   df <- loop_query(query, jpage, verbose) # in utils-loop.R
 
-  if (constit_details == TRUE & (nrow(df) > 0)) {
-    message("Retrieving constituency information")
-
-    constits <- suppressMessages(constituencies(current = FALSE))
-
-    df <- dplyr::left_join(df, constits,
-      by = c(constituency._about = "about")
-    )
-  }
-
-  names(df)[names(df) == "_about"] <- "about"
+  names(df)[names(df) == "_about"] <- "election_about"
 
   dat <- vector("list", nrow(df))
 
-  df$about <- gsub("http://data.parliament.uk/resources/", "", df$about)
+  df$election_about <- gsub(
+    "http://data.parliament.uk/resources/", "",
+    df$election_about
+  )
 
   seq_list <- seq(from = 1, to = nrow(df), by = 1)
 
@@ -77,30 +70,23 @@ election_candidates <- function(ID = NULL, constit_details = FALSE,
     x <- jsonlite::fromJSON(
       paste0(
         "http://lda.data.parliament.uk/electionresults/",
-        df$about[[i]], ".json"
+        df$election_about[[i]], ".json"
       ),
       flatten = TRUE
     )
 
     df2 <- x$result$primaryTopic$candidate
 
-    names(df2)[names(df2) == "_about"] <- "about"
-    df2$about <- gsub(
+    names(df2)[names(df2) == "_about"] <- "election_about"
+
+    df2$election_about <- gsub(
       "http://data.parliament.uk/resources/",
-      "", df2$about
-    )
-    df2$about <- gsub("/.*", "", df2$about)
-
-    df2 <- stats::aggregate(fullName._value ~ party._value + about,
-      data = df2, c
+      "", df2$election_about
     )
 
-    df2$fullName._value <- as.list(df2$fullName._value)
+    df2$election_about <- gsub("/.*", "", df2$election_about)
 
-    dat[[i]] <- tidyr::spread_(df2,
-      key_col = "party._value",
-      value_col = "fullName._value"
-    )
+    dat[[i]] <- df2
 
     if (verbose == TRUE) {
       message(
@@ -113,24 +99,28 @@ election_candidates <- function(ID = NULL, constit_details = FALSE,
 
   df4 <- dplyr::bind_rows(dat)
 
-  names(df4)[names(df4) == "Con"] <- "Conservative"
-  names(df4)[names(df4) == "Lab"] <- "Labour"
-  names(df4)[names(df4) == "Lib"] <- "Liberal Democrat"
-  names(df4)[names(df4) == "Ind"] <- "Independent"
+  if (constit_details == TRUE & (nrow(df) > 0)) {
+    message("Retrieving constituency information")
 
-  df4 <- df4[, order(colnames(df4))]
+    constits <- suppressMessages(constituencies(current = FALSE))
+
+    df <- dplyr::left_join(df, constits,
+      by = c(constituency._about = "about")
+    )
+  }
+
 
   if (nrow(df) == 0) {
     message("The request did not return any data.
                 Please check your parameters.")
   } else {
+    df <- tibble::as_tibble(df)
+
+    df <- dplyr::left_join(df, df4, by = "election_about")
+
     if (tidy == TRUE) {
       df <- elect_can_tidy(df, tidy_style)
     }
-
-    df <- tibble::as_tibble(df)
-
-    df <- dplyr::left_join(df, df4, by = "about")
 
     df
   }
